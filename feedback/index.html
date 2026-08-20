@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Form — AI & Digital Transformation | IICM Ranchi</title>
+    <link rel="stylesheet" href="feedback.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Header Hero Banner -->
+    <header class="form-header-hero">
+        <div class="brand-wrapper">
+            <i class="fa-solid fa-graduation-cap" style="color:var(--accent-gold);"></i>
+            <span class="brand-logo-text">Indian Institute of Coal Management</span>
+            <span class="brand-badge">Official Feedback</span>
+        </div>
+        <h1 class="form-main-title" id="form-program-title">
+            Feedback Form of Programme on “Artificial Intelligence and Digital Transformation” Duration 17 - 19 June 2026.
+        </h1>
+        <p class="form-sub-title">
+            Your valuable feedback helps IICM continuously enhance academic rigor, executive facilitation, and campus hospitality.
+        </p>
+    </header>
+
+    <main class="form-container">
+
+        <!-- Progress Tracker -->
+        <div class="progress-card">
+            <div class="progress-info">
+                <i class="fa-solid fa-chart-pie"></i> Form Completion
+            </div>
+            <div class="progress-bar-wrap">
+                <div class="progress-bar-fill" id="progress-fill"></div>
+            </div>
+            <div class="progress-counter" id="progress-text">0 / 18 Required Answered</div>
+        </div>
+
+        <!-- Section Navigation Pills -->
+        <nav class="form-nav-pills">
+            <a href="#sec-participant" class="form-nav-pill active">1. Participant Details</a>
+            <a href="#sec-design" class="form-nav-pill">2. Programme Design</a>
+            <a href="#sec-piyush-rai" class="form-nav-pill">3. Prof. Piyush Rai</a>
+            <a href="#sec-manish-kumar" class="form-nav-pill">4. Dr. Manish Kumar</a>
+            <a href="#sec-shyam-agarwal" class="form-nav-pill">5. CA Shyam Agarwal</a>
+            <a href="#sec-n-kishore" class="form-nav-pill">6. Dr. N. Kishore</a>
+            <a href="#sec-services" class="form-nav-pill">7. Services & Hostel</a>
+            <a href="#sec-coordinator" class="form-nav-pill">8. Coordinator</a>
+            <a href="#sec-overall" class="form-nav-pill">9. Overall Rating</a>
+        </nav>
+
+        <form id="google-feedback-form" onsubmit="handleFeedbackSubmit(event)">
+
+            <!-- SECTION 1: PARTICIPANT INFORMATION -->
+            <section class="form-section-card" id="sec-participant">
+                <div class="section-header">
+                    <div class="section-icon-badge"><i class="fa-solid fa-user-check"></i></div>
+                    <div class="section-title-wrap">
+                        <h2>Section 1: Participant Information</h2>
+                        <p>Please provide your executive identification details</p>
+                    </div>
+                </div>
+                <div class="section-body">
+                    <!-- Q1 -->
+                    <div class="question-item" data-qid="q1" data-required="true">
+                        <label class="question-label" for="q1_participant_name">
+                            1. Name of the Participant <span class="req-star">*</span>
+                        </label>
+                        <input type="text" id="q1_participant_name" name="q1_participant_name" class="input-text" placeholder="Enter your full name" required>
+                        <div class="error-msg">This question requires an answer</div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="question-item" data-qid="q2" data-required="true">
+                        <label class="question-label" for="q2_eis_no">
+                            2. EIS NO <span class="req-star">*</span>
+                        </label>
+                        <input type="text" id="q2_eis_no" name="q2_eis_no" class="input-text" placeholder="Enter your 8-digit EIS Number (e.g. 90123456)" required>
+                        <div class="error-msg">This question requires an answer</div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="question-item" data-qid="q3" data-required="true">
+                        <label class="question-label" for="q3_subsidiary">
+                            3. Subsidiary <span class="req-star">*</span>
+                        </label>
+                        <select id="q3_subsidiary" name="q3_subsidiary" class="input-select" required>
+                            <option value="">-- Select Subsidiary / Company --</option>
+                            <option value="CCL">Central Coalfields Limited (CCL)</option>
+                            <option value="BCCL">Bharat Coking Coal Limited (BCCL)</option>
+                            <option value="ECL">Eastern Coalfields Limited (ECL)</option>
+                            <option value="WCL">Western Coalfields Limited (WCL)</option>
+                            <option value="SECL">South Eastern Coalfields Limited (SECL)</option>
+                            <option value="NCL">Northern Coalfields Limited (NCL)</option>
+                            <option value="MCL">Mahanadi Coalfields Limited (MCL)</option>
+                            <option value="CMPDI">Central Mine Planning & Design Institute (CMPDI)</option>
+                            <option value="CIL HQ">Coal India Limited HQ (CIL HQ)</option>
+                            <option value="NEC">North Eastern Coalfields (NEC)</option>
+                            <option value="IICM">Indian Institute of Coal Management (IICM)</option>
+                            <option value="Other">Other Organization / Ministry</option>
+                        </select>
+                        <div class="error-msg">Please select your subsidiary</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: PROGRAMME DESIGN & RELEVANCE -->
+            <section class="form-section-card" id="sec-design">
+                <div class="section-header">
+                    <div class="section-icon-badge"><i class="fa-solid fa-book-open"></i></div>
+                    <div class="section-title-wrap">
+                        <h2>Section 2: Programme Relevance & Design</h2>
+                        <p>Evaluation of course outline, curriculum structure, and relevance</p>
+                    </div>
+                </div>
+                <div class="section-body">
+                    <!-- Q4 -->
+                    <div class="question-item" data-qid="q4" data-required="false">
+                        <label class="question-label" for="q4_relevance">
+                            4. Was this training programme required/relevant for you? If yes, please specify how.
+                        </label>
+                        <input type="text" id="q4_relevance" name="q4_relevance" class="input-text" placeholder="Your response (Optional)">
+                    </div>
+
+                    <!-- Q5 -->
+                    <div class="question-item" data-qid="q5" data-required="true">
+                        <label class="question-label">
+                            5. How you rate the Programme Design (The topics which covered in the Programme ) <span class="req-star">*</span>
+                        </label>
+                        <div class="rating-pills-group" data-group="q5_prog_design">
+                            <label class="rating-pill-label" data-val="Excellent">
+                                <input type="radio" name="q5_prog_design" value="Excellent" required> <i class="fa-solid fa-star"></i> Excellent
+                            </label>
+                            <label class="rating-pill-label" data-val="Very Good">
+                                <input type="radio" name="q5_prog_design" value="Very Good"> <i class="fa-regular fa-star"></i> Very Good
+                            </label>
+                            <label class="rating-pill-label" data-val="Good">
+                                <input type="radio" name="q5_prog_design" value="Good"> <i class="fa-regular fa-thumbs-up"></i> Good
+                            </label>
+                            <label class="rating-pill-label" data-val="Average">
+                                <input type="radio" name="q5_prog_design" value="Average"> <i class="fa-solid fa-minus"></i> Average
+                            </label>
+                            <label class="rating-pill-label" data-val="Poor">
+                                <input type="radio" name="q5_prog_design" value="Poor"> <i class="fa-regular fa-thumbs-down"></i> Poor
+                            </label>
+                        </div>
+                        <div class="error-msg">Please select a rating for Programme Design</div>
+                    </div>
+
+                    <!-- Q6 -->
+                    <div class="question-item" data-qid="q6" data-required="false">
+                        <label class="question-label" for="q6_additional_topics">
+                            6. Please suggest any additional topics that could be included in the programme, and mention if there are any topics that may be omitted.
+                        </label>
+                        <input type="text" id="q6_additional_topics" name="q6_additional_topics" class="input-text" placeholder="Your response (Optional)">
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: PROF. PIYUSH RAI, IIT-BHU -->
+            <section class="form-section-card" id="sec-piyush-rai">
+                <div class="section-header">
+                    <div class="section-icon-badge"><i class="fa-solid fa-chalkboard-user"></i></div>
+                    <div class="section-title-wrap">
+                        <h2>Section 3: Prof. Piyush Rai, IIT-BHU</h2>
+                        <p>Faculty feedback for sessions on Participant Expectations & Digital Transformation</p>
+                    </div>
+                </div>
+                <div class="section-body">
+                    <!-- Q7 -->
+                    <div class="question-item" data-qid="q7" data-required="true">
+                        <label class="question-label">
+                            7. How do you rate the Session facilitated by Prof Piyush Rai, IIT-BHU on Topic of Participant Expectations. <span class="req-star">*</span>
+                        </label>
+                        <div class="rating-pills-group" data-group="q7_piyush_expectations">
+                            <label class="rating-pill-label" data-val="Excellent"><input type="radio" name="q7_piyush_expectations" value="Excellent" required> Excellent</label>
+                            <label class="rating-pill-label" data-val="Very Good"><input type="radio" name="q7_piyush_expectations" value="Very Good"> Very Good</label>
+                            <label class="rating-pill-label" data-val="Good"><input type="radio" name="q7_piyush_expectations" value="Good"> Good</label>
+                            <label class="rating-pill-label" data-val="Average"><input type="radio" name="q7_piyush_expectations" value="Average"> Average</label>
+                            <label class="rating-pill-label" data-val="Poor"><input type="radio" name="q7_piyush_expectations" value="Poor"> Poor</label>
+                        </div>
+                        <div class="error-msg">This question requires an answer</div>
+                    </div>
+
+                    <!-- Q8 -->
+                    <div class="question-item" data-qid="q8" data-required="true">
+                        <label class="question-label">
+                            8. How do you rate the Session facilitated by Prof Piyush Rai, IIT-BHU on Topic of Digital Transformation Journey in PSUs and coal Industry <span class="req-star">*</span>
+                        </label>
+                        <div class="rating-pills-group" data-group="q8_piyush_digital_journey">
+                            <label class="rating-pill-label" data-val="Excellent"><input type="radio" name="q8_piyush_digital_journey" value="Excellent" required> Excellent</label>
+                            <label class="rating-pill-label" data-val="Very Good"><input type="radio" name="q8_piyush_digital_journey" value="Very Good"> Very Good</label>
+                            <label class="rating-pill-label" data-val="Good"><input type="radio" name="q8_piyush_digital_journey" value="Good"> Good</label>
+                            <label class="rating-pill-label" data-val="Average"><input type="radio" name="q8_piyush_digital_journey" value="Average"> Average</label>
+                            <label class="rating-pill-label" data-val="Poor"><input type="radio" name="q8_piyush_digital_journey" value="Poor"> Poor</label>
+                        </div>
+                        <div class="error-msg">This question requires an answer</div>
+                    </div>
+
+                    <!-- Q9 -->
+                    <div class="question-item" data-qid="q9" data-required="false">
+                        <label class="question-label" for="q9_piyush_thoughts">
+                            9. Share your thoughts on how Prof Piyush Rai, IIT-BHU conducted the session — what did you appreciate most about his facilitation?
+                        </label>
+                        <input type="text" id="q9_piyush_thoughts" name="q9_piyush_thoughts" class="input-text" placeholder="Your response (Optional)">
+                    </div>
+
+                    <!-- Q10 -->
+                    <div class="question-item" data-qid="q10" data-required="false">
+                        <label class="question-label" for="q10_piyush_improvement">
+                            10. Kindly mention any specific areas of improvement you would recommend for Prof Piyush Rai, IIT-BHU to enhance future sessions.
+                        </label>
+                        <input type="text" id="q10_piyush_improvement" name="q10_piyush_improvement" class="input-text" placeholder="Your response (Optional)">
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4: DR. MANISH KUMAR, IIM RANCHI -->
+            <section class="form-section-card" id="sec-manish-kumar">
+                <div class="section-header">
+                    <div class="section-icon-badge"><i class="fa-solid fa-microchip"></i></div>
+                    <div class="section-title-wrap">
+                        <h2>Section 4: Dr. Manish Kumar, IIM Ranchi</h2>
+                        <p>Faculty feedback for AI, Machine Learning, Deep Learning and Generative AI</p>
+                    </div>
+                </div>
+                <div class="section-body">
+                    <!-- Q11 -->
+                    <div class="question-item" data-qid="q11" data-required="true">
+                        <label class="question-label">
+                            11. How do you rate the Session facilitated by Dr. Manish Kumar Asst. Professor (Operations Management) IIM Ranchi on Topic of AI, Machine Learning, Deep Learning and Generative. <span class="req-star">*</span>
+                        </label>
+                        <div class="rating-pills-group" data-group="q11_manish_ai_ml">
+                            <label class="rating-pill-label" data-val="Excellent"><input type="radio" name="q11_manish_ai_ml" value="Excellent" required> Excellent</label>
+                            <label class="rating-pill-label" data-val="Very Good"><input type="radio" name="q11_manish_ai_ml" value="Very Good"> Very Good</label>
+                            <label class="rating-pill-label" data-val="Good"><input type="radio" name="q11_manish_ai_ml" value="Good"> Good</label>
+                            <label class="rating-pill-label" data-val="Average"><input type="radio" name="q11_manish_ai_ml" value="Average"> Average</label>
+                            <label class="rating-pill-label" data-val="Poor"><input type="radio" name="q11_manish_ai_ml" value="Poor"> Poor</label>
+                        </div>
+                        <div class="error-msg">This question requires an answer</div>
+                    </div>
+
+                    <!-- Q12 -->
+                    <div class="question-item" data-qid="q12" data-required="true">
+                        <label class="question-label">
+                            12. How do you rate the Session facilitated by Dr. Manish Kumar Asst. Professor (Operations Management) IIM Ranchi on Topic of AI, Machine Learning, Deep Learning and Generative AI Understanding the Difference <span class="req-star">*</span>
+                        </label>
+                        <div class="rating-pills-group" data-group="q12_manish_genai_diff">
+                            <label class="rating-pill-label" data-val="Excellent"><input type="radio" name="q12_manish_genai_diff" value="Excellent" required> Excellent</label>
+                            <label class="rating-pill-label" data-val="Very Good"><input type="radio" name="q12_manish_genai_diff" value="Very Good"> Very Good</label>
+                            <label class="rating-pill-label" data-val="Good"><input type="radio" name="q12_manish_genai_diff" value="Good"> Good</label>
+                            <label class="rating-pill-label" data-val="Average"><input type="radio" name="q12_manish_genai_diff" value="Average"> Average</label>
+                            <label class="rating-pill-label" data-val="Poor"><input type="radio" name="q12_manish_genai_diff" value="Poor"> Poor</label>
+                        </div>
+                        <div class="error-msg">This question requires an answer</div>
+                    </div>
+
+                    <!-- Q13 -->
+                    <div class="question-item" data-qid="q13" data-required="false">
+                        <label class="question-label" for="q13_manish_thoughts">
+                            13. Share your thoughts on how Dr. Manish Kumar Asst. Professor (Operations Management) IIM Ranchi conducted the session — what did you appreciate most about his facilitation?
+                        </label>
+                        <input type="text" id="q13_manish_thoughts" name="q13_manish_thoughts" class="input-text" placeholder="Your response (Optional)">
+                    </div>
+
+                    <!-- Q14 -->
+                    <div class="question-item" data-qid="q14" data-required="false">
+                        <label class="question-label" for="q14_manish_improvement">
+                            14. Kindly mention any specific areas of improvement you would recommend for Dr. Manish Kumar Asst. Professor (Operations Management) IIM Ranchi to enhance future sessions.
+                        </label>
+                        <input type="text" id="q14_manish_improvement" name="q14_manish_improvement" class="input-text" placeholder="Your response (Optional)">
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 5: CA SHYAM AGARWAL, R. G. AGARWALA & CO -->
+            <section class="form-section-card" id="sec-shyam-agarwal">
+                <div class="section-header">
+                    <div class="section-icon-badge"><i class="fa-solid fa-robot"></i></div>
+                    <div class="section-title-wrap">
+                        <h2>Section 5: CA Shyam Agarwal, Partner R. G. Agarwala & Co</h2>
+                        <p>Faculty feedback for Prompt Engineering, Office Productivity, Finance Audit & Analytics</p>
+                    </div>
+                </div>
+                <div class="section-body">
+                    <!-- Q15 -->
+                    <div class="question-item" data-qid="q15" data-required="true">
+                        <label class="question-label">
+                            15. How do you rate the Session facilitated by CA Shyam Agarwal Partner R. G. Agarwala & Co on Topic of Generative AI Language Models (Chat-GPT, Co-pilot, Gemini, etc. <span class="req-star">*</span>
+                        </label>
+                        <div class="rating-pills-group" data-group="q15_shyam_llm">
+                            <label class="rating-pill-label" data-val="Excellent"><input type="radio" name="q15_shyam_llm" value="Excellent" required> Excellent</label>
+                            <label class="rating-pill-label" data-val="Very Good"><input type="radio" name="q15_shyam_llm" value="Very Good"> Very Good</label>
+                            <label class="rating-pill-label" data-val="Good"><input type="radio" name="q15_shyam_llm" value="Good"> Good</label>
+                            <label class="rating-pill-label" data-val="Average"><input type="radio" name="q15_shyam_llm" value="Average"> Average</label>
+                            <label class="rating-pill-label" data-val="Poor"><input type="radio" name="q15_shyam_llm" value="Poor"> Poor</label>
+                        </div>
+                        <div class="error-msg">This question requires an answer</div>
+                    </div>
+
+                    <!-- Q16 -->
+                    <div class="question-item" data-qid="q16" data-required="true">
+                        <label class="question-label">
+                            16. How do you rate the Session facilitated by CA Shyam Agarwal Partner R. G. Agarwala & Co on Topic of Prompt Engineering for Managers : Practical Applications and Demonstrations. <span class="req-star">*</span>
+                        </label>
+                        <div class="rating-pills-group" data-group="q16_shyam_prompt">
+                            <label class="rating-pill-label" data-val="Excellent"><input type="radio" name="q16_shyam_prompt" value="Excellent" required> Excellent</label>
+                            <label class="rating-pill-label" data-val="Very Good"><input type="radio" name="q16_shyam_prompt" value="Very Good"> Very Good</label>
+                            <label class="rating-pill-label" data-val="Good"><input type="radio" name="q16_shyam_prompt" value="Good"> Good</label>
+                            <label class="rating-pill-label" data-val="Average"><input type="radio" name="q16_shyam_prompt" value="Average"> Average</label>
+                            <label class="rating-pill-label" data-val="Poor"><input type="radio" name="q16_shyam_prompt" value="Poor"> Poor</label>
+                        </div>
+                        <div class="error-msg">This question requires an answer</div>
+                    </div>
+
+                    <!-- Q17 -->
+                    <div class="question-item" data-qid="q17" data-required="true">
+                        <label class="question-label">
+                            17. How do you rate the Session facilitated by CA Shyam Agarwal Partner R. G. Agarwala & Co on Topic of AI for Office Productivity: Reports, Presentations, Knowledge Management and Decision Support. <span class="req-star">*</span>
+                        </label>
+                        <div class="rating-pills-group" data-group="q17_shyam_productivity">
+                            <label class="rating-pill-label" data-val="Excellent"><input type="radio" name="q17_shyam_productivity" value="Excellent" required> Excellent</label>
+                            <label class="rating-pill-label" data-val="Very Good"><input type="radio" name="q17_shyam_productivity" value="Very Good"> Very Good</label>
+                            <label class="rating-pill-label" data-val="Good"><input type="radio" name="q17_shyam_productivity" value="Good"> Good</label>
+                            <label class="rating-pill-label" data-val="Average"><input type="radio" name="q17_shyam_productivity" value="Average"> Average</label>
+                            <label class="rating-pill-label" data-val="Poor"><input type="radio" name="q17_shyam_productivity" value="Poor"> Poor</label>
+                        </div>
+                        <div class="error-msg">This question requires an answer</div>
+                    </div>
+
+                    <!-- Q18 -->
+                    <div class="question-item" data-qid="q18" data-required="true">
+                        <label class="question-label">
+                            18. How do you rate the Session facilitated by CA Shyam Agarwal Partner R. G. Agarwala & Co on Topic of AI in Finance Audit & Procurement Management and Data Analytics for Financial Decision Making. <span class="req-star">*</span>
+                        </label>
+                        <div class="rating-pills-group" data-group="q18_shyam_finance">
+                            <label class="rating-pill-label" data-val="Excellent"><input type="radio" name="q18_shyam_finance" value="Excellent" required> Excellent</label>
+                            <label class="rating-pill-label" data-val="Very Good"><input type="radio" name="q18_shyam_finance" value="Very Good"> Very Good</label>
+                            <label class="rating-pill-label" data-val="Good"><input type="radio" name="q18_shyam_finance" value="Good"> Good</label>
+                            <label class="rating-pill-label" data-val="Average"><input type="radio" name="q18_shyam_finance" value="Average"> Average</label>
+                            <label class="rating-pill-label" data-val="Poor"><input type="radio" name="q18_shyam_finance" value="Poor"> Poor</label>
+                        </div>
+                        <div class="error-msg">This question requires an answer</div>
+                    </div>
+
+                    <!-- Q19 -->
+                    <div class="question-item" data-qid="q19" data-required="false">
+                        <label class="question-label" for="q19_shyam_thoughts">
+                            19. Share your thoughts on how CA Shyam Agarwal Partner R. G. Agarwala & Co conducted the session — what did you appreciate most about his facilitation?
+                        </label>
+                        <input type="text" id="q19_shyam_thoughts" name="q19_shyam_thoughts" class="input-text" placeholder="Your response (Optional)">
+                    </div>
+
+                    <!-- Q20 -->
+                    <div class="question-item" data-qid="q20" data-required="false">
+                        <label class="question-label" for="q20_shyam_improvement">
+                            20. Kindly mention any specific areas of improvement you would recommend for CA Shyam Agarwal Partner R. G. Agarwala & Co to enhance future sessions.
+                        </label>
+                        <input type="text" id="q20_shyam_improvement" name="q20_shyam_improvement" class="input-text" placeholder="Your response (Optional)">
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 6: DR. N. KISHORE, IIIT RANCHI -->
+            <section class="form-section-card" id="sec-n-kishore">
+                <div class="section-header">
+                    <div class="section-icon-badge"><i class="fa-solid fa-shield-halved"></i></div>
+                    <div class="section-title-wrap">
+                        <h2>Section 6: Dr. N. Kishore, IIIT Ranchi</h2>
+                        <p>Faculty feedback for AI Governance, Cybersecurity, Mining Applications & AI Adoption</p>
+                    </div>
+                </div>
+                <div class="section-body">
+                    <!-- Q21 -->
+                    <div class="question-item" data-qid="q21" data-required="true">
+                        <label class="question-label">
+                            21. How do you rate the Session facilitated by Dr. N. Kishore Asst Prof IIIT Ranchi on Topic of AI Governance, Ethics, Responsible AI and Regulatory Considerations. <span class="req-star">*</span>
+                        </label>
+                        <div class="rating-pills-group" data-group="q21_kishore_governance">
+                            <label class="rating-pill-label" data-val="Excellent"><input type="radio" name="q21_kishore_governance" value="Excellent" required> Excellent</label>
+                            <label class="rating-pill-label" data-val="Very Good"><input type="radio" name="q21_kishore_governance" value="Very Good"> Very Good</label>
+                            <label class="rating-pill-label" data-val="Good"><input type="radio" name="q21_kishore_governance" value="Good"> Good</label>
+                            <label class="rating-pill-label" data-val="Average"><input type="radio" name="q21_kishore_governance" value="Average"> Average</label>
+                            <label class="rating-pill-label" data-val="Poor"><input type="radio" name="q21_kishore_governance" value="Poor"> Poor</label>
+                        </div>
+                        <div class="error-msg">This question requires an answer</div>
+                    </div>
+
+                    <!-- Q22 -->
+                    <div class="question-item" data-qid="q22" data-required="true">
+                        <label class="question-label">
+                            22. How do you rate the Session facilitated by Dr. N. Kishore Asst Prof IIIT Ranchi on Topic of Cyber Security, Data Privacy and AI Risk Management. <span class="req-star">*</span>
+                        </label>
+                        <div class="rating-pills-group" data-group="q22_kishore_cyber">
+                            <label class="rating-pill-label" data-val="Excellent"><input type="radio" name="q22_kishore_cyber" value="Excellent" required> Excellent</label>
+                            <label class="rating-pill-label" data-val="Very Good"><input type="radio" name="q22_kishore_cyber" value="Very Good"> Very Good</label>
+                            <label class="rating-pill-label" data-val="Good"><input type="radio" name="q22_kishore_cyber" value="Good"> Good</label>
+                            <label class="rating-pill-label" data-val="Average"><input type="radio" name="q22_kishore_cyber" value="Average"> Average</label>
+                            <label class="rating-pill-label" data-val="Poor"><input type="radio" name="q22_kishore_cyber" value="Poor"> Poor</label>
+                        </div>
+                        <div class="error-msg">This question requires an answer</div>
+                    </div>
+
+                    <!-- Q23 -->
+                    <div class="question-item" data-qid="q23" data-required="true">
+                        <label class="question-label">
+                            23. How do you rate the Session facilitated by Dr. N. Kishore Asst Prof IIIT Ranchi on Topic of AI Applications in Mining Operations: Case Studies from Coal Industry. <span class="req-star">*</span>
+                        </label>
+                        <div class="rating-pills-group" data-group="q23_kishore_mining">
+                            <label class="rating-pill-label" data-val="Excellent"><input type="radio" name="q23_kishore_mining" value="Excellent" required> Excellent</label>
+                            <label class="rating-pill-label" data-val="Very Good"><input type="radio" name="q23_kishore_mining" value="Very Good"> Very Good</label>
+                            <label class="rating-pill-label" data-val="Good"><input type="radio" name="q23_kishore_mining" value="Good"> Good</label>
+                            <label class="rating-pill-label" data-val="Average"><input type="radio" name="q23_kishore_mining" value="Average"> Average</label>
+                            <label class="rating-pill-label" data-val="Poor"><input type="radio" name="q23_kishore_mining" value="Poor"> Poor</label>
+                        </div>
+                        <div class="error-msg">This question requires an answer</div>
+                    </div>
+
+                    <!-- Q24 -->
+                    <div class="question-item" data-qid="q24" data-required="true">
+                        <label class="question-label">
+                            24. How do you rate the Session facilitated by Dr. N. Kishore Asst Prof IIIT Ranchi on Topic of Emerging Technologies, Roadmap for AI Adoption. <span class="req-star">*</span>
+                        </label>
+                        <div class="rating-pills-group" data-group="q24_kishore_roadmap">
+                            <label class="rating-pill-label" data-val="Excellent"><input type="radio" name="q24_kishore_roadmap" value="Excellent" required> Excellent</label>
+                            <label class="rating-pill-label" data-val="Very Good"><input type="radio" name="q24_kishore_roadmap" value="Very Good"> Very Good</label>
+                            <label class="rating-pill-label" data-val="Good"><input type="radio" name="q24_kishore_roadmap" value="Good"> Good</label>
+                            <label class="rating-pill-label" data-val="Average"><input type="radio" name="q24_kishore_roadmap" value="Average"> Average</label>
+                            <label class="rating-pill-label" data-val="Poor"><input type="radio" name="q24_kishore_roadmap" value="Poor"> Poor</label>
+                        </div>
+                        <div class="error-msg">This question requires an answer</div>
+                    </div>
+
+                    <!-- Q25 -->
+                    <div class="question-item" data-qid="q25" data-required="false">
+                        <label class="question-label" for="q25_kishore_thoughts">
+                            25. Share your thoughts on how Dr. N. Kishore Asst Prof IIIT Ranchi conducted the session — what did you appreciate most about his facilitation?
+                        </label>
+                        <input type="text" id="q25_kishore_thoughts" name="q25_kishore_thoughts" class="input-text" placeholder="Your response (Optional)">
+                    </div>
+
+                    <!-- Q26 -->
+                    <div class="question-item" data-qid="q26" data-required="false">
+                        <label class="question-label" for="q26_kishore_improvement">
+                            26. Kindly mention any specific areas of improvement you would recommend for Dr. N. Kishore Asst Prof IIIT Ranchi to enhance future sessions.
+                        </label>
+                        <input type="text" id="q26_kishore_improvement" name="q26_kishore_improvement" class="input-text" placeholder="Your response (Optional)">
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 7: FEEDBACK OF SERVICES & HOSPITALITY -->
+            <section class="form-section-card" id="sec-services">
+                <div class="section-header">
+                    <div class="section-icon-badge"><i class="fa-solid fa-hotel"></i></div>
+                    <div class="section-title-wrap">
+                        <h2>Section 7: Feedback of the Services & Hospitality</h2>
+                        <p>Evaluation of campus infrastructure, dining, hostel, and recreational facilities</p>
+                    </div>
+                </div>
+                <div class="section-body">
+                    <!-- Q27 Matrix Grid -->
+                    <div class="question-item" data-qid="q27_matrix" data-required="true">
+                        <label class="question-label">
+                            27. Feedback of the services <span class="req-star">*</span>
+                        </label>
+                        <p class="question-desc">Please rate each campus service facility from Excellent to Poor</p>
+                        
+                        <div class="matrix-table-wrap">
+                            <table class="matrix-table">
+                                <thead>
+                                    <tr>
+                                        <th>Service Facility</th>
+                                        <th>Excellent</th>
+                                        <th>Very Good</th>
+                                        <th>Good</th>
+                                        <th>Average</th>
+                                        <th>Poor</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-row="q27_av_aids">
+                                        <td class="row-title">Audio Visual Aids used during sessions <span class="req-star">*</span></td>
+                                        <td><input type="radio" name="q27_av_aids" value="Excellent" class="matrix-radio-btn" required></td>
+                                        <td><input type="radio" name="q27_av_aids" value="Very Good" class="matrix-radio-btn"></td>
+                                        <td><input type="radio" name="q27_av_aids" value="Good" class="matrix-radio-btn"></td>
+                                        <td><input type="radio" name="q27_av_aids" value="Average" class="matrix-radio-btn"></td>
+                                        <td><input type="radio" name="q27_av_aids" value="Poor" class="matrix-radio-btn"></td>
+                                    </tr>
+                                    <tr data-row="q27_library">
+                                        <td class="row-title">Library (Learning Resource Centre) <span class="req-star">*</span></td>
+                                        <td><input type="radio" name="q27_library" value="Excellent" class="matrix-radio-btn" required></td>
+                                        <td><input type="radio" name="q27_library" value="Very Good" class="matrix-radio-btn"></td>
+                                        <td><input type="radio" name="q27_library" value="Good" class="matrix-radio-btn"></td>
+                                        <td><input type="radio" name="q27_library" value="Average" class="matrix-radio-btn"></td>
+                                        <td><input type="radio" name="q27_library" value="Poor" class="matrix-radio-btn"></td>
+                                    </tr>
+                                    <tr data-row="q27_hostel">
+                                        <td class="row-title">Room upkeep & Services in Hostel <span class="req-star">*</span></td>
+                                        <td><input type="radio" name="q27_hostel" value="Excellent" class="matrix-radio-btn" required></td>
+                                        <td><input type="radio" name="q27_hostel" value="Very Good" class="matrix-radio-btn"></td>
+                                        <td><input type="radio" name="q27_hostel" value="Good" class="matrix-radio-btn"></td>
+                                        <td><input type="radio" name="q27_hostel" value="Average" class="matrix-radio-btn"></td>
+                                        <td><input type="radio" name="q27_hostel" value="Poor" class="matrix-radio-btn"></td>
+                                    </tr>
+                                    <tr data-row="q27_dining">
+                                        <td class="row-title">Food Services in Dining Hall <span class="req-star">*</span></td>
+                                        <td><input type="radio" name="q27_dining" value="Excellent" class="matrix-radio-btn" required></td>
+                                        <td><input type="radio" name="q27_dining" value="Very Good" class="matrix-radio-btn"></td>
+                                        <td><input type="radio" name="q27_dining" value="Good" class="matrix-radio-btn"></td>
+                                        <td><input type="radio" name="q27_dining" value="Average" class="matrix-radio-btn"></td>
+                                        <td><input type="radio" name="q27_dining" value="Poor" class="matrix-radio-btn"></td>
+                                    </tr>
+                                    <tr data-row="q27_recreation">
+                                        <td class="row-title">Recreation Facilities ( Swimming Pool, Health Club, Games etc.) <span class="req-star">*</span></td>
+                                        <td><input type="radio" name="q27_recreation" value="Excellent" class="matrix-radio-btn" required></td>
+                                        <td><input type="radio" name="q27_recreation" value="Very Good" class="matrix-radio-btn"></td>
+                                        <td><input type="radio" name="q27_recreation" value="Good" class="matrix-radio-btn"></td>
+                                        <td><input type="radio" name="q27_recreation" value="Average" class="matrix-radio-btn"></td>
+                                        <td><input type="radio" name="q27_recreation" value="Poor" class="matrix-radio-btn"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="error-msg">Please rate all 5 service areas</div>
+                    </div>
+
+                    <!-- Q28 -->
+                    <div class="question-item" data-qid="q28" data-required="false">
+                        <label class="question-label" for="q28_issues_faced">
+                            28. Please update the Key issues/ Problems faced in the Hospitality and Services
+                        </label>
+                        <textarea id="q28_issues_faced" name="q28_issues_faced" class="input-textarea" rows="3" placeholder="Describe any problems faced with room, food, or amenities..."></textarea>
+                    </div>
+
+                    <!-- Q29 -->
+                    <div class="question-item" data-qid="q29" data-required="false">
+                        <label class="question-label" for="q29_hospitality_suggestions">
+                            29. Suggestion to improve  overall Hospitality and Services
+                        </label>
+                        <input type="text" id="q29_hospitality_suggestions" name="q29_hospitality_suggestions" class="input-text" placeholder="Your response (Optional)">
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 8: FEEDBACK OF THE COORDINATOR -->
+            <section class="form-section-card" id="sec-coordinator">
+                <div class="section-header">
+                    <div class="section-icon-badge"><i class="fa-solid fa-user-tie"></i></div>
+                    <div class="section-title-wrap">
+                        <h2>Section 8: Feedback of the Coordinator</h2>
+                        <p>Evaluation of programme management, communication, and logistical coordination</p>
+                    </div>
+                </div>
+                <div class="section-body">
+                    <!-- Q30 Matrix Grid -->
+                    <div class="question-item" data-qid="q30_matrix" data-required="true">
+                        <label class="question-label">
+                            30. Feedback of the coordinator <span class="req-star">*</span>
+                        </label>
+                        <div class="matrix-table-wrap">
+                            <table class="matrix-table">
+                                <thead>
+                                    <tr>
+                                        <th>Coordination Dimension</th>
+                                        <th>Excellent</th>
+                                        <th>Very Good</th>
+                                        <th>Good</th>
+                                        <th>Average</th>
+                                        <th>Poor</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr data-row="q30_comm_skill">
+                                        <td class="row-title">Communication Skill <span class="req-star">*</span></td>
+                                        <td><input type="radio" name="q30_comm_skill" value="Excellent" class="matrix-radio-btn" required></td>
+                                        <td><input type="radio" name="q30_comm_skill" value="Very Good" class="matrix-radio-btn"></td>
+                                        <td><input type="radio" name="q30_comm_skill" value="Good" class="matrix-radio-btn"></td>
+                                        <td><input type="radio" name="q30_comm_skill" value="Average" class="matrix-radio-btn"></td>
+                                        <td><input type="radio" name="q30_comm_skill" value="Poor" class="matrix-radio-btn"></td>
+                                    </tr>
+                                    <tr data-row="q30_overall_coord">
+                                        <td class="row-title">Over all coordination <span class="req-star">*</span></td>
+                                        <td><input type="radio" name="q30_overall_coord" value="Excellent" class="matrix-radio-btn" required></td>
+                                        <td><input type="radio" name="q30_overall_coord" value="Very Good" class="matrix-radio-btn"></td>
+                                        <td><input type="radio" name="q30_overall_coord" value="Good" class="matrix-radio-btn"></td>
+                                        <td><input type="radio" name="q30_overall_coord" value="Average" class="matrix-radio-btn"></td>
+                                        <td><input type="radio" name="q30_overall_coord" value="Poor" class="matrix-radio-btn"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="error-msg">Please rate both coordinator dimensions</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 9: OVERALL PROGRAMME & CLOSING -->
+            <section class="form-section-card" id="sec-overall">
+                <div class="section-header">
+                    <div class="section-icon-badge"><i class="fa-solid fa-award"></i></div>
+                    <div class="section-title-wrap">
+                        <h2>Section 9: Overall Programme Rating & Closing</h2>
+                        <p>Overall executive summary and final remarks</p>
+                    </div>
+                </div>
+                <div class="section-body">
+                    <!-- Q31 -->
+                    <div class="question-item" data-qid="q31" data-required="true">
+                        <label class="question-label">
+                            31. How you rate overall Programme <span class="req-star">*</span>
+                        </label>
+                        <div class="rating-pills-group" data-group="q31_overall_prog">
+                            <label class="rating-pill-label" data-val="Excellent"><input type="radio" name="q31_overall_prog" value="Excellent" required> <i class="fa-solid fa-star"></i> Excellent</label>
+                            <label class="rating-pill-label" data-val="Very Good"><input type="radio" name="q31_overall_prog" value="Very Good"> <i class="fa-regular fa-star"></i> Very Good</label>
+                            <label class="rating-pill-label" data-val="Good"><input type="radio" name="q31_overall_prog" value="Good"> <i class="fa-regular fa-thumbs-up"></i> Good</label>
+                            <label class="rating-pill-label" data-val="Average"><input type="radio" name="q31_overall_prog" value="Average"> <i class="fa-solid fa-minus"></i> Average</label>
+                            <label class="rating-pill-label" data-val="Poor"><input type="radio" name="q31_overall_prog" value="Poor"> <i class="fa-regular fa-thumbs-down"></i> Poor</label>
+                        </div>
+                        <div class="error-msg">Please select an overall rating for the programme</div>
+                    </div>
+
+                    <!-- Q32 -->
+                    <div class="question-item" data-qid="q32" data-required="false">
+                        <label class="question-label" for="q32_overall_suggestions">
+                            32. Suggestions to improve overall aspects  if any
+                        </label>
+                        <input type="text" id="q32_overall_suggestions" name="q32_overall_suggestions" class="input-text" placeholder="Your response (Optional)">
+                    </div>
+
+                    <!-- Q33 -->
+                    <div class="question-item" data-qid="q33" data-required="false">
+                        <label class="question-label" for="q33_remarks">
+                            33. Remarks
+                        </label>
+                        <input type="text" id="q33_remarks" name="q33_remarks" class="input-text" placeholder="Final remarks / closing comments (Optional)">
+                    </div>
+                </div>
+            </section>
+
+            <!-- SUBMIT ACTION BAR -->
+            <div class="form-actions-card">
+                <button type="submit" class="btn-submit" id="btn-submit-form">
+                    <i class="fa-solid fa-paper-plane"></i> Submit Feedback
+                </button>
+                <button type="button" class="btn-clear" onclick="clearForm()">
+                    <i class="fa-solid fa-rotate-left"></i> Clear Form
+                </button>
+            </div>
+
+        </form>
+
+    </main>
+
+    <!-- SUCCESS CONFIRMATION MODAL -->
+    <div class="modal-backdrop" id="success-modal">
+        <div class="modal-box">
+            <div class="success-icon-wrap">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h2 style="font-size:22px; color:#073b26; margin-bottom:8px;">Feedback Submitted Successfully!</h2>
+            <p style="font-size:14px; color:#64748b; margin-bottom:20px;" id="success-summary-text">
+                Thank you for evaluating the Programme on “Artificial Intelligence and Digital Transformation”. Your response has been securely recorded.
+            </p>
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:16px; margin-bottom:24px; text-align:left; font-size:13px;" id="receipt-details">
+                <!-- Injected by feedback.js -->
+            </div>
+            <div style="display:flex; gap:10px; justify-content:center;">
+                <button type="button" class="btn-submit" onclick="window.print()" style="padding:10px 24px; font-size:14px;">
+                    <i class="fa-solid fa-print"></i> Print / Save Receipt
+                </button>
+                <button type="button" class="btn-clear" onclick="closeSuccessModal()" style="margin:0; padding:10px 20px;">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="feedback.js"></script>
+</body>
+</html>

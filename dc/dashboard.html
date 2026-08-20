@@ -1,0 +1,304 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IICM — Executive Director | Final Approval Authority</title>
+    <meta name="description" content="Executive Director dashboard for QRTMS — Final approval authority for programme note sheets.">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ── DC-specific overrides ── */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+        .stat-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px 22px;
+            box-shadow: var(--card-shadow);
+            border-left: 5px solid var(--accent-gold);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+        .stat-card:hover { transform: translateY(-2px); }
+        .stat-card.green  { border-left-color: #28a745; }
+        .stat-card.red    { border-left-color: #dc3545; }
+        .stat-card.blue   { border-left-color: #17a2b8; }
+        .stat-val  { font-size: 30px; font-weight: 800; color: #1b4332; margin-top: 4px; }
+        .stat-lbl  { font-size: 12px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-icon { font-size: 34px; }
+
+        /* ── Approval Timeline ── */
+        .timeline-bar {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 24px;
+        }
+        .t-step {
+            flex: 1;
+            text-align: center;
+            padding: 12px 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #6c757d;
+            border-bottom: 3px solid #dee2e6;
+            position: relative;
+        }
+        .t-step.done  { color: #0B5D3B; border-bottom-color: #0B5D3B; }
+        .t-step.active { color: var(--accent-gold); border-bottom-color: var(--accent-gold); font-weight: 800; }
+        .t-step-num {
+            display: block;
+            width: 28px; height: 28px;
+            border-radius: 50%;
+            background: #dee2e6;
+            color: #6c757d;
+            font-size: 12px;
+            font-weight: 700;
+            line-height: 28px;
+            margin: 0 auto 6px;
+        }
+        .t-step.done  .t-step-num  { background: #0B5D3B; color: #fff; }
+        .t-step.active .t-step-num { background: var(--accent-gold); color: #fff; }
+
+        /* ── Note details ── */
+        .note-grid {
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            gap: 8px 14px;
+            font-size: 13px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 16px;
+            border: 1px solid #dee2e6;
+            margin-bottom: 18px;
+        }
+        .note-label { font-weight: 700; color: #495057; }
+        .note-val   { color: #1b4332; }
+
+        /* ── Remarks / remarks history ── */
+        .remarks-history {
+            margin-bottom: 16px;
+        }
+        .remark-item {
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 8px;
+            border-left: 4px solid;
+        }
+        .remark-gm   { background: #fff3cd; border-color: #ffc107; }
+        .remark-dc   { background: #d4edda; border-color: #28a745; }
+        .remark-rej  { background: #f8d7da; border-color: #dc3545; }
+
+        .section-view { display: none; }
+        .section-view.active { display: block; }
+
+        .toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+        .toolbar-search { flex: 1; min-width: 200px; }
+    </style>
+    <link rel="stylesheet" href="../assets/css/mobile-responsive.css?v=20260806">
+</head>
+<body>
+<div class="dashboard-layout">
+
+    <!-- ═══ SIDEBAR ═══ -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div style="font-size:11px;opacity:0.6;font-weight:400;margin-bottom:2px;">IICM QRTMS</div>
+            Executive Director
+        </div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-item active" id="nav-pending">
+                <a href="#" onclick="showSection('pending')">⏳ Pending Final Approval</a>
+            </li>
+            <li class="sidebar-item" id="nav-approved">
+                <a href="#" onclick="showSection('approved')">✅ Approved Programmes</a>
+            </li>
+            <li class="sidebar-item" id="nav-rejected">
+                <a href="#" onclick="showSection('rejected')">❌ Returned / Rejected</a>
+            </li>
+            <li class="sidebar-item" id="nav-all">
+                <a href="#" onclick="showSection('all')">📋 All Note Sheets</a>
+            </li>
+            <li class="sidebar-item" id="nav-notifications">
+                <a href="#" onclick="showSection('notifications')">🔔 Notifications</a>
+            </li>
+        </ul>
+        <div style="padding:16px 20px;border-top:1px solid rgba(255,255,255,0.1);font-size:11px;color:rgba(255,255,255,0.4);">
+            Final Approval Authority<br>Competent Authority — IICM
+        </div>
+    </aside>
+
+    <!-- ═══ MAIN CONTENT ═══ -->
+    <main class="main-content">
+        <header class="top-navbar">
+            <div style="font-weight:700;color:#1b4332;font-size:16px;" id="page-title">
+                Executive Director — Final Approval Authority
+            </div>
+            <div class="user-profile-badge">
+                <div id="user-profile-info"></div>
+                <button onclick="logoutUser()" class="btn-logout">Sign Out</button>
+            </div>
+        </header>
+
+        <div class="content-body">
+
+            <!-- ── Stats Row ── -->
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div>
+                        <div class="stat-lbl">Awaiting ED Approval</div>
+                        <div class="stat-val" id="stat-pending">—</div>
+                    </div>
+                    <div class="stat-icon">⏳</div>
+                </div>
+                <div class="stat-card green">
+                    <div>
+                        <div class="stat-lbl">Final Approved</div>
+                        <div class="stat-val" id="stat-approved">—</div>
+                    </div>
+                    <div class="stat-icon">✅</div>
+                </div>
+                <div class="stat-card red">
+                    <div>
+                        <div class="stat-lbl">Returned / Rejected</div>
+                        <div class="stat-val" id="stat-rejected">—</div>
+                    </div>
+                    <div class="stat-icon">❌</div>
+                </div>
+                <div class="stat-card blue">
+                    <div>
+                        <div class="stat-lbl">Total Programmes</div>
+                        <div class="stat-val" id="stat-total">—</div>
+                    </div>
+                    <div class="stat-icon">📋</div>
+                </div>
+            </div>
+
+            <!-- ── Programme Table Section ── -->
+            <div id="section-programs" class="section-view active">
+                <div class="dash-card">
+                    <div class="toolbar">
+                        <div class="toolbar-search">
+                            <input type="text" id="dc-search" class="form-control" placeholder="Search programmes by title, type, coordinator..." oninput="loadProgramsTable()">
+                        </div>
+                        <select id="dc-quarter-filter" class="form-control" style="width:160px;" onchange="loadProgramsTable()">
+                            <option value="">All Quarters</option>
+                            <option value="Q1">Q1 (Apr–Jun)</option>
+                            <option value="Q2">Q2 (Jul–Sep)</option>
+                            <option value="Q3">Q3 (Oct–Dec)</option>
+                            <option value="Q4">Q4 (Jan–Mar)</option>
+                        </select>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Programme Title</th>
+                                    <th>Type</th>
+                                    <th>Dates</th>
+                                    <th>Duration</th>
+                                    <th>Coordinator</th>
+                                    <th>GM Status</th>
+                                    <th>ED Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dc-table-body">
+                                <tr><td colspan="9" style="text-align:center;padding:30px;color:#6c757d;">Loading programmes...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ── Notifications Section ── -->
+            <div id="section-notifications" class="section-view">
+                <div class="dash-card">
+                    <h3 style="color:#1b4332;margin-bottom:18px;">📬 Executive Director Notifications</h3>
+                    <div id="notifications-list">
+                        <div style="text-align:center;padding:30px;color:#6c757d;">Loading notifications...</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<!-- ═══════════ REVIEW MODAL ═══════════ -->
+<div class="modal-overlay" id="review-modal">
+    <div class="modal-card" style="max-width:700px;">
+        <div class="modal-header" style="background:#1b4332;">
+            <h3 id="modal-title">📋 Final Note Sheet Review</h3>
+            <button class="modal-close" onclick="closeModal()">✕</button>
+        </div>
+
+        <div class="modal-body">
+            <!-- Approval Workflow Timeline -->
+            <div class="timeline-bar">
+                <div class="t-step done">
+                    <span class="t-step-num">1</span>
+                    Programme Coordinator
+                </div>
+                <div class="t-step done" id="step-gm">
+                    <span class="t-step-num">2</span>
+                    GM (Academics)
+                </div>
+                <div class="t-step active" id="step-ed">
+                    <span class="t-step-num">3</span>
+                    Executive Director
+                </div>
+                <div class="t-step" id="step-final">
+                    <span class="t-step-num">✓</span>
+                    Final Decision
+                </div>
+            </div>
+
+            <!-- Programme Details -->
+            <div class="note-grid" id="modal-details">
+                <div class="note-label">Programme Title:</div><div class="note-val" id="md-title">—</div>
+                <div class="note-label">Programme Type:</div><div class="note-val" id="md-type">—</div>
+                <div class="note-label">Venue:</div><div class="note-val" id="md-venue">—</div>
+                <div class="note-label">Schedule Dates:</div><div class="note-val" id="md-dates">—</div>
+                <div class="note-label">Duration:</div><div class="note-val" id="md-duration">—</div>
+                <div class="note-label">Target Participants:</div><div class="note-val" id="md-participants">—</div>
+                <div class="note-label">Estimated Budget:</div><div class="note-val" id="md-budget" style="font-weight:700;color:#1b4332;">—</div>
+                <div class="note-label">Coordinator:</div><div class="note-val" id="md-coordinator">—</div>
+                <div class="note-label">Objectives:</div><div class="note-val" id="md-objective">—</div>
+            </div>
+
+            <!-- Remarks History -->
+            <div class="remarks-history" id="remarks-history">
+                <!-- Injected by JS -->
+            </div>
+
+            <!-- ED Decision Remarks -->
+            <div class="form-group" id="ed-remarks-group">
+                <label for="ed-remarks">Executive Director Remarks *</label>
+                <textarea id="ed-remarks" class="form-control" rows="3" placeholder="Enter your final decision remarks (required for return/rejection)..."></textarea>
+            </div>
+        </div>
+
+        <div class="modal-footer" id="modal-footer">
+            <button type="button" class="btn-secondary" onclick="closeModal()">Close</button>
+            <button type="button" class="btn-warning" onclick="submitEDDecision('return')" id="btn-return">↩ Return to GM</button>
+            <button type="button" class="btn-danger" onclick="submitEDDecision('reject')" id="btn-reject">❌ Reject</button>
+            <button type="button" class="btn-success" onclick="submitEDDecision('approve')" id="btn-approve">✅ Final Approval</button>
+        </div>
+    </div>
+</div>
+
+<script src="../assets/js/api-fallback.js"></script>
+<script src="auth.js"></script>
+<script src="dc.js"></script>
+    <script src="../assets/js/mobile-nav.js?v=20260806"></script>
+</body>
+</html>

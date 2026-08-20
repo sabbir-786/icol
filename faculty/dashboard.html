@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Teaching &amp; Operations Dashboard - IICM Ranchi</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../assets/css/variables.css">
+    <link rel="stylesheet" href="../assets/css/global.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../assets/css/mobile-responsive.css?v=20260806">
+</head>
+<body>
+<div class="dashboard-layout">
+
+    <!-- ═══════════════════════════════
+         SIDEBAR
+    ═══════════════════════════════ -->
+    <aside class="sidebar" id="app-sidebar">
+
+        <!-- Brand -->
+        <div class="sidebar-brand">
+            <div class="sidebar-brand-icon">IICM</div>
+            <span>Faculty Portal</span>
+        </div>
+
+        <!-- Faculty Identity -->
+        <div class="sidebar-identity">
+            <div class="sidebar-avatar" id="user-avatar-text">F</div>
+            <div class="sidebar-identity-text">
+                <strong id="user-display-name">Faculty Member</strong>
+                <span id="user-display-role">IICM Faculty</span>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="sidebar-nav-container">
+            <div class="sidebar-section-label">Main Menu</div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-item active" id="nav-schedule">
+                    <a href="javascript:void(0)" onclick="showSection('schedule')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        <span>My Schedule</span>
+                    </a>
+                </li>
+                <li class="sidebar-item" id="nav-fac-master">
+                    <a href="javascript:void(0)" onclick="showSection('fac-master')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <span>Faculty &amp; Students</span>
+                    </a>
+                </li>
+                <li class="sidebar-item" id="nav-qr-attendance">
+                    <a href="javascript:void(0)" onclick="showSection('qr-attendance')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                        <span>QR Attendance</span>
+                    </a>
+                </li>
+                <li class="sidebar-item" id="nav-feedback">
+                    <a href="javascript:void(0)" onclick="showSection('feedback')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        <span>Session Feedback</span>
+                    </a>
+                </li>
+                <li class="sidebar-item" id="nav-certificates">
+                    <a href="javascript:void(0)" onclick="showSection('certificates')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                        <span>Certificates</span>
+                    </a>
+                </li>
+                <li class="sidebar-item" id="nav-profile">
+                    <a href="javascript:void(0)" onclick="showSection('profile')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        <span>My Profile</span>
+                    </a>
+                </li>
+                <li class="sidebar-item" id="nav-notifications">
+                    <a href="javascript:void(0)" onclick="showSection('notifications')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                        <span>Notifications</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Sidebar Footer -->
+        <div class="sidebar-footer">
+            <div class="sidebar-footer-label">
+                Logged in as
+                <strong id="sidebar-user-name">Faculty User</strong>
+            </div>
+            <button type="button" class="btn-signout" onclick="logoutUser()">Sign Out</button>
+        </div>
+    </aside>
+
+    <!-- ═══════════════════════════════
+         MAIN CONTENT
+    ═══════════════════════════════ -->
+    <main class="main-content">
+
+        <!-- Top Navbar -->
+        <header class="top-navbar">
+            <div class="top-navbar-left">
+                <button type="button" class="btn-hamburger mobile-sidebar-toggle" onclick="toggleSidebar()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
+                <div class="navbar-title-block">
+                    <h1 id="page-title-text">Faculty Teaching &amp; Operations Dashboard</h1>
+                    <p>Indian Institute of Coal Management — Academic Operations</p>
+                </div>
+            </div>
+            <div class="top-navbar-right">
+                <div class="date-chip">
+                    📅 <span id="dashboard-date">07 August 2026</span>
+                </div>
+                <div class="faculty-badge" id="user-profile-info">
+                    <div class="faculty-badge-avatar">F</div>
+                    <span id="faculty-badge-role">Faculty Member</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Body -->
+        <div class="content-body">
+
+            <!-- KPI Stat Cards (shown on schedule view only) -->
+            <div class="stat-grid">
+                <div class="stat-card" onclick="showSection('schedule')">
+                    <div>
+                        <div class="stat-val" id="stat-progs">—</div>
+                        <div class="stat-label">Assigned Programs</div>
+                        <div class="stat-sub font-green">Active Teaching Programs</div>
+                    </div>
+                    <div class="stat-icon">🎓</div>
+                </div>
+                <div class="stat-card" onclick="showSection('schedule')">
+                    <div>
+                        <div class="stat-val" id="stat-sessions">—</div>
+                        <div class="stat-label">Total Teaching Sessions</div>
+                        <div class="stat-sub font-blue">Scheduled Sessions</div>
+                    </div>
+                    <div class="stat-icon">📅</div>
+                </div>
+                <div class="stat-card" onclick="showSection('schedule')">
+                    <div>
+                        <div class="stat-val" id="stat-today">—</div>
+                        <div class="stat-label">Today's Sessions</div>
+                        <div class="stat-sub font-amber">Active Lecture Today</div>
+                    </div>
+                    <div class="stat-icon">⏰</div>
+                </div>
+            </div>
+
+            <!-- ════════════════════════════
+                 SECTION 1: MY SCHEDULE
+            ════════════════════════════ -->
+            <div id="section-schedule" class="section-view active">
+                <div class="table-card">
+                    <div class="section-header">
+                        <div class="section-header-title">
+                            <h3>Assigned Teaching Sessions &amp; Timetable</h3>
+                            <p>View upcoming training lectures, launch QR attendance screens, and interact with enrolled trainees.</p>
+                        </div>
+                        <button type="button" class="btn-filter" style="background:#f1f5f9;color:#0f172a;" onclick="loadFacultySchedule()">🔄 Refresh Schedule</button>
+                    </div>
+                    <div id="faculty-schedule-container"></div>
+                    <div id="schedule-cards-list"></div>
+                </div>
+            </div>
+
+            <!-- ════════════════════════════
+                 SECTION 2: FACULTY & STUDENTS
+            ════════════════════════════ -->
+            <div id="section-fac-master" class="section-view" style="display:none;">
+                <!-- Faculty Profile Hero -->
+                <div id="faculty-profile-hero-card" style="background:linear-gradient(135deg,#022c22 0%,#047857 100%);border-radius:16px;padding:24px;color:#fff;margin-bottom:20px;box-shadow:0 6px 20px rgba(6,78,59,0.2);">
+                    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;">
+                        <div style="display:flex;align-items:center;gap:16px;">
+                            <div style="width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;" id="fac-hero-initial">F</div>
+                            <div>
+                                <h2 style="margin:0;font-size:20px;font-weight:800;" id="fac-hero-name">Faculty Member</h2>
+                                <div style="font-size:13px;color:#a7f3d0;margin-top:4px;" id="fac-hero-email">Internal Core Faculty</div>
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:12px;">
+                            <div style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);padding:12px 20px;border-radius:10px;text-align:center;">
+                                <div style="font-size:22px;font-weight:900;" id="hero-trainee-count">0</div>
+                                <div style="font-size:11px;color:#a7f3d0;font-weight:700;text-transform:uppercase;margin-top:2px;">Selected Trainees</div>
+                            </div>
+                            <div style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);padding:12px 20px;border-radius:10px;text-align:center;">
+                                <div style="font-size:18px;font-weight:900;" id="fac-hero-subject">Executive Safety</div>
+                                <div style="font-size:11px;color:#a7f3d0;font-weight:700;text-transform:uppercase;margin-top:2px;">Assigned Subject</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Students Roster Table -->
+                <div class="table-card">
+                    <div class="section-header">
+                        <div class="section-header-title">
+                            <h3>Selected Candidate Trainees Roster
+                                <span id="selected-candidates-count-badge" style="background:#dcfce7;color:#15803d;font-size:12px;font-weight:700;padding:3px 10px;border-radius:20px;margin-left:8px;vertical-align:middle;"></span>
+                            </h3>
+                            <p>Direct database roster of executive candidates nominated by CIL Subsidiary Companies.</p>
+                        </div>
+                        <button type="button" class="btn-filter" style="background:#16a34a;color:#fff;" onclick="sendBulkQREmailsToSelectedCandidates()">
+                            📩 Send QR Link Email to ALL Trainees
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>S.No &amp; Participant Name</th>
+                                    <th>EIS Code</th>
+                                    <th>Subsidiary Company</th>
+                                    <th>Email &amp; Contact</th>
+                                    <th>QR Reg Status</th>
+                                    <th style="text-align:right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="faculty-selected-trainees-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════════════════
+                 SECTION 3: QR ATTENDANCE
+            ════════════════════════════ -->
+            <div id="section-qr-attendance" class="section-view" style="display:none;">
+                <div class="table-card" style="margin-bottom:20px;">
+                    <div class="section-header">
+                        <div class="section-header-title">
+                            <h3>Live QR Code Attendance Projection</h3>
+                            <p>Project this live QR code during the lecture session for instant trainee mobile scanning.</p>
+                        </div>
+                        <div style="display:flex;align-items:center;gap:10px;">
+                            <label style="font-weight:700;font-size:13px;">Select Session:</label>
+                            <select id="qr-session-select" class="form-control" style="width:280px;" onchange="updateQRScreenForSelectedSession()"></select>
+                        </div>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:300px 1fr;gap:28px;align-items:center;">
+                        <div style="background:#fff;border:2px solid #064e3b;border-radius:14px;padding:22px;text-align:center;box-shadow:0 4px 16px rgba(6,78,59,0.1);">
+                            <div id="qr-code-canvas" style="display:flex;justify-content:center;align-items:center;margin-bottom:12px;">
+                                <svg width="180" height="180" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <rect width="100" height="100" fill="white"/>
+                                    <rect x="5" y="5" width="30" height="30" fill="#064e3b"/>
+                                    <rect x="10" y="10" width="20" height="20" fill="white"/>
+                                    <rect x="14" y="14" width="12" height="12" fill="#064e3b"/>
+                                    <rect x="65" y="5" width="30" height="30" fill="#064e3b"/>
+                                    <rect x="70" y="10" width="20" height="20" fill="white"/>
+                                    <rect x="74" y="14" width="12" height="12" fill="#064e3b"/>
+                                    <rect x="5" y="65" width="30" height="30" fill="#064e3b"/>
+                                    <rect x="10" y="70" width="20" height="20" fill="white"/>
+                                    <rect x="14" y="74" width="12" height="12" fill="#064e3b"/>
+                                    <rect x="40" y="10" width="15" height="30" fill="#064e3b"/>
+                                    <rect x="45" y="45" width="25" height="25" fill="#064e3b"/>
+                                    <rect x="75" y="45" width="20" height="15" fill="#064e3b"/>
+                                    <rect x="10" y="45" width="28" height="12" fill="#064e3b"/>
+                                    <rect x="65" y="65" width="30" height="30" fill="#064e3b"/>
+                                </svg>
+                            </div>
+                            <div style="font-size:13px;font-weight:800;color:#064e3b;" id="qr-session-title">Session: Mine Safety</div>
+                            <div style="font-size:11px;color:#64748b;margin-top:3px;">Scan with mobile camera</div>
+                        </div>
+
+                        <div>
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                                <span style="font-weight:800;font-size:14px;">Real-Time Attendance Rate:</span>
+                                <span style="font-weight:900;font-size:24px;color:#16a34a;" id="attendance-percent-text">88%</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div class="progress-bar-fill" id="attendance-progress-fill" style="width:88%;"></div>
+                            </div>
+                            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:18px;text-align:center;">
+                                <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:14px;">
+                                    <div style="font-size:28px;font-weight:900;color:#16a34a;" id="count-present">12</div>
+                                    <div style="font-size:11px;font-weight:700;color:#15803d;text-transform:uppercase;margin-top:2px;">Present</div>
+                                </div>
+                                <div style="background:#fef3c7;border:1px solid #fde68a;border-radius:12px;padding:14px;">
+                                    <div style="font-size:28px;font-weight:900;color:#d97706;" id="count-late">3</div>
+                                    <div style="font-size:11px;font-weight:700;color:#b45309;text-transform:uppercase;margin-top:2px;">Late</div>
+                                </div>
+                                <div style="background:#fee2e2;border:1px solid #fca5a5;border-radius:12px;padding:14px;">
+                                    <div style="font-size:28px;font-weight:900;color:#dc2626;" id="count-absent">2</div>
+                                    <div style="font-size:11px;font-weight:700;color:#b91c1c;text-transform:uppercase;margin-top:2px;">Absent</div>
+                                </div>
+                            </div>
+                            <div style="margin-top:18px;display:flex;justify-content:flex-end;">
+                                <button type="button" class="btn-filter" style="background:#064e3b;color:#fff;" onclick="sendQREmailToAllTrainees()">
+                                    📩 Email Attendance QR Link to ALL Participants
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-card">
+                    <h4 style="font-size:16px;font-weight:800;color:#064e3b;margin-bottom:14px;">Live Attendance Feed Logs</h4>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Scan Time</th>
+                                    <th>EIS Code</th>
+                                    <th>Participant Name &amp; Email</th>
+                                    <th>Subsidiary</th>
+                                    <th>Attendance Status</th>
+                                    <th style="text-align:right;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="qr-attendees-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════════════════
+                 SECTION 4: FEEDBACK
+            ════════════════════════════ -->
+            <div id="section-feedback" class="section-view" style="display:none;">
+                <div class="table-card">
+                    <div class="section-header">
+                        <div class="section-header-title">
+                            <h3>Session Feedback &amp; Trainee Rating Module</h3>
+                            <p>Review trainee ratings, feedback comments, and dispatch feedback collection email links.</p>
+                        </div>
+                        <button type="button" class="btn-filter" style="background:#0284c7;color:#fff;" onclick="sendFeedbackEmailToAllStudents()">
+                            ✉️ Email Feedback Link to All Students
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Student / Trainee</th>
+                                    <th>Session / Program</th>
+                                    <th>Overall Rating</th>
+                                    <th>Faculty Content Rating</th>
+                                    <th>Comments &amp; Review</th>
+                                    <th>Feedback Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="feedback-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════════════════
+                 SECTION 5: CERTIFICATES
+            ════════════════════════════ -->
+            <div id="section-certificates" class="section-view" style="display:none;">
+                <div class="table-card">
+                    <div class="section-header">
+                        <div class="section-header-title">
+                            <h3>Course Completion Certificate Management</h3>
+                            <p>Generate official IICM completion certificates and dispatch digital PDF copies via email.</p>
+                        </div>
+                        <button type="button" class="btn-filter" style="background:#16a34a;color:#fff;" onclick="sendBulkCertificateEmails()">
+                            Generate &amp; Email Certificates to All
+                        </button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Certificate No.</th>
+                                    <th>Trainee EIS Code</th>
+                                    <th>Student Name</th>
+                                    <th>Program Title</th>
+                                    <th>Issue Date</th>
+                                    <th>Certificate Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="certificates-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════════════════
+                 SECTION 6: MY PROFILE
+            ════════════════════════════ -->
+            <div id="section-profile" class="section-view" style="display:none;">
+
+                <!-- Profile Hero -->
+                <div style="background:linear-gradient(135deg,#022c22 0%,#064e3b 60%,#047857 100%);border-radius:16px;padding:28px;color:#fff;margin-bottom:24px;box-shadow:0 8px 24px rgba(6,78,59,0.2);display:flex;flex-wrap:wrap;align-items:center;gap:24px;justify-content:space-between;">
+                    <div style="display:flex;align-items:center;gap:18px;">
+                        <div style="width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,#059669,#34d399);border:3px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:30px;font-weight:800;box-shadow:0 4px 14px rgba(0,0,0,0.25);" id="profile-avatar-initials">PS</div>
+                        <div>
+                            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+                                <h2 style="font-size:22px;font-weight:800;margin:0;" id="hero-profile-name">Faculty Member</h2>
+                                <span style="background:#dcfce7;color:#15803d;font-size:11.5px;font-weight:800;padding:3px 10px;border-radius:20px;">🟢 Core Faculty</span>
+                            </div>
+                            <p style="margin:6px 0 0 0;font-size:13.5px;color:#a7f3d0;" id="hero-profile-dept">Senior Faculty — Department of Mining &amp; Executive Training, IICM Ranchi</p>
+                            <div style="display:flex;gap:16px;margin-top:8px;font-size:12.5px;color:#e2e8f0;flex-wrap:wrap;">
+                                <span>🆔 <strong>EIS:</strong> <span id="hero-profile-eis">EIS-2026-FAC-991</span></span>
+                                <span>✉️ <strong>Email:</strong> <span id="hero-profile-email">faculty@iicm.ac.in</span></span>
+                                <span>📞 <strong>Phone:</strong> <span id="hero-profile-phone">+91 94311 00299</span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:14px 20px;display:flex;gap:24px;text-align:center;">
+                        <div>
+                            <div style="font-size:22px;font-weight:900;color:#34d399;">142</div>
+                            <small style="font-size:10.5px;color:#cbd5e1;text-transform:uppercase;">Lectures Delivered</small>
+                        </div>
+                        <div style="border-left:1px solid rgba(255,255,255,0.2);padding-left:24px;">
+                            <div style="font-size:22px;font-weight:900;color:#fbbf24;">4.92 ⭐</div>
+                            <small style="font-size:10.5px;color:#cbd5e1;text-transform:uppercase;">Avg Rating</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Edit + Security -->
+                <div style="display:grid;grid-template-columns:1.2fr 0.8fr;gap:24px;">
+                    <div class="table-card" style="padding:26px;">
+                        <h3 style="font-size:17px;font-weight:800;color:#064e3b;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid #e2e8f0;">
+                            Faculty Personal &amp; Academic Profile
+                        </h3>
+                        <form id="faculty-profile-form" onsubmit="saveFacultyProfileEdits(event)">
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+                                <div class="form-group">
+                                    <label>Full Name *</label>
+                                    <input type="text" id="profile-fullname" class="form-control" value="Faculty Member" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>EIS / Faculty ID Code</label>
+                                    <input type="text" id="profile-eis" class="form-control" value="EIS-2026-FAC-991" readonly style="background:#f8fafc;">
+                                </div>
+                                <div class="form-group">
+                                    <label>Designation *</label>
+                                    <input type="text" id="profile-designation" class="form-control" value="Senior Visiting Faculty &amp; Mining Safety Expert" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Department *</label>
+                                    <input type="text" id="profile-department" class="form-control" value="Department of Mining &amp; Executive Training" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Official Email *</label>
+                                    <input type="email" id="profile-email" class="form-control" value="anamika30122006@gmail.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Contact Phone *</label>
+                                    <input type="text" id="profile-phone" class="form-control" value="+91 94311 00299" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Specialization &amp; Subject Expertise *</label>
+                                <input type="text" id="profile-specialization" class="form-control" value="Mine Safety Management, Statutory Environmental Norms, DGMS Audits" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Academic Qualifications &amp; Professional Statement</label>
+                                <textarea id="profile-bio" class="form-control" rows="3">Ph.D. in Mining Engineering (IIT ISM Dhanbad), M.Tech (Mining Engineering). 16+ years of consulting and academic experience.</textarea>
+                            </div>
+                            <div style="display:flex;justify-content:flex-end;">
+                                <button type="submit" class="btn-filter" style="background:#064e3b;color:#fff;">💾 Save Profile Changes</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div style="display:flex;flex-direction:column;gap:20px;">
+                        <div class="table-card" style="padding:22px;">
+                            <h4 style="color:#064e3b;font-size:16px;font-weight:800;margin-bottom:14px;">🎓 Academic Credentials</h4>
+                            <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;color:#334155;">
+                                <div style="padding:10px 13px;background:#f8fafc;border-radius:9px;border:1px solid #e2e8f0;">
+                                    <strong style="color:#0f172a;display:block;">Ph.D. Mining Engineering</strong>
+                                    <span>IIT ISM Dhanbad (2014)</span>
+                                </div>
+                                <div style="padding:10px 13px;background:#f8fafc;border-radius:9px;border:1px solid #e2e8f0;">
+                                    <strong style="color:#0f172a;display:block;">M.Tech Mining Operations</strong>
+                                    <span>BIT Mesra, Ranchi (2009)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-card" style="padding:22px;">
+                            <h4 style="color:#064e3b;font-size:16px;font-weight:800;margin-bottom:14px;">🔒 Account Password &amp; Security</h4>
+                            <form id="profile-password-form" onsubmit="updateFacultyPassword(event)">
+                                <div class="form-group">
+                                    <label>Current Password *</label>
+                                    <input type="password" id="pass-current" class="form-control" placeholder="••••••••" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>New Password *</label>
+                                    <input type="password" id="pass-new" class="form-control" placeholder="••••••••" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Confirm New Password *</label>
+                                    <input type="password" id="pass-confirm" class="form-control" placeholder="••••••••" required>
+                                </div>
+                                <button type="submit" class="btn-filter" style="width:100%;background:#0284c7;color:#fff;">🔒 Update Password</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ════════════════════════════
+                 SECTION 7: NOTIFICATIONS
+            ════════════════════════════ -->
+            <div id="section-notifications" class="section-view" style="display:none;">
+                <div class="table-card">
+                    <h3 style="color:#064e3b;font-size:18px;font-weight:800;margin-bottom:18px;">Faculty System Notifications</h3>
+                    <div id="notifications-list"></div>
+                </div>
+            </div>
+
+        </div><!-- /content-body -->
+    </main>
+</div>
+
+<script src="../assets/js/api-fallback.js"></script>
+<script src="../assets/js/qrcode.min.js"></script>
+<script src="auth.js"></script>
+<script src="faculty.js?v=20260807-modern"></script>
+<script src="../assets/js/mobile-nav.js?v=20260806"></script>
+
+</body>
+</html>

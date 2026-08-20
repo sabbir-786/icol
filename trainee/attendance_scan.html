@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IICM Trainee Attendance Marking &amp; Validation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        body { background: #f8fafc; color: #0f172a; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .card { background: #ffffff; width: 100%; max-width: 520px; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08); overflow: hidden; }
+        .card-header { background: linear-gradient(135deg, #064e3b 0%, #047857 100%); color: #ffffff; padding: 24px; text-align: center; }
+        .card-header h2 { font-size: 20px; font-weight: 800; }
+        .card-header p { font-size: 13px; color: #a7f3d0; margin-top: 4px; }
+        .card-body { padding: 24px; }
+        .status-box { background: #dcfce7; border: 2px solid #16a34a; color: #15803d; padding: 16px; border-radius: 12px; text-align: center; margin-bottom: 20px; }
+        .status-box h3 { font-size: 18px; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #e2e8f0; font-size: 13px; }
+        .info-label { color: #64748b; font-weight: 600; }
+        .info-val { color: #0f172a; font-weight: 700; }
+        .btn-confirm { display: block; width: 100%; background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); color: #ffffff; text-align: center; font-weight: 800; font-size: 15px; padding: 14px; border: none; border-radius: 10px; cursor: pointer; margin-top: 20px; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.25); text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            <h2>🏢 Indian Institute of Coal Management</h2>
+            <p>Executive Training Attendance Validation Portal</p>
+        </div>
+        <div class="card-body">
+            <div class="status-box">
+                <h3>✅ ATTENDANCE MARKED</h3>
+                <p style="font-size:12px; margin-top:4px;">QR Scan Validated &amp; Recorded in Central Database</p>
+            </div>
+
+            <div class="info-row">
+                <span class="info-label">Participant Name</span>
+                <span class="info-val" id="participant-name">Amit Kumar</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">EIS Number</span>
+                <span class="info-val" id="participant-eis" style="font-family:monospace;">90341122</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Lecture Session</span>
+                <span class="info-val">Mining Safety &amp; Statutory Regulations</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Venue</span>
+                <span class="info-val">IICM Main Auditorium, Ranchi</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Scan Timestamp</span>
+                <span class="info-val" id="scan-time">06 Aug 2026, 09:34:15 AM</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Punctuality Status</span>
+                <span class="info-val" style="color:#16a34a; font-weight:800;">🟢 ON TIME (PRESENT)</span>
+            </div>
+
+            <a href="dashboard.html" class="btn-confirm">✅ Complete &amp; Return to Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const eis = params.get('eis') || '90341122';
+            const name = params.get('name') || 'Amit Kumar';
+            
+            document.getElementById('participant-name').innerText = name;
+            document.getElementById('participant-eis').innerText = eis;
+
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            document.getElementById('scan-time').innerText = `06 Aug 2026, ${timeStr}`;
+
+            // Save to localStorage attendance sync map for live faculty view
+            try {
+                let liveMap = JSON.parse(localStorage.getItem('iicm_live_attendance') || '{}');
+                liveMap[eis] = {
+                    name: name,
+                    eis: eis,
+                    status: 'PRESENT',
+                    time: timeStr,
+                    mode: 'QR Email Link Scan'
+                };
+                localStorage.setItem('iicm_live_attendance', JSON.stringify(liveMap));
+            } catch(e){}
+        });
+    </script>
+</body>
+</html>

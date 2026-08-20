@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IICM — General Manager Executive Note Approval Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=20260806-fixed">
+    <style>
+        .note-details-box {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 24px;
+        }
+
+        .detail-row {
+            display: grid;
+            grid-template-columns: 160px 1fr;
+            gap: 12px;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .detail-label {
+            font-weight: 800;
+            color: #475569;
+        }
+
+        .timeline-container {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 12px;
+            padding: 18px 24px;
+            margin-bottom: 24px;
+        }
+
+        .timeline-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: #15803d;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .timeline-steps {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .timeline-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            z-index: 2;
+        }
+
+        .step-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: #64748b;
+            font-weight: 800;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .timeline-step.completed .step-icon {
+            background: #16a34a;
+            color: #ffffff;
+        }
+
+        .timeline-step.active .step-icon {
+            background: #d97706;
+            color: #ffffff;
+            box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.2);
+        }
+
+        .step-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #334155;
+        }
+    </style>
+    <link rel="stylesheet" href="../assets/css/mobile-responsive.css?v=20260806">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="app-sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-brand-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </div>
+                <span>IICM GM Executive</span>
+            </div>
+
+            <div class="sidebar-nav-container">
+                <ul class="sidebar-nav">
+                    <li class="sidebar-item active" id="nav-pending">
+                        <a href="javascript:void(0)" onclick="showSection('pending')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            <span>Pending Approvals</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item" id="nav-approved">
+                        <a href="javascript:void(0)" onclick="showSection('approved')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            <span>Approved Programs</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item" id="nav-rejected">
+                        <a href="javascript:void(0)" onclick="showSection('rejected')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                            <span>Rejected Programs</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item" id="nav-honorarium">
+                        <a href="javascript:void(0)" onclick="showSection('honorarium')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            <span>Honorarium Approvals</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item" id="nav-notifications">
+                        <a href="javascript:void(0)" onclick="showSection('notifications')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                            <span>Notifications</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            <!-- Top Navbar -->
+            <header class="top-navbar">
+                <div class="navbar-title-box">
+                    <h1 class="navbar-title" id="page-title">General Manager Executive Note Sheet &amp; Approval Portal</h1>
+                    <div class="navbar-subtitle">Indian Institute of Coal Management (IICM), Ranchi — Academic Governance</div>
+                </div>
+                <div class="user-profile-badge">
+                    <div class="role-pill">GM — Academics / IICM</div>
+                    <div id="user-profile-info"></div>
+                    <button onclick="logoutUser()" class="btn-logout">Sign Out</button>
+                </div>
+            </header>
+
+            <div class="content-body">
+
+                <!-- Summary Cards Grid -->
+                <div class="stat-grid" style="grid-template-columns: repeat(4, 1fr);">
+                    <div class="stat-card" style="cursor:pointer;" onclick="showSection('pending')">
+                        <div>
+                            <div class="stat-label">Pending GM Review</div>
+                            <div class="stat-val" id="stat-pending">0</div>
+                        </div>
+                        <div style="font-size: 32px;">⏳</div>
+                    </div>
+
+                    <div class="stat-card stat-app" style="cursor:pointer;" onclick="showSection('approved')">
+                        <div>
+                            <div class="stat-label">Approved Programs</div>
+                            <div class="stat-val" id="stat-approved">0</div>
+                        </div>
+                        <div style="font-size: 32px;">🟢</div>
+                    </div>
+
+                    <div class="stat-card stat-rej" style="cursor:pointer;" onclick="showSection('rejected')">
+                        <div>
+                            <div class="stat-label">Rejected Programs</div>
+                            <div class="stat-val" id="stat-rejected">0</div>
+                        </div>
+                        <div style="font-size: 32px;">🔴</div>
+                    </div>
+
+                    <div class="stat-card" style="cursor:pointer; border-left:4px solid #064e3b;" onclick="showSection('honorarium')">
+                        <div>
+                            <div class="stat-label">Honorarium Pending GM</div>
+                            <div class="stat-val" id="stat-hon-pending-main" style="color:#064e3b;">0</div>
+                        </div>
+                        <div style="font-size: 32px;">💰</div>
+                    </div>
+                </div>
+
+                <!-- SECTION 1: PROGRAMS TABLE -->
+                <div id="section-programs" class="section-view active">
+                    <div class="dash-card">
+                        <div class="toolbar" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+                            <div class="toolbar-search">
+                                <input type="text" id="gm-search" placeholder="🔍 Search submitted note sheets by title or coordinator..." oninput="loadProgramsTable()">
+                            </div>
+                            <div style="font-size:13.5px; color:#64748b; font-weight:600;">
+                                Filter Status: <strong id="current-filter-label" style="color:#0f172a;">PENDING GM APPROVAL</strong>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Program Title</th>
+                                        <th>Type</th>
+                                        <th>Venue</th>
+                                        <th>Schedule Dates</th>
+                                        <th>Budget (₹)</th>
+                                        <th>Submitted By</th>
+                                        <th>Status</th>
+                                        <th style="text-align:right;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="gm-table-body">
+                                    <!-- Injected by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 2: NOTIFICATIONS VIEW -->
+                <div id="section-notifications" class="section-view">
+                    <div class="dash-card">
+                        <h3 style="color:#064e3b; margin-bottom:20px; font-size:20px; font-weight:800;">GM Executive Governance Notifications</h3>
+                        <div id="notifications-list">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 3: HONORARIUM APPROVALS VIEW -->
+                <div id="section-honorarium" class="section-view">
+                    <!-- Header Card -->
+                    <div style="background: linear-gradient(135deg, #022c22 0%, #064e3b 60%, #047857 100%); border-radius: 16px; padding: 24px 28px; color: #ffffff; margin-bottom: 24px; box-shadow: 0 10px 32px rgba(6,78,59,0.22); position:relative; overflow:hidden;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+                            <div>
+                                <div style="display:flex; align-items:center; gap:12px; margin-bottom:6px;">
+                                    <div style="width:42px; height:42px; background:rgba(52,211,153,0.18); border:1.5px solid rgba(52,211,153,0.4); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px;">💰</div>
+                                    <div>
+                                        <h2 style="margin:0; font-size:20px; font-weight:900; color:#ffffff;">Honorarium Requisition Sanction Portal</h2>
+                                        <p style="margin:2px 0 0 0; font-size:13px; color:#a7f3d0; font-weight:600;">Executive Sanction &amp; Administrative Approval for Faculty Payment Slips</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <span style="background:rgba(52,211,153,0.2); border:1px solid rgba(52,211,153,0.4); padding:6px 16px; border-radius:20px; font-size:12.5px; font-weight:700; color:#34d399;">🏛️ GM Executive Authority</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Honorarium Summary Stats -->
+                    <div class="stat-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom:24px;">
+                        <div class="stat-card" style="border-left:4px solid #d97706;">
+                            <div>
+                                <div class="stat-label">Pending GM Sanctions</div>
+                                <div class="stat-val" id="gm-stat-hon-pending" style="color:#d97706;">0</div>
+                            </div>
+                            <div style="font-size: 32px;">⏳</div>
+                        </div>
+                        <div class="stat-card stat-app" style="border-left:4px solid #16a34a;">
+                            <div>
+                                <div class="stat-label">Sanctioned Bills</div>
+                                <div class="stat-val" id="gm-stat-hon-approved" style="color:#16a34a;">0</div>
+                            </div>
+                            <div style="font-size: 32px;">🟢</div>
+                        </div>
+                        <div class="stat-card" style="border-left:4px solid #0284c7;">
+                            <div>
+                                <div class="stat-label">Total Amount Pending (₹)</div>
+                                <div class="stat-val" id="gm-stat-hon-amount" style="color:#0284c7; font-size:22px;">₹ 0</div>
+                            </div>
+                            <div style="font-size: 32px;">💳</div>
+                        </div>
+                    </div>
+
+                    <!-- Honorarium Data Table Card -->
+                    <div class="dash-card">
+                        <div class="toolbar" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+                            <div class="toolbar-search">
+                                <input type="text" id="gm-hon-search" placeholder="🔍 Search by Faculty, Bill Ref, Session..." oninput="loadGMHonorariumTable()">
+                            </div>
+                            <div style="display:flex; gap:10px;">
+                                <button type="button" class="btn-primary" style="background:#064e3b; padding:8px 16px; font-size:13px;" onclick="filterGMHonTable('ALL')">All Bills</button>
+                                <button type="button" class="btn-primary" style="background:#d97706; padding:8px 16px; font-size:13px;" onclick="filterGMHonTable('PENDING')">⏳ Pending Only</button>
+                                <button type="button" class="btn-primary" style="background:#16a34a; padding:8px 16px; font-size:13px;" onclick="filterGMHonTable('APPROVED')">🟢 Sanctioned</button>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Bill Ref &amp; Date</th>
+                                        <th>Faculty Member</th>
+                                        <th>Session &amp; Program</th>
+                                        <th>Calculation Basis</th>
+                                        <th>Net Amount Payable</th>
+                                        <th>GM Status</th>
+                                        <th style="text-align:right;">Sanction Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="gm-hon-table-body">
+                                    <!-- Injected dynamically by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Review Note Sheet Modal (Official Government Executive Note Sheet Format) -->
+    <div class="modal-overlay" id="review-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div style="display:flex; align-items:center; gap:14px;">
+                    <div style="width:40px; height:40px; background:rgba(255,255,255,0.15); border-radius:10px; display:flex; align-items:center; justify-content:center;">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 7v14M21 7v14M6 11h4M6 15h4M14 11h4M14 15h4M9 3l3-3 3 3"/></svg>
+                    </div>
+                    <div>
+                        <h3 id="modal-program-title" style="margin:0;">Official Executive Note Sheet</h3>
+                        <small style="color:#a7f3d0; font-weight:500;">Indian Institute of Coal Management (IICM), Ranchi</small>
+                    </div>
+                </div>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            
+            <div class="modal-body">
+
+                <!-- Official Note Sheet Document Frame -->
+                <div class="official-notesheet-card" id="notesheet-document-frame">
+                    
+                    <!-- Official Gov Header -->
+                    <div class="notesheet-gov-header">
+                        <div style="display:flex; justify-content:center; margin-bottom:8px;">
+                            <svg width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="50" r="46" fill="#f0fdf4" stroke="#064e3b" stroke-width="3"/>
+                                <path d="M50 20 L75 42 L65 75 L35 75 L25 42 Z" fill="#064e3b"/>
+                                <text x="50" y="87" text-anchor="middle" font-size="10" font-weight="900" fill="#064e3b">IICM RANCHI</text>
+                            </svg>
+                        </div>
+                        <div class="notesheet-org-name">INDIAN INSTITUTE OF COAL MANAGEMENT (IICM), RANCHI</div>
+                        <div class="notesheet-doc-title">OFFICIAL NOTE SHEET FOR ADMINISTRATIVE &amp; FINANCIAL SANCTION</div>
+                        
+                        <div class="notesheet-ref-bar">
+                            <span><strong>REF NOTE NO:</strong> <span id="modal-ref-no">IICM/NS-2026/08-101</span></span>
+                            <span><strong>DATE:</strong> <span id="modal-note-date">06 August 2026</span></span>
+                            <span><strong>STATUS:</strong> <span id="modal-status-badge" class="badge-status badge-pending_approval">🟡 PENDING GM REVIEW</span></span>
+                        </div>
+                    </div>
+
+                    <!-- Subject Box -->
+                    <div class="notesheet-subject-box">
+                        <strong>SUBJECT:</strong> Administrative Approval and Financial Sanction of Estimated Budget <strong id="modal-budget-headline" style="color:#064e3b; font-size:16px;">₹ 4,80,000</strong> for conducting executive training program <span id="modal-subject-title" style="font-weight:800; text-decoration:underline;">"Digital Transformation Workshop"</span>.
+                    </div>
+
+                    <!-- VIEW MODE: Official Note Sheet Body -->
+                    <div id="notesheet-view-mode">
+                        
+                        <!-- Approval Timeline Component -->
+                        <div class="timeline-container" style="margin-bottom:20px;">
+                            <div class="timeline-title">Note Sheet Workflow Audit Trail</div>
+                            <div class="timeline-steps" id="timeline-steps">
+                                <div class="timeline-step completed">
+                                    <div class="step-icon">1</div>
+                                    <div class="step-label">Drafted</div>
+                                </div>
+                                <div class="timeline-step completed">
+                                    <div class="step-icon">2</div>
+                                    <div class="step-label">Submitted</div>
+                                </div>
+                                <div class="timeline-step active" id="step-gm-review">
+                                    <div class="step-icon">3</div>
+                                    <div class="step-label">GM Review</div>
+                                </div>
+                                <div class="timeline-step" id="step-final-decision">
+                                    <div class="step-icon">4</div>
+                                    <div class="step-label">Final Approval</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Readout Grid -->
+                        <div class="note-details-box">
+                            <div class="detail-row">
+                                <div class="detail-label">Program Type:</div>
+                                <div id="modal-type" style="font-weight:700;">-</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Venue &amp; Hall:</div>
+                                <div id="modal-venue">-</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Schedule Dates:</div>
+                                <div id="modal-dates">-</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Estimated Budget:</div>
+                                <div id="modal-budget" style="font-weight:900; color:#064e3b; font-size:17px;">-</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Target Participants:</div>
+                                <div id="modal-participants">-</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Target Subsidiaries:</div>
+                                <div id="modal-companies">-</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Objectives:</div>
+                                <div id="modal-objective" style="line-height:1.5; color:#334155;">-</div>
+                            </div>
+                            <div class="detail-row">
+                                <div class="detail-label">Proposal Scope:</div>
+                                <div id="modal-description" style="line-height:1.5; color:#334155;">-</div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- EDIT MODE: Inline Form for GM/Coordinator to modify Note Sheet -->
+                    <div id="notesheet-edit-mode" style="display:none;" class="notesheet-edit-box">
+                        <h4 style="color:#064e3b; margin-bottom:16px; font-size:16px; font-weight:800;">✏️ Edit Note Sheet Specifications</h4>
+                        
+                        <div class="form-group" style="margin-bottom:14px;">
+                            <label style="font-weight:700; font-size:13px; display:block; margin-bottom:4px;">Program Title *</label>
+                            <input type="text" id="edit-ns-title" class="form-control" style="width:100%; padding:10px 14px; font-size:14px; border:1px solid #cbd5e1; border-radius:8px;">
+                        </div>
+
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px;">
+                            <div>
+                                <label style="font-weight:700; font-size:13px; display:block; margin-bottom:4px;">Program Type</label>
+                                <input type="text" id="edit-ns-type" class="form-control" style="width:100%; padding:10px 14px; font-size:14px; border:1px solid #cbd5e1; border-radius:8px;">
+                            </div>
+                            <div>
+                                <label style="font-weight:700; font-size:13px; display:block; margin-bottom:4px;">Venue &amp; Hall</label>
+                                <input type="text" id="edit-ns-venue" class="form-control" style="width:100%; padding:10px 14px; font-size:14px; border:1px solid #cbd5e1; border-radius:8px;">
+                            </div>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-bottom:14px;">
+                            <div>
+                                <label style="font-weight:700; font-size:13px; display:block; margin-bottom:4px;">Start Date</label>
+                                <input type="date" id="edit-ns-start" class="form-control" style="width:100%; padding:10px 14px; font-size:14px; border:1px solid #cbd5e1; border-radius:8px;">
+                            </div>
+                            <div>
+                                <label style="font-weight:700; font-size:13px; display:block; margin-bottom:4px;">End Date</label>
+                                <input type="date" id="edit-ns-end" class="form-control" style="width:100%; padding:10px 14px; font-size:14px; border:1px solid #cbd5e1; border-radius:8px;">
+                            </div>
+                            <div>
+                                <label style="font-weight:700; font-size:13px; display:block; margin-bottom:4px;">Sanction Budget (₹)</label>
+                                <input type="number" id="edit-ns-budget" class="form-control" style="width:100%; padding:10px 14px; font-size:14px; border:1px solid #cbd5e1; border-radius:8px;">
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom:14px;">
+                            <label style="font-weight:700; font-size:13px; display:block; margin-bottom:4px;">Objectives</label>
+                            <textarea id="edit-ns-objective" class="form-control" rows="2" style="width:100%; padding:10px 14px; font-size:14px; border:1px solid #cbd5e1; border-radius:8px;"></textarea>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom:16px;">
+                            <label style="font-weight:700; font-size:13px; display:block; margin-bottom:4px;">Description / Scope</label>
+                            <textarea id="edit-ns-description" class="form-control" rows="2" style="width:100%; padding:10px 14px; font-size:14px; border:1px solid #cbd5e1; border-radius:8px;"></textarea>
+                        </div>
+
+                        <div style="display:flex; justify-content:flex-end; gap:12px;">
+                            <button type="button" class="btn-secondary" onclick="toggleEditNoteSheet(false)">Cancel Edit</button>
+                            <button type="button" class="btn-success" onclick="saveNoteSheetEdits()">💾 Save Note Sheet Changes</button>
+                        </div>
+                    </div>
+
+                    <!-- Existing GM Remarks readout (if already reviewed) -->
+                    <div id="existing-remarks-box" style="display:none; margin-bottom:20px; padding:16px; background:#eff6ff; border-left:4px solid #2563eb; border-radius:8px;">
+                        <strong style="color:#1d4ed8; font-size:14px;">GM Sanction / Approval Remarks:</strong>
+                        <p id="existing-remarks-text" style="font-size:13.5px; color:#334155; margin-top:6px; font-style:italic;"></p>
+                    </div>
+
+                    <!-- Executive Signatures Stamp -->
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; border-top:1px dashed #cbd5e1; padding-top:16px; margin-top:20px;">
+                        <div style="font-size:12.5px; color:#64748b;">
+                            <strong>Submitted By:</strong><br>
+                            Program Coordinator, IICM Ranchi<br>
+                            <small>Digitally Signed &amp; Dispatched</small>
+                        </div>
+                        <div style="font-size:12.5px; color:#064e3b; text-align:right;">
+                            <strong>Sanctioning Authority:</strong><br>
+                            <strong style="font-size:14px;">GM (Academics / Executive Governance)</strong><br>
+                            <small id="gm-sanction-stamp">Status: Executive Review Active</small>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- GM Remarks Input Field -->
+                <div class="form-group" id="remarks-input-group" style="margin-bottom:0;">
+                    <label for="gm-remarks" style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:8px; display:block;">GM Approval / Rejection Executive Remarks *</label>
+                    <textarea id="gm-remarks" class="form-control" rows="2" placeholder="Enter executive approval remarks, budgetary sanctions, or revision notes..." style="width:100%; padding:10px 14px; font-size:14px; border:1.5px solid #cbd5e1; border-radius:10px;"></textarea>
+                </div>
+
+            </div>
+
+            <!-- Action Buttons Footer (Contained inside modal card with zero overflow) -->
+            <div class="modal-footer" id="modal-action-buttons">
+                <div style="display:flex; gap:8px; align-items:center;">
+                    <button type="button" class="btn-primary" onclick="printNoteSheetDocument()" style="background:#0284c7; padding:9px 15px; font-size:13px;">🖨️ Print PDF</button>
+                    <button type="button" class="btn-primary" onclick="toggleEditNoteSheet(true)" style="background:#d97706; padding:9px 15px; font-size:13px;">✏️ Edit Note</button>
+                </div>
+                <div style="display:flex; gap:8px; align-items:center;">
+                    <button type="button" class="btn-secondary" onclick="closeModal()" style="padding:9px 16px; font-size:13px;">Close</button>
+                    <button type="button" class="btn-danger" onclick="submitDecision('reject')" style="padding:9px 16px; font-size:13px;">❌ Reject</button>
+                    <button type="button" class="btn-success" onclick="submitDecision('approve')" style="padding:9px 16px; font-size:13px;">✅ Approve / Accept</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="gm.js?v=20260806-gmredesign1"></script>
+    <script src="../assets/js/mobile-nav.js?v=20260806"></script>
+</body>
+</html>

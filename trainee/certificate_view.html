@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IICM Official Executive Certificate of Completion</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #0f172a;
+            font-family: 'Inter', sans-serif;
+            color: #1e293b;
+            min-height: 100vh;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Top Control Bar */
+        .control-bar {
+            width: 100%;
+            max-width: 1000px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+            padding: 16px 24px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .btn-action {
+            background: #064e3b;
+            color: #ffffff;
+            border: none;
+            font-size: 14px;
+            font-weight: 800;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-action:hover {
+            background: #047857;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(4, 120, 87, 0.3);
+        }
+
+        .btn-download {
+            background: #2563eb;
+        }
+
+        .btn-download:hover {
+            background: #1d4ed8;
+        }
+
+        /* Printable Certificate Frame */
+        .certificate-wrapper {
+            width: 100%;
+            max-width: 1000px;
+            background: #ffffff;
+            padding: 24px;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .certificate-container {
+            background: #fffdf9;
+            border: 12px double #064e3b;
+            padding: 48px 56px;
+            text-align: center;
+            position: relative;
+            border-radius: 8px;
+            outline: 2px solid #d97706;
+            outline-offset: -6px;
+        }
+
+        .cert-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 140px;
+            font-weight: 900;
+            color: rgba(6, 78, 59, 0.03);
+            font-family: 'Cinzel', serif;
+            pointer-events: none;
+            user-select: none;
+            white-space: nowrap;
+        }
+
+        .cert-header {
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 20px;
+            margin-bottom: 28px;
+        }
+
+        .cert-logo-text {
+            font-family: 'Cinzel', serif;
+            font-size: 26px;
+            font-weight: 800;
+            color: #064e3b;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .cert-subtitle {
+            font-size: 13px;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cert-title-badge {
+            display: inline-block;
+            font-family: 'Cinzel', serif;
+            font-size: 28px;
+            font-weight: 900;
+            color: #064e3b;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 20px 0 16px;
+            border-bottom: 3px double #d97706;
+            padding-bottom: 8px;
+        }
+
+        .cert-body-text {
+            font-size: 16px;
+            color: #475569;
+            margin-bottom: 12px;
+        }
+
+        .cert-name {
+            font-size: 36px;
+            font-weight: 800;
+            color: #0f172a;
+            font-family: 'Cinzel', serif;
+            margin: 16px 0;
+            color: #047857;
+            text-decoration: underline;
+            text-decoration_color: #d97706;
+        }
+
+        .cert-meta {
+            font-size: 15px;
+            color: #334155;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .cert-program {
+            font-size: 22px;
+            font-weight: 800;
+            color: #064e3b;
+            margin: 14px 0 24px;
+        }
+
+        .cert-footer {
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 2px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .cert-footer-col {
+            text-align: left;
+        }
+
+        .cert-footer-col.right {
+            text-align: right;
+        }
+
+        .signature-line {
+            width: 200px;
+            border-top: 2px solid #0f172a;
+            margin-top: 40px;
+            padding-top: 6px;
+            font-weight: 800;
+            font-size: 14px;
+            color: #0f172a;
+        }
+
+        /* Print Media Styles */
+        @media print {
+            body {
+                background: #ffffff;
+                padding: 0;
+            }
+            .control-bar {
+                display: none !important;
+            }
+            .certificate-wrapper {
+                box-shadow: none;
+                max-width: 100%;
+                padding: 0;
+            }
+            .certificate-container {
+                border-width: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Action Control Bar -->
+    <div class="control-bar">
+        <div>
+            <strong style="color: #064e3b; font-size: 16px;">🎓 Official IICM Course Completion Certificate</strong>
+            <div style="font-size: 12px; color: #64748b;">Indian Institute of Coal Management, Ranchi</div>
+        </div>
+        <div style="display: flex; gap: 12px;">
+            <button type="button" class="btn-action" onclick="window.print()">
+                🖨️ Print Certificate
+            </button>
+            <button type="button" class="btn-action btn-download" onclick="downloadPDF()">
+                📥 Download PDF Certificate
+            </button>
+        </div>
+    </div>
+
+    <!-- Printable Certificate Document -->
+    <div class="certificate-wrapper" id="printable-certificate">
+        <div class="certificate-container">
+            <div class="cert-watermark">IICM RANCHI</div>
+
+            <div class="cert-header">
+                <div class="cert-logo-text">INDIAN INSTITUTE OF COAL MANAGEMENT</div>
+                <div class="cert-subtitle">Kanke Road, Ranchi - 834006, Jharkhand, India</div>
+            </div>
+
+            <div class="cert-title-badge">CERTIFICATE OF COMPLETION</div>
+
+            <div class="cert-body-text">This is to certify that</div>
+
+            <div class="cert-name" id="cert-trainee-name">Amit Kumar</div>
+
+            <div class="cert-meta">
+                EIS Number: <strong id="cert-eis">90341122</strong> | Subsidiary: <strong id="cert-company">BCCL (Dhanbad)</strong>
+            </div>
+
+            <div class="cert-body-text">has successfully attended and completed the specialized executive program on</div>
+
+            <div class="cert-program" id="cert-program-title">Advanced Executive Safety Management Programme</div>
+
+            <div class="cert-body-text" style="margin-top: 12px;">
+                Conducted at Indian Institute of Coal Management (IICM Campus), Ranchi on <strong>06 August 2026</strong>.
+            </div>
+
+            <div class="cert-footer">
+                <div class="cert-footer-col">
+                    <div style="font-size: 13px; color: #64748b;">Certificate Reference:</div>
+                    <strong id="cert-number" style="font-family: monospace; font-size: 15px; color: #064e3b;">IICM-CERT-2026-1001</strong>
+                    <div style="font-size: 12px; color: #64748b; margin-top: 4px;">Issue Date: 06 August 2026</div>
+                </div>
+
+                <div class="cert-footer-col right">
+                    <div style="font-size: 13px; color: #64748b;">Verified &amp; Authenticated by</div>
+                    <div class="signature-line" style="margin-left: auto;">
+                        Prof. (Dr.) Executive Director<br>
+                        <small style="font-size: 11px; color: #64748b; font-weight: 500;">Academic Operations, IICM</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const name = getQueryParam('name');
+            const certNo = getQueryParam('cert_no');
+            const eis = getQueryParam('eis');
+            const company = getQueryParam('company');
+            const program = getQueryParam('program');
+
+            if (name) document.getElementById('cert-trainee-name').innerText = name;
+            if (certNo) document.getElementById('cert-number').innerText = certNo;
+            if (eis) document.getElementById('cert-eis').innerText = eis;
+            if (company) document.getElementById('cert-company').innerText = company;
+            if (program) document.getElementById('cert-program-title').innerText = program;
+        });
+
+        function downloadPDF() {
+            window.print();
+        }
+    </script>
+</body>
+</html>

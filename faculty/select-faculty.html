@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Faculty Verification — IICM Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #043e2f 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 44px 40px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .logo-box {
+            width: 44px; height: 44px;
+            background: linear-gradient(135deg, #064e3b, #059669);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 14px; font-weight: 900; letter-spacing: 0.5px;
+        }
+
+        .logo-text strong {
+            display: block;
+            font-size: 15px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .logo-text span {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        h2 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            font-size: 13.5px;
+            color: #64748b;
+            margin-bottom: 28px;
+            line-height: 1.5;
+        }
+
+        .step {
+            display: none;
+        }
+        .step.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; } to { opacity: 1; }
+        }
+
+        .step-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #15803d;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 20px;
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 7px;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 10px;
+            background: #f8fafc;
+            color: #0f172a;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        select:focus, input:focus {
+            border-color: #059669;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.12);
+        }
+
+        .selected-preview {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            margin-top: 12px;
+            padding: 10px 14px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 10px;
+        }
+
+        .selected-preview.show { display: flex; }
+
+        .avatar-circle {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, #064e3b, #059669);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .preview-info strong {
+            display: block;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .preview-info span {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .fg { margin-bottom: 20px; }
+
+        .otp-input {
+            font-size: 28px !important;
+            font-weight: 800 !important;
+            letter-spacing: 12px !important;
+            text-align: center !important;
+            font-family: monospace !important;
+            padding: 16px !important;
+            color: #064e3b !important;
+        }
+
+        .email-sent-badge {
+            text-align: center;
+            padding: 12px 16px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 10px;
+            font-size: 13px;
+            color: #1d4ed8;
+            font-weight: 500;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #064e3b, #059669);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(5, 150, 105, 0.3);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #475569;
+            margin-top: 10px;
+            font-size: 13.5px;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .alert {
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 18px;
+            display: none;
+            align-items: flex-start;
+            gap: 8px;
+            line-height: 1.45;
+        }
+
+        .alert.err { display: flex; background: #fff1f2; color: #be123c; border: 1px solid #fecdd3; }
+        .alert.ok  { display: flex; background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+
+        .spinner {
+            width: 16px; height: 16px;
+            border: 2.5px solid rgba(255,255,255,0.4);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .resend-link {
+            text-align: center;
+            margin-top: 14px;
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .resend-link button {
+            background: none;
+            border: none;
+            color: #059669;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .resend-link button:hover { text-decoration: underline; }
+
+        .back-link {
+            text-align: center;
+            margin-top: 22px;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .back-link a {
+            color: #059669;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .back-link a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="logo-row">
+        <div class="logo-box">IICM</div>
+        <div class="logo-text">
+            <strong>Faculty Portal</strong>
+            <span>Identity Verification</span>
+        </div>
+    </div>
+
+    <div id="alert-box" class="alert"></div>
+
+    <!-- ── STEP 1: Select Faculty ── -->
+    <div class="step active" id="step-1">
+        <div class="step-badge">🎓 Step 1 of 2 — Select Your Profile</div>
+        <h2>Who are you?</h2>
+        <p class="subtitle">Select your name from the list below. A verification code will be sent to your registered email address.</p>
+
+        <div class="fg">
+            <label for="faculty-select">Select Faculty Name *</label>
+            <select id="faculty-select" onchange="onFacultySelect()">
+                <option value="">— Loading faculty list... —</option>
+            </select>
+            <div class="selected-preview" id="selected-preview">
+                <div class="avatar-circle" id="preview-avatar">?</div>
+                <div class="preview-info">
+                    <strong id="preview-name">—</strong>
+                    <span id="preview-email">—</span>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" id="btn-send-otp" onclick="sendOTP()" disabled>
+            📨 Send Verification Code
+        </button>
+        <div class="back-link">
+            Not you? <a href="../login/index.html" onclick="clearSession()">Sign out</a>
+        </div>
+    </div>
+
+    <!-- ── STEP 2: Enter OTP ── -->
+    <div class="step" id="step-2">
+        <div class="step-badge">🔐 Step 2 of 2 — Enter Verification Code</div>
+        <h2>Check your email</h2>
+        <p class="subtitle">Enter the 6-digit code we sent to your email. The code is valid for 10 minutes.</p>
+
+        <div class="email-sent-badge" id="email-sent-badge">
+            ✉️ Code sent to <strong id="email-hint-display">your email</strong>
+        </div>
+
+        <div class="fg">
+            <label for="otp-input">6-Digit Verification Code *</label>
+            <input
+                type="text"
+                id="otp-input"
+                class="otp-input"
+                maxlength="6"
+                placeholder="______"
+                inputmode="numeric"
+                autocomplete="one-time-code"
+                oninput="this.value=this.value.replace(/\D/g,'')"
+            >
+        </div>
+
+        <button class="btn btn-primary" id="btn-verify" onclick="verifyOTP()">
+            ✅ Verify & Open My Dashboard
+        </button>
+        <button class="btn btn-secondary" onclick="goBackToStep1()">
+            ← Change Faculty Selection
+        </button>
+        <div class="resend-link">
+            Didn't receive the code?
+            <button onclick="resendOTP()">Resend Code</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const API = 'http://127.0.0.1:8000/api/v1';
+const LOGIN_URL = '../login/index.html';
+const DASHBOARD_URL = '../faculty/dashboard.html';
+
+let selectedFacultyEmail = '';
+let selectedFacultyName = '';
+let accessToken = '';
+
+/* ── Check auth on load ── */
+(function init() {
+    const token = localStorage.getItem('iicm_access_token');
+    const user = JSON.parse(localStorage.getItem('iicm_user') || 'null');
+
+    if (!token || !user || user.role_code !== 'FACULTY') {
+        window.location.href = LOGIN_URL;
+        return;
+    }
+
+    accessToken = token;
+    loadFacultyList();
+})();
+
+/* ── Load faculty list from backend ── */
+async function loadFacultyList() {
+    const select = document.getElementById('faculty-select');
+    try {
+        const res = await fetch(`${API}/faculty/faculties/`, {
+            headers: { 'Authorization': `Bearer ${accessToken}` }
+        });
+        if (!res.ok) throw new Error('Failed to load');
+
+        const data = await res.json();
+        const faculties = data.results || data;
+
+        if (!faculties || faculties.length === 0) {
+            select.innerHTML = '<option value="">— No faculty profiles found —</option>';
+            return;
+        }
+
+        select.innerHTML = '<option value="">— Select your name —</option>' +
+            faculties.map(f => {
+                const email = f.email || '';
+                const name = f.name || 'Unknown Faculty';
+                return `<option value="${email}" data-name="${name}" data-email="${email}">${name}</option>`;
+            }).join('');
+
+    } catch (e) {
+        select.innerHTML = '<option value="">— Error loading list. Please refresh —</option>';
+        showErr('Could not load the faculty list. Please check the backend connection.');
+    }
+}
+
+/* ── Handle dropdown selection change ── */
+function onFacultySelect() {
+    const select = document.getElementById('faculty-select');
+    const selectedOpt = select.options[select.selectedIndex];
+    const email = selectedOpt.value;
+    const name = selectedOpt.getAttribute('data-name') || '';
+
+    const preview = document.getElementById('selected-preview');
+    const btn = document.getElementById('btn-send-otp');
+
+    if (email) {
+        selectedFacultyEmail = email;
+        selectedFacultyName = name;
+
+        document.getElementById('preview-avatar').textContent = name.charAt(0).toUpperCase();
+        document.getElementById('preview-name').textContent = name;
+        document.getElementById('preview-email').textContent = email;
+        preview.classList.add('show');
+        btn.disabled = false;
+        clearAlert();
+    } else {
+        selectedFacultyEmail = '';
+        selectedFacultyName = '';
+        preview.classList.remove('show');
+        btn.disabled = true;
+    }
+}
+
+/* ── Send OTP to the selected faculty's email ── */
+async function sendOTP() {
+    if (!selectedFacultyEmail) { showErr('Please select a faculty name first.'); return; }
+
+    const btn = document.getElementById('btn-send-otp');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Sending code...';
+    clearAlert();
+
+    try {
+        const res = await fetch(`${API}/accounts/send-faculty-otp/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify({
+                faculty_email: selectedFacultyEmail,
+                faculty_name: selectedFacultyName
+            })
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.status === 'success') {
+            document.getElementById('email-hint-display').textContent = data.email_hint || selectedFacultyEmail;
+            goToStep2();
+        } else {
+            showErr(data.message || 'Failed to send the verification code. Please try again.');
+            btn.disabled = false;
+            btn.innerHTML = '📨 Send Verification Code';
+        }
+    } catch (e) {
+        showErr('Could not reach the server. Please ensure the backend is running.');
+        btn.disabled = false;
+        btn.innerHTML = '📨 Send Verification Code';
+    }
+}
+
+/* ── Verify the OTP entered by the faculty ── */
+async function verifyOTP() {
+    const otp = document.getElementById('otp-input').value.trim();
+    if (!otp || otp.length !== 6) { showErr('Please enter the complete 6-digit code.'); return; }
+
+    const btn = document.getElementById('btn-verify');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Verifying...';
+    clearAlert();
+
+    try {
+        const res = await fetch(`${API}/accounts/verify-faculty-otp/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`
+            },
+            body: JSON.stringify({
+                otp: otp,
+                faculty_email: selectedFacultyEmail
+            })
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.status === 'success') {
+            /* Store the selected faculty's identity for the dashboard */
+            const currentUser = JSON.parse(localStorage.getItem('iicm_user') || '{}');
+            currentUser.selected_faculty_email = selectedFacultyEmail;
+            currentUser.selected_faculty_name = selectedFacultyName;
+            localStorage.setItem('iicm_user', JSON.stringify(currentUser));
+            localStorage.setItem('iicm_selected_faculty_email', selectedFacultyEmail);
+            localStorage.setItem('iicm_selected_faculty_name', selectedFacultyName);
+
+            showOk(`✅ Verified! Welcome, ${selectedFacultyName}! Opening your dashboard...`);
+            btn.innerHTML = '✅ Verified!';
+            setTimeout(() => { window.location.href = DASHBOARD_URL; }, 900);
+        } else {
+            showErr(data.message || 'Invalid code. Please check your email and try again.');
+            btn.disabled = false;
+            btn.innerHTML = '✅ Verify & Open My Dashboard';
+        }
+    } catch (e) {
+        showErr('Could not reach the server. Please check your connection.');
+        btn.disabled = false;
+        btn.innerHTML = '✅ Verify & Open My Dashboard';
+    }
+}
+
+/* ── Resend OTP ── */
+async function resendOTP() {
+    document.getElementById('otp-input').value = '';
+    clearAlert();
+    goToStep1();
+    // Trigger send after going back
+    setTimeout(() => sendOTP(), 200);
+}
+
+/* ── Navigation helpers ── */
+function goToStep2() {
+    document.getElementById('step-1').classList.remove('active');
+    document.getElementById('step-2').classList.add('active');
+    document.getElementById('otp-input').focus();
+    clearAlert();
+}
+
+function goToStep1() {
+    document.getElementById('step-2').classList.remove('active');
+    document.getElementById('step-1').classList.add('active');
+    document.getElementById('btn-send-otp').disabled = false;
+    document.getElementById('btn-send-otp').innerHTML = '📨 Send Verification Code';
+    clearAlert();
+}
+
+function goBackToStep1() {
+    document.getElementById('otp-input').value = '';
+    goToStep1();
+}
+
+/* ── Alert helpers ── */
+function showErr(msg) {
+    const el = document.getElementById('alert-box');
+    el.innerHTML = '<span>⚠️</span><span>' + msg + '</span>';
+    el.className = 'alert err';
+}
+function showOk(msg) {
+    const el = document.getElementById('alert-box');
+    el.innerHTML = '<span>✅</span><span>' + msg + '</span>';
+    el.className = 'alert ok';
+}
+function clearAlert() {
+    document.getElementById('alert-box').className = 'alert';
+}
+
+/* ── Clear session on sign out ── */
+function clearSession() {
+    localStorage.removeItem('iicm_access_token');
+    localStorage.removeItem('iicm_refresh_token');
+    localStorage.removeItem('iicm_user');
+    localStorage.removeItem('iicm_selected_faculty_email');
+    localStorage.removeItem('iicm_selected_faculty_name');
+}
+
+/* ── Allow Enter key to verify OTP ── */
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        const step2 = document.getElementById('step-2');
+        if (step2.classList.contains('active')) verifyOTP();
+    }
+});
+</script>
+</body>
+</html>

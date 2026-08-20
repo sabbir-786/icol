@@ -1,0 +1,474 @@
+/*
+ * IICM — Global Mobile Responsive Stylesheet
+ * Applies to: all dashboard portals (admin, company, dc, faculty, gm,
+ *             program_coordinator, reports, super_admin, trainee)
+ * Strategy : media-query overrides only — zero desktop changes.
+ * Breakpoints:
+ *   ≤ 1024px  Tablet / small laptop
+ *   ≤ 768px   Tablet portrait / large phone
+ *   ≤ 480px   Phone
+ */
+
+/* ─── Smooth transitions for sidebar collapse ─── */
+.sidebar,
+.sidebar-nav,
+.sidebar-item a,
+.main-content {
+    transition: all 0.25s ease;
+}
+
+/* ══════════════════════════════════════════════
+   TABLET  (≤ 1024px)
+══════════════════════════════════════════════ */
+@media (max-width: 1024px) {
+
+    /* Layout: sidebar narrows */
+    .dashboard-layout {
+        display: flex !important;
+        flex-direction: row !important;
+        height: 100vh !important;
+        overflow: hidden !important;
+    }
+
+    .sidebar {
+        width: 220px !important;
+        min-width: 220px !important;
+        flex-shrink: 0 !important;
+        overflow-y: auto !important;
+    }
+
+    .main-content {
+        flex: 1 !important;
+        overflow-y: auto !important;
+        width: auto !important;
+        min-width: 0 !important;
+    }
+
+    /* Top navbar */
+    .top-navbar {
+        padding: 0 18px !important;
+        flex-wrap: wrap !important;
+        height: auto !important;
+        min-height: 60px !important;
+        gap: 8px !important;
+    }
+
+    /* Stat / KPI grids — 2 columns */
+    .stat-grid,
+    .kpi-grid,
+    .stats-grid,
+    .metrics-grid,
+    .summary-strip {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    /* Card grids — 2 columns */
+    .company-card-grid,
+    .program-card-grid,
+    .card-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+
+    /* Content padding */
+    .content-body,
+    .content-area,
+    .main-area {
+        padding: 16px !important;
+    }
+
+    /* Tables: horizontal scroll */
+    .table-responsive,
+    .data-table-wrapper {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+
+    /* Modal width */
+    .modal-card,
+    .modal-content {
+        max-width: 90vw !important;
+        width: 90vw !important;
+    }
+}
+
+/* ══════════════════════════════════════════════
+   MOBILE  (≤ 768px)
+══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+    /* ── Layout: sidebar becomes top hamburger drawer ── */
+    body {
+        overflow: hidden !important;
+    }
+
+    .dashboard-layout {
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100dvh !important;
+        overflow: hidden !important;
+    }
+
+    /* Sidebar: collapsed to icon strip by default */
+    .sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: -280px !important;       /* hidden off-screen */
+        width: 280px !important;
+        min-width: 280px !important;
+        height: 100vh !important;
+        z-index: 9999 !important;
+        overflow-y: auto !important;
+        box-shadow: 4px 0 20px rgba(0,0,0,0.3) !important;
+        transition: left 0.3s ease !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* Open state toggled by JS hamburger */
+    .sidebar.mobile-open {
+        left: 0 !important;
+    }
+
+    /* Overlay behind open sidebar */
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.45);
+        z-index: 9998;
+        backdrop-filter: blur(2px);
+    }
+    .sidebar-overlay.visible {
+        display: block;
+    }
+
+    /* Hamburger button — injected by JS */
+    .hamburger-btn {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        border-radius: 8px;
+        flex-shrink: 0;
+        padding: 0;
+        z-index: 100;
+    }
+    .hamburger-btn:hover { background: rgba(0,0,0,0.06); }
+    .hamburger-btn svg { width: 24px; height: 24px; }
+
+    /* Main content: full width */
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        flex: 1 !important;
+        height: 100dvh !important;
+        overflow-y: auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    /* Top navbar */
+    .top-navbar {
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 100 !important;
+        padding: 0 12px !important;
+        height: auto !important;
+        min-height: 56px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        flex-wrap: nowrap !important;
+        gap: 8px !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+    }
+
+    /* Hide long subtitle on mobile */
+    .top-navbar p,
+    #page-subtitle {
+        display: none !important;
+    }
+
+    /* Page title smaller */
+    .top-navbar h1,
+    #page-title {
+        font-size: 16px !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 160px;
+    }
+
+    /* Content body */
+    .content-body,
+    .content-area,
+    .main-area {
+        padding: 12px !important;
+        flex: 1;
+    }
+
+    /* ── Summary strip: 2×2 grid ── */
+    .summary-strip {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+        padding: 10px !important;
+    }
+    .summary-item {
+        border-right: none !important;
+        border-bottom: 1px solid var(--line, #dde4e2) !important;
+        padding: 10px !important;
+        height: auto !important;
+    }
+    .summary-item:nth-child(2),
+    .summary-item:nth-child(4) {
+        border-bottom: none !important;
+    }
+
+    /* ── KPI / stat cards: 2 columns ── */
+    .stat-grid,
+    .kpi-grid,
+    .stats-grid,
+    .metrics-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px !important;
+    }
+
+    /* ── Company / program cards: 1 column ── */
+    .company-card-grid,
+    .program-card-grid,
+    .card-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+
+    /* ── Toolbars: stack vertically ── */
+    .company-toolbar,
+    .toolbar,
+    .section-heading,
+    .page-actions,
+    .header-actions {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+    }
+
+    .search-box,
+    .sort-box {
+        width: 100% !important;
+        min-width: unset !important;
+    }
+
+    .toolbar-right,
+    .nomination-actions,
+    .btn-group {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+
+    /* ── Tables: scrollable ── */
+    .table-responsive,
+    .data-table-wrapper,
+    .nominations-table-wrap {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        border-radius: 8px !important;
+    }
+
+    .data-table,
+    table.table {
+        min-width: 600px !important;
+        font-size: 12px !important;
+    }
+
+    .data-table th,
+    .data-table td {
+        padding: 8px 10px !important;
+        white-space: nowrap !important;
+    }
+
+    /* ── Modals: full screen on mobile ── */
+    .modal-overlay {
+        padding: 0 !important;
+        align-items: flex-end !important;
+    }
+
+    .modal-card,
+    .modal-content {
+        max-width: 100vw !important;
+        width: 100vw !important;
+        border-radius: 16px 16px 0 0 !important;
+        max-height: 90vh !important;
+        overflow-y: auto !important;
+    }
+
+    .modal-body {
+        max-height: 65vh !important;
+        overflow-y: auto !important;
+    }
+
+    /* ── Form rows: single column ── */
+    .form-row,
+    .form-grid,
+    [style*="grid-template-columns: 1fr 1fr"] {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+
+    /* ── Nomination section toolbar ── */
+    #section-nominations .toolbar {
+        grid-template-columns: 1fr !important;
+    }
+
+    #section-nominations .toolbar-search {
+        grid-template-columns: 1fr !important;
+    }
+
+    /* ── Program coordinator step pipeline ── */
+    .pipeline-steps,
+    .steps-row,
+    .step-list {
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+
+    /* ── MIS tabs: horizontal scroll ── */
+    .mis-tabs,
+    .tab-bar,
+    .tab-list {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        flex-wrap: nowrap !important;
+        gap: 4px !important;
+        padding-bottom: 4px !important;
+    }
+
+    .mis-tab,
+    .tab-btn {
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+        padding: 7px 12px !important;
+        font-size: 12px !important;
+    }
+
+    /* ── Help card in sidebar ── */
+    .help-card { display: none !important; }
+
+    /* ── Buttons: full width in stacked contexts ── */
+    .btn-add-company,
+    .btn-add-program {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+
+    /* ── Add nomination / nominate buttons ── */
+    .send-all-email-btn,
+    .nominate-btn,
+    .upload-btn {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+
+    /* ── User profile badge: compact ── */
+    .role-pill { display: none !important; }
+
+    .user-profile-badge {
+        gap: 6px !important;
+    }
+
+    /* ── Nav label text: hide long labels ── */
+    .nav-label { font-size: 9px !important; }
+
+    /* ── Pagination: compact ── */
+    .pagination button {
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 12px !important;
+    }
+
+    /* ── Company detail heading ── */
+    .company-detail-heading {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+
+    /* ── Nomination section header ── */
+    .nomination-section-header {
+        flex-direction: column !important;
+        gap: 10px !important;
+        padding: 14px 16px !important;
+    }
+
+    /* ── Faculty schedule cards ── */
+    .schedule-card,
+    .session-card {
+        padding: 12px !important;
+    }
+}
+
+/* ══════════════════════════════════════════════
+   SMALL PHONE  (≤ 480px)
+══════════════════════════════════════════════ */
+@media (max-width: 480px) {
+
+    /* KPI cards: single column */
+    .stat-grid,
+    .kpi-grid,
+    .stats-grid,
+    .metrics-grid,
+    .summary-strip {
+        grid-template-columns: 1fr !important;
+    }
+
+    .summary-item { border-bottom: 1px solid var(--line, #dde4e2) !important; }
+    .summary-item:last-of-type { border-bottom: none !important; }
+
+    /* Top navbar title */
+    .top-navbar h1,
+    #page-title {
+        font-size: 14px !important;
+        max-width: 130px !important;
+    }
+
+    /* Stat values smaller */
+    .stat-val,
+    .summary-item strong {
+        font-size: 20px !important;
+    }
+
+    /* Dash cards */
+    .dash-card {
+        padding: 12px !important;
+        border-radius: 8px !important;
+    }
+
+    /* Notification button */
+    .notification-button { font-size: 18px !important; }
+
+    /* Logout button: compact */
+    .btn-logout {
+        padding: 6px 10px !important;
+        font-size: 11px !important;
+    }
+
+    .modal-card,
+    .modal-content {
+        max-height: 95vh !important;
+    }
+}
+
+/* ══════════════════════════════════════════════
+   HAMBURGER + OVERLAY JS INJECTION STYLES
+══════════════════════════════════════════════ */
+/* These are used by the inline JS injected via this file's companion script */
+@media (max-width: 768px) {
+    .hamburger-btn { display: flex !important; }
+}
+@media (min-width: 769px) {
+    .hamburger-btn { display: none !important; }
+    .sidebar-overlay { display: none !important; }
+    .sidebar { left: auto !important; position: relative !important; }
+}

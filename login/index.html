@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IICM QRTMS — Sign In</title>
+    <meta name="description"
+        content="Sign in to the QR-Based Training Management System (QRTMS) of Indian Institute of Coal Management, Ranchi.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --green-dark: #0B5D3B;
+            --green-mid: #0F7A4F;
+            --green-light: #EAF7F1;
+            --gold: #D4AF37;
+            --gold-light: #F0D060;
+            --bg-dark: #071a11;
+            --card-bg: #ffffff;
+            --text-dark: #1F2937;
+            --text-mid: #374151;
+            --text-light: #6B7280;
+            --border: #D1D5DB;
+            --input-bg: #F9FAFB;
+            --error-bg: #FEF2F2;
+            --error-text: #991B1B;
+            --error-bdr: #FCA5A5;
+            --ok-bg: #ECFDF5;
+            --ok-text: #065F46;
+            --ok-bdr: #6EE7B7;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background: var(--bg-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ── Ambient background blobs ── */
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(80px);
+            opacity: 0.55;
+        }
+
+        .blob-1 {
+            width: 480px;
+            height: 480px;
+            background: radial-gradient(circle, #0F7A4F 0%, transparent 70%);
+            top: -160px;
+            left: -160px;
+        }
+
+        .blob-2 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, transparent 70%);
+            bottom: -200px;
+            right: -150px;
+        }
+
+        .blob-3 {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(15, 122, 79, 0.35) 0%, transparent 70%);
+            top: 50%;
+            right: 10%;
+            transform: translateY(-50%);
+        }
+
+        /* ── Grid layout: left panel + right card ── */
+        .page-wrap {
+            position: relative;
+            z-index: 10;
+            display: flex;
+            width: 100%;
+            max-width: 960px;
+            min-height: 600px;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
+            animation: rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+
+        @keyframes rise {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ── Left branding panel ── */
+        .brand-panel {
+            flex: 1;
+            background: linear-gradient(160deg, #071a11 0%, #0B5D3B 60%, #0e8050 100%);
+            padding: 48px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-panel::before {
+            content: '';
+            position: absolute;
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            bottom: -100px;
+            left: -80px;
+            border-radius: 50%;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-logo-box {
+            width: 52px;
+            height: 52px;
+            background: rgba(212, 175, 55, 0.2);
+            border: 2px solid rgba(212, 175, 55, 0.5);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+            font-weight: 900;
+            color: var(--gold);
+            flex-shrink: 0;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-logo-text h2 {
+            font-size: 17px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 0.2px;
+        }
+
+        .brand-logo-text p {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.55);
+            font-weight: 400;
+            margin-top: 1px;
+        }
+
+        .brand-headline {
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand-headline h1 {
+            font-size: 30px;
+            font-weight: 900;
+            color: #fff;
+            line-height: 1.25;
+            margin-bottom: 14px;
+        }
+
+        .brand-headline h1 span {
+            color: var(--gold);
+        }
+
+        .brand-headline p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.7;
+            max-width: 280px;
+        }
+
+        .brand-features {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .brand-feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand-feature-icon {
+            width: 30px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .brand-feature-text {
+            font-size: 12.5px;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+        }
+
+        /* ── Right sign-in card ── */
+        .signin-card {
+            width: 420px;
+            flex-shrink: 0;
+            background: var(--card-bg);
+            padding: 44px 40px 36px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .card-header {
+            margin-bottom: 28px;
+        }
+
+        .card-header h2 {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--green-dark);
+            margin-bottom: 5px;
+        }
+
+        .card-header p {
+            font-size: 13.5px;
+            color: var(--text-light);
+        }
+
+        /* ── Alert ── */
+        .alert {
+            padding: 11px 14px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 18px;
+            display: none;
+            line-height: 1.45;
+        }
+
+        .alert.err {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            background: var(--error-bg);
+            color: var(--error-text);
+            border: 1px solid var(--error-bdr);
+        }
+
+        .alert.ok {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            background: var(--ok-bg);
+            color: var(--ok-text);
+            border: 1px solid var(--ok-bdr);
+        }
+
+        /* ── Form groups ── */
+        .fg {
+            margin-bottom: 18px;
+        }
+
+        .fg label {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-mid);
+            margin-bottom: 6px;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 15px;
+            color: #9CA3AF;
+            pointer-events: none;
+        }
+
+        .fg input,
+        .fg select {
+            width: 100%;
+            padding: 11px 14px 11px 38px;
+            font-size: 14px;
+            font-family: inherit;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            outline: none;
+            background: var(--input-bg);
+            color: var(--text-dark);
+            transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .fg input:focus,
+        .fg select:focus {
+            border-color: var(--green-mid);
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(15, 122, 79, 0.12);
+        }
+
+        .pwd-toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #9CA3AF;
+            padding: 4px;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+
+        .pwd-toggle:hover {
+            color: var(--green-mid);
+        }
+
+        /* ── Role Select custom styling ── */
+        .select-wrap {
+            position: relative;
+        }
+
+        .select-wrap::after {
+            content: '▾';
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9CA3AF;
+            pointer-events: none;
+            font-size: 13px;
+        }
+
+        .fg select option {
+            padding: 8px;
+        }
+
+        /* ── Submit Button ── */
+        .btn-signin {
+            width: 100%;
+            padding: 13.5px;
+            background: linear-gradient(135deg, var(--green-dark), var(--green-mid));
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: all 0.2s;
+            box-shadow: 0 6px 20px rgba(11, 93, 59, 0.3);
+            letter-spacing: 0.3px;
+        }
+
+        .btn-signin:hover:not(:disabled) {
+            background: linear-gradient(135deg, var(--green-mid), #12a468);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px rgba(11, 93, 59, 0.4);
+        }
+
+        .btn-signin:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn-signin:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.65s linear infinite;
+            vertical-align: middle;
+            margin-right: 7px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ── Footer hint ── */
+        .signin-footer {
+            margin-top: 22px;
+            padding-top: 18px;
+            border-top: 1px solid #F3F4F6;
+            text-align: center;
+            font-size: 11.5px;
+            color: #9CA3AF;
+            line-height: 1.6;
+        }
+
+        /* ── Role badge preview ── */
+        .role-preview {
+            display: none;
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: var(--green-light);
+            border: 1px solid rgba(11, 93, 59, 0.15);
+            font-size: 12.5px;
+            color: var(--green-dark);
+            font-weight: 600;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .role-preview.show {
+            display: flex;
+        }
+
+        .role-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--green-mid);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 760px) {
+            .brand-panel {
+                display: none;
+            }
+
+            .signin-card {
+                width: 100%;
+                border-radius: 20px;
+            }
+
+            .page-wrap {
+                border-radius: 20px;
+                max-width: 440px;
+            }
+        }
+
+        /* ── Floating particles for style ── */
+        .particles {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(212, 175, 55, 0.15);
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: translateY(-20px) scale(1);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Ambient blobs -->
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <div class="page-wrap">
+
+        <!-- ═══ LEFT BRAND PANEL ═══ -->
+        <div class="brand-panel">
+            <div class="brand-logo">
+                <div class="brand-logo-box">IICM</div>
+                <div class="brand-logo-text">
+                    <h2>QRTMS Portal</h2>
+                    <p>Ranchi, Jharkhand</p>
+                </div>
+            </div>
+
+            <div class="brand-headline">
+                <h1>Yash-Based Training<br><span>Management System</span></h1>
+                <p>A unified digital platform automating the complete lifecycle of training programme management at
+                    IICM.</p>
+            </div>
+
+            <div class="brand-features">
+                <div class="brand-feature">
+                    <div class="brand-feature-icon">📋</div>
+                    <div class="brand-feature-text">Academic Calendar & Programme Scheduling</div>
+                </div>
+                <div class="brand-feature">
+                    <div class="brand-feature-icon">📱</div>
+                    <div class="brand-feature-text">QR Code Attendance & Feedback Collection</div>
+                </div>
+                <div class="brand-feature">
+                    <div class="brand-feature-icon">✅</div>
+                    <div class="brand-feature-text">Multi-level Approval Workflows</div>
+                </div>
+                <div class="brand-feature">
+                    <div class="brand-feature-icon">💰</div>
+                    <div class="brand-feature-text">Automated Honorarium Payment Processing</div>
+                </div>
+                <div class="brand-feature">
+                    <div class="brand-feature-icon">📊</div>
+                    <div class="brand-feature-text">MIS Reports & Role-Based Dashboards</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ RIGHT SIGN-IN CARD ═══ -->
+        <div class="signin-card">
+            <div class="card-header">
+                <h2>Welcome Back 👋</h2>
+                <p>Sign in to your IICM QRTMS account</p>
+            </div>
+
+            <div id="alert-box" class="alert"></div>
+
+            <form id="login-form" novalidate autocomplete="on">
+
+                <!-- Email / Username -->
+                <div class="fg">
+                    <label for="email">Email or Username *</label>
+                    <div class="input-wrap">
+                        <span class="input-icon">👤</span>
+                        <input type="text" id="email" name="email"
+                            placeholder="e.g. superadmin or superadmin@iicm.ac.in" autocomplete="username"
+                            spellcheck="false">
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="fg">
+                    <label for="password">Password *</label>
+                    <div class="input-wrap">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" id="password" name="password" placeholder="Enter your password"
+                            autocomplete="current-password">
+                        <button type="button" class="pwd-toggle" id="pwd-toggle" title="Toggle password visibility"
+                            onclick="togglePwd()">👁</button>
+                    </div>
+                </div>
+
+                <!-- Role Selection -->
+                <div class="fg">
+                    <label for="role">Select Your Role *</label>
+                    <div class="input-wrap select-wrap">
+                        <span class="input-icon">🎭</span>
+                        <select id="role" name="role" onchange="onRoleChange()">
+                            <option value="">— Choose your role —</option>
+                            <option value="SUPER_ADMIN">Super Admin</option>
+                            <option value="ADMIN">Admin (Master Data)</option>
+                            <option value="GM">GM – Academics / IICM</option>
+                            <option value="DC">Executive Director (Competent Authority)</option>
+                            <option value="PROGRAM_COORDINATOR">Programme Coordinator</option>
+                            <option value="COMPANY_ADMIN">Finance Officer</option>
+                            <option value="FACULTY">Faculty</option>
+                            <option value="TRAINEE">Participant / Trainee</option>
+                        </select>
+                    </div>
+                    <div class="role-preview" id="role-preview">
+                        <span class="role-dot"></span>
+                        <span id="role-preview-text"></span>
+                    </div>
+                </div>
+
+                <!-- Sign In Button -->
+                <button type="submit" class="btn-signin" id="login-btn">
+                    Sign In →
+                </button>
+
+            </form>
+
+            <details style="margin-top:16px;border:1px solid #D1FAE5;border-radius:9px;overflow:hidden;">
+                <summary
+                    style="padding:10px 14px;font-size:12px;font-weight:700;color:#065F46;cursor:pointer;background:#ECFDF5;list-style:none;display:flex;justify-content:space-between;align-items:center;">
+                    🔑 Demo Credentials <span style="font-weight:400;opacity:0.6;">(click to expand)</span></summary>
+                <div
+                    style="padding:12px 14px;font-size:11.5px;font-family:monospace;color:#374151;line-height:2;background:#fff;">
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px 16px;">
+                        <div><b>superadmin</b> → Super Admin</div>
+                        <div><b>admin</b> → Admin</div>
+                        <div><b>gm</b> → GM Academics</div>
+                        <div><b>dc</b> → Executive Director</div>
+                        <div><b>coordinator</b> → Prog. Coordinator</div>
+                        <div><b>companyadmin</b> → Finance Officer</div>
+                        <div><b>faculty</b> → Faculty</div>
+                        <div><b>trainee</b> → Trainee</div>
+                    </div>
+                    <div style="margin-top:8px;padding:6px 10px;background:#F0FDF4;border-radius:6px;color:#065F46;">
+                        Password for all: <b>password123</b></div>
+                </div>
+            </details>
+
+            <div class="signin-footer">
+                Indian Institute of Coal Management, Ranchi<br>
+                <strong>QRTMS</strong> &nbsp;·&nbsp; Secure Role-Based Access Control
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        /* ═══════════════════════════════════════════════════
+           IICM QRTMS — Unified Sign-In Logic
+           Handles: email + password + role → role dashboard
+        ═══════════════════════════════════════════════════ */
+
+        const API = 'http://127.0.0.1:8000/api/v1';
+
+        const DASH = {
+            'SUPER_ADMIN': '../super_admin/dashboard.html',
+            'ADMIN': '../admin/dashboard.html',
+            'GM': '../gm/dashboard.html',
+            'DC': '../dc/dashboard.html',
+            'PROGRAM_COORDINATOR': '../program_coordinator/dashboard.html',
+            'COMPANY_ADMIN': '../finance/dashboard.html',
+            'FACULTY': '../faculty/dashboard.html',
+            'TRAINEE': '../trainee/dashboard.html'
+        };
+
+        const ROLE_LABELS = {
+            'SUPER_ADMIN': 'Super Admin — Full system governance',
+            'ADMIN': 'Admin — Master Data Control Center',
+            'GM': 'GM (Academics / IICM) — Approvals & oversight',
+            'DC': 'Executive Director — Final approval authority',
+            'PROGRAM_COORDINATOR': 'Programme Coordinator — Scheduling & nominations',
+            'COMPANY_ADMIN': 'Finance Officer — Honorarium & payments',
+            'FACULTY': 'Faculty — Sessions & invitations',
+            'TRAINEE': 'Participant / Trainee — Registration & feedback'
+        };
+
+        /* ── Auto-redirect removed to prevent login page flickering ── */
+
+
+        /* ── Role change preview ── */
+        function onRoleChange() {
+            const role = document.getElementById('role').value;
+            const preview = document.getElementById('role-preview');
+            const previewText = document.getElementById('role-preview-text');
+            clearAlert();
+            if (role && ROLE_LABELS[role]) {
+                preview.classList.add('show');
+                previewText.textContent = ROLE_LABELS[role];
+            } else {
+                preview.classList.remove('show');
+            }
+        }
+
+        /* ── Toggle password visibility ── */
+        function togglePwd() {
+            const inp = document.getElementById('password');
+            const btn = document.getElementById('pwd-toggle');
+            if (inp.type === 'password') {
+                inp.type = 'text';
+                btn.textContent = '🙈';
+            } else {
+                inp.type = 'password';
+                btn.textContent = '👁';
+            }
+        }
+
+        /* ── Alert helpers ── */
+        function showErr(msg) {
+            const el = document.getElementById('alert-box');
+            el.innerHTML = '<span>⚠️</span><span>' + msg + '</span>';
+            el.className = 'alert err';
+        }
+        function showOk(msg) {
+            const el = document.getElementById('alert-box');
+            el.innerHTML = '<span>✅</span><span>' + msg + '</span>';
+            el.className = 'alert ok';
+        }
+        function clearAlert() {
+            document.getElementById('alert-box').className = 'alert';
+        }
+
+        /* ── Main login handler ── */
+        document.getElementById('login-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
+            const btn = document.getElementById('login-btn');
+
+            /* Client-side validation */
+            if (!email) { showErr('Please enter your email or username.'); return; }
+            if (email.length < 3) { showErr('Please enter a valid username or email.'); return; }
+            if (!password) { showErr('Please enter your password.'); return; }
+            if (!role) { showErr('Please select your role to continue.'); return; }
+
+            /* Spinner */
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span>Signing in...';
+            clearAlert();
+
+            try {
+                const res = await fetch(API + '/accounts/login/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: email, password: password, role: role })
+                });
+
+                const data = await res.json();
+
+                if (res.ok && data.status === 'success') {
+
+                    /* Verify role matches */
+                    const serverRole = data.user.role_code;
+                    if (serverRole !== role) {
+                        showErr(
+                            'Role mismatch: your account is registered as <strong>' +
+                            (ROLE_LABELS[serverRole] || serverRole) +
+                            '</strong>. Please select the correct role.'
+                        );
+                        btn.disabled = false;
+                        btn.innerHTML = 'Sign In →';
+                        return;
+                    }
+
+                    /* ── FACULTY: Redirect to Faculty Selection & OTP page ── */
+                    if (serverRole === 'FACULTY') {
+                        /* Save tokens temporarily — the select-faculty page will complete the flow */
+                        localStorage.setItem('iicm_access_token', data.tokens.access);
+                        localStorage.setItem('iicm_refresh_token', data.tokens.refresh);
+                        localStorage.setItem('iicm_user', JSON.stringify(data.user));
+
+                        showOk('Credentials verified! Redirecting to faculty selection...');
+                        setTimeout(() => { window.location.href = '../faculty/select-faculty.html'; }, 600);
+                        return;
+                    }
+
+
+                    /* ── All other roles: Direct login (no OTP) ── */
+                    localStorage.setItem('iicm_access_token', data.tokens.access);
+                    localStorage.setItem('iicm_refresh_token', data.tokens.refresh);
+                    localStorage.setItem('iicm_user', JSON.stringify(data.user));
+
+                    const name = (data.user.first_name || data.user.username || 'User');
+                    showOk('Welcome, ' + name + '! Redirecting to your dashboard...');
+
+                    const target = DASH[serverRole] || DASH['TRAINEE'];
+                    window.location.href = target;
+                    return;
+                } else {
+                    /* Error from server */
+                    let msg = data.detail || '';
+                    if (!msg && data.errors) {
+                        if (typeof data.errors === 'string') msg = data.errors;
+                        else if (data.errors.non_field_errors) msg = data.errors.non_field_errors[0];
+                        else msg = JSON.stringify(data.errors);
+                    }
+                    showErr(msg || 'Sign in failed. Please check your credentials and role.');
+                }
+
+            } catch (err) {
+                showErr('Cannot reach the server. Please ensure the backend is running on port 8000.');
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = 'Sign In →';
+        });
+
+
+        /* ── Allow pressing Enter on role select ── */
+        document.getElementById('role').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') document.getElementById('login-form').dispatchEvent(new Event('submit'));
+        });
+    </script>
+</body>
+
+</html>

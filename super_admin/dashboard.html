@@ -1,0 +1,1536 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IICM — Super Admin Governance Dashboard</title>
+    <meta name="description"
+        content="Super Admin control panel for IICM system governance, user management, and configuration.">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../program_coordinator/coordinator-redesign.css?v=20260807">
+    <style>
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+        }
+
+        /* ─── Sidebar ─── */
+        .sidebar-brand {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar-logo {
+            width: 36px;
+            height: 36px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 13px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .sidebar-brand-text {
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .sidebar-brand-text small {
+            font-size: 11px;
+            opacity: 0.7;
+            font-weight: 400;
+            display: block;
+        }
+
+        .sidebar-section-label {
+            padding: 16px 20px 6px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(255, 255, 255, 0.45);
+            font-weight: 600;
+        }
+
+        .sidebar-item {
+            list-style: none;
+        }
+
+        .sidebar-item a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            color: rgba(255, 255, 255, 0.75);
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .sidebar-item a:hover,
+        .sidebar-item.active a {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            border-left-color: #D4AF37;
+        }
+
+        .sidebar-icon {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .sidebar-footer {
+            padding: 16px 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* ─── Top navbar ─── */
+        .top-navbar {
+            padding: 0 24px;
+        }
+
+        .page-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1b4332;
+        }
+
+        .breadcrumb {
+            font-size: 12px;
+            color: #6B7280;
+        }
+
+        /* ─── Stats Cards ─── */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 24px;
+        }
+
+        @media(max-width:1200px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .stat-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(11, 93, 59, 0.1);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .stat-icon.green {
+            background: #EAF7F1;
+        }
+
+        .stat-icon.blue {
+            background: #EBF5FB;
+        }
+
+        .stat-icon.gold {
+            background: #FEF9E7;
+        }
+
+        .stat-icon.red {
+            background: #FDEDEC;
+        }
+
+        .stat-value {
+            font-size: 26px;
+            font-weight: 800;
+            color: #1F2937;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6B7280;
+            margin-top: 4px;
+        }
+
+        .stat-delta {
+            font-size: 11px;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .delta-up {
+            color: #16a34a;
+        }
+
+        .delta-down {
+            color: #dc2626;
+        }
+
+        /* ─── Tab panels ─── */
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        /* ─── Section header ─── */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .section-header h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #1b4332;
+        }
+
+        /* ─── Search bar ─── */
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-input {
+            padding: 8px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 13px;
+            outline: none;
+            width: 220px;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--secondary-green);
+        }
+
+        .filter-select {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 13px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* ─── Role badge ─── */
+        .role-badge {
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .role-SUPER_ADMIN {
+            background: #1b4332;
+            color: #fff;
+        }
+
+        .role-ADMIN {
+            background: #2563eb;
+            color: #fff;
+        }
+
+        .role-PROGRAM_COORDINATOR {
+            background: #7c3aed;
+            color: #fff;
+        }
+
+        .role-FACULTY {
+            background: #0891b2;
+            color: #fff;
+        }
+
+        .role-TRAINEE {
+            background: #d97706;
+            color: #fff;
+        }
+
+        .role-GM {
+            background: #16a34a;
+            color: #fff;
+        }
+
+        .role-DC {
+            background: #9d174d;
+            color: #fff;
+        }
+
+        .role-COMPANY_ADMIN {
+            background: #374151;
+            color: #fff;
+        }
+
+        /* ─── Action buttons ─── */
+        .action-btns {
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-edit {
+            background: #3b82f6;
+            color: #fff;
+            border: none;
+            padding: 5px 11px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-edit:hover {
+            background: #2563eb;
+        }
+
+        .btn-deact {
+            background: #f59e0b;
+            color: #fff;
+            border: none;
+            padding: 5px 11px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-deact:hover {
+            background: #d97706;
+        }
+
+        .btn-restore {
+            background: #10b981;
+            color: #fff;
+            border: none;
+            padding: 5px 11px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* ─── Status pill ─── */
+        .status-active {
+            background: #d1fae5;
+            color: #065f46;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .status-inactive {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* ─── Modal (new design) ─── */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(3px);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-backdrop.open {
+            display: flex;
+        }
+
+        .modal-box {
+            background: #fff;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 520px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            animation: slideUp 0.25s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .modal-box-header {
+            background: var(--primary-green);
+            color: #fff;
+            padding: 18px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-box-header h3 {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .modal-x {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 22px;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .modal-box-body {
+            padding: 24px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .modal-box-footer {
+            padding: 16px 24px;
+            background: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        /* ─── Inline form grid ─── */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        /* ─── Audit log ─── */
+        .log-item {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            padding: 12px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .log-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 5px;
+        }
+
+        .log-dot.green {
+            background: #16a34a;
+        }
+
+        .log-dot.blue {
+            background: #2563eb;
+        }
+
+        .log-dot.red {
+            background: #dc2626;
+        }
+
+        .log-dot.gold {
+            background: #d97706;
+        }
+
+        .log-meta {
+            font-size: 12px;
+            color: #6B7280;
+            margin-top: 2px;
+        }
+
+        /* ─── Config toggle ─── */
+        .config-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .config-label {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .config-desc {
+            font-size: 12px;
+            color: #6B7280;
+            margin-top: 2px;
+        }
+
+        .toggle {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            inset: 0;
+            background: #d1d5db;
+            border-radius: 24px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .toggle-slider:before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            left: 3px;
+            top: 3px;
+            background: #fff;
+            border-radius: 50%;
+            transition: transform 0.2s;
+        }
+
+        .toggle input:checked+.toggle-slider {
+            background: var(--secondary-green);
+        }
+
+        .toggle input:checked+.toggle-slider:before {
+            transform: translateX(20px);
+        }
+
+        /* ─── Backup card ─── */
+        .backup-card {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 16px 20px;
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .backup-info strong {
+            font-size: 14px;
+        }
+
+        .backup-info span {
+            font-size: 12px;
+            color: #6B7280;
+            display: block;
+        }
+
+        /* ─── Progress bar ─── */
+        .progress-bar-wrap {
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 6px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--primary-green);
+            border-radius: 6px;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        /* ─── Empty state ─── */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #9ca3af;
+        }
+
+        .empty-state span {
+            font-size: 36px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        /* ─── Toast notification ─── */
+        #toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #1b4332;
+            color: #fff;
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+            z-index: 99999;
+            transform: translateY(80px);
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        #toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        #toast.error {
+            background: #dc2626;
+        }
+    </style>
+    <link rel="stylesheet" href="../assets/css/mobile-responsive.css?v=20260806">
+</head>
+
+<body>
+    <div class="dashboard-layout">
+
+        <!-- ═══════════════ SIDEBAR ═══════════════ -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-logo">SA</div>
+                <div class="sidebar-brand-text">
+                    IICM Portal
+                    <small>Super Admin</small>
+                </div>
+            </div>
+
+            <p class="sidebar-section-label">Main</p>
+            <ul class="sidebar-nav">
+                <li class="sidebar-item active" id="nav-overview">
+                    <a onclick="switchTab('overview','nav-overview')">
+                        <span class="sidebar-icon">🏠</span> Dashboard Overview
+                    </a>
+                </li>
+                <li class="sidebar-item" id="nav-users">
+                    <a onclick="switchTab('users','nav-users')">
+                        <span class="sidebar-icon">👥</span> User Management
+                    </a>
+                </li>
+                <li class="sidebar-item" id="nav-calendar">
+                    <a onclick="switchTab('calendar','nav-calendar')">
+                        <span class="sidebar-icon">📅</span> Academic Calendar
+                    </a>
+                </li>
+                <li class="sidebar-item" id="nav-reports">
+                    <a onclick="switchTab('reports','nav-reports')">
+                        <span class="sidebar-icon">📊</span> Executive Reports
+                    </a>
+                </li>
+            </ul>
+
+            <p class="sidebar-section-label">System</p>
+            <ul class="sidebar-nav">
+                <li class="sidebar-item" id="nav-config">
+                    <a onclick="switchTab('config','nav-config')">
+                        <span class="sidebar-icon">⚙️</span> System Configuration
+                    </a>
+                </li>
+                <li class="sidebar-item" id="nav-backup">
+                    <a onclick="switchTab('backup','nav-backup')">
+                        <span class="sidebar-icon">💾</span> Database Backup
+                    </a>
+                </li>
+                <li class="sidebar-item" id="nav-logs">
+                    <a onclick="switchTab('logs','nav-logs')">
+                        <span class="sidebar-icon">📋</span> Audit Logs
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">IICM v2.0 — Governance Portal</div>
+        </aside>
+
+        <!-- ═══════════════ MAIN CONTENT ═══════════════ -->
+        <main class="main-content">
+            <header class="top-navbar">
+                <div>
+                    <div class="page-title" id="page-title">Dashboard Overview</div>
+                    <div class="breadcrumb">IICM / Super Admin / <span id="breadcrumb-current">Overview</span></div>
+                </div>
+                <div class="user-profile-badge">
+                    <div id="user-profile-info"></div>
+                    <button onclick="logoutUser()" class="btn-logout">🚪 Sign Out</button>
+                </div>
+            </header>
+
+            <div class="content-body">
+
+                <!-- ══ TAB: OVERVIEW ══ -->
+                <div id="tab-overview" class="tab-panel active">
+                    <!-- Stats -->
+                    <div class="stats-grid" id="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon green">👥</div>
+                            <div>
+                                <div class="stat-value" id="stat-total-users">—</div>
+                                <div class="stat-label">Total Users</div>
+                                <div class="stat-delta delta-up">↑ System Wide</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon blue">✅</div>
+                            <div>
+                                <div class="stat-value" id="stat-active-users">—</div>
+                                <div class="stat-label">Active Accounts</div>
+                                <div class="stat-delta delta-up">↑ Live Now</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon gold">🎓</div>
+                            <div>
+                                <div class="stat-value" id="stat-trainees">—</div>
+                                <div class="stat-label">Trainees</div>
+                                <div class="stat-delta delta-up">↑ Enrolled</div>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon red">🚫</div>
+                            <div>
+                                <div class="stat-value" id="stat-inactive">—</div>
+                                <div class="stat-label">Inactive Accounts</div>
+                                <div class="stat-delta delta-down">⚠ Needs Review</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Role distribution -->
+                    <div class="dash-card">
+                        <h3 style="font-size:16px;font-weight:700;color:#1b4332;margin-bottom:18px;">👤 Users by Role
+                        </h3>
+                        <div id="role-distribution" style="display:flex;flex-wrap:wrap;gap:10px;">
+                            <span style="color:#9ca3af;font-size:13px;">Loading...</span>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="dash-card">
+                        <h3 style="font-size:16px;font-weight:700;color:#1b4332;margin-bottom:18px;">📊 Recent System
+                            Activity</h3>
+                        <div id="recent-activity">
+                            <div class="log-item">
+                                <div class="log-dot green"></div>
+                                <div>
+                                    <div style="font-size:13px;font-weight:600;">System booted successfully</div>
+                                    <div class="log-meta">Today, backend service is running</div>
+                                </div>
+                            </div>
+                            <div class="log-item">
+                                <div class="log-dot blue"></div>
+                                <div>
+                                    <div style="font-size:13px;font-weight:600;">Super Admin logged in</div>
+                                    <div class="log-meta">Just now · via Web Portal</div>
+                                </div>
+                            </div>
+                            <div class="log-item">
+                                <div class="log-dot gold"></div>
+                                <div>
+                                    <div style="font-size:13px;font-weight:600;">Database is healthy</div>
+                                    <div class="log-meta">SQLite active · No errors detected</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ══ TAB: USER MANAGEMENT ══ -->
+                <div id="tab-users" class="tab-panel">
+                    <div class="dash-card">
+                        <div class="section-header">
+                            <h3>👥 User Management</h3>
+                            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                                <div class="search-bar">
+                                    <input class="search-input" id="user-search" placeholder="Search username, email..."
+                                        oninput="filterUsers()">
+                                    <select class="filter-select" id="role-filter" onchange="filterUsers()">
+                                        <option value="">All Roles</option>
+                                        <option value="SUPER_ADMIN">Super Admin</option>
+                                        <option value="ADMIN">Admin</option>
+                                        <option value="PROGRAM_COORDINATOR">Program Coordinator</option>
+                                        <option value="FACULTY">Faculty</option>
+                                        <option value="TRAINEE">Trainee</option>
+                                        <option value="GM">General Manager</option>
+                                        <option value="DC">Department Controller</option>
+                                        <option value="COMPANY_ADMIN">Company Admin</option>
+                                    </select>
+                                </div>
+                                <button class="btn-primary" onclick="openCreateModal()">➕ Create New User</button>
+                            </div>
+                        </div>
+
+                        <div id="users-alert" class="alert" style="margin-bottom:14px;"></div>
+
+                        <div class="table-responsive">
+                            <table class="data-table" id="users-table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Username</th>
+                                        <th>Full Name</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="users-tbody">
+                                    <tr>
+                                        <td colspan="7" style="text-align:center;padding:30px;color:#9ca3af;">Loading
+                                            users...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div id="user-count" style="margin-top:12px;font-size:12px;color:#6B7280;"></div>
+                    </div>
+                </div>
+
+                <!-- ══ TAB: SYSTEM CONFIG ══ -->
+                <div id="tab-config" class="tab-panel">
+                    <div class="dash-card">
+                        <div class="section-header">
+                            <h3>⚙️ System Configuration</h3>
+                            <button class="btn-primary" onclick="saveConfig()">💾 Save Changes</button>
+                        </div>
+
+                        <div class="config-row">
+                            <div>
+                                <div class="config-label">Maintenance Mode</div>
+                                <div class="config-desc">Disable public access temporarily for upgrades</div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="cfg-maintenance">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="config-row">
+                            <div>
+                                <div class="config-label">Allow New Registrations</div>
+                                <div class="config-desc">Allow new users to self-register via login page</div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="cfg-registration" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="config-row">
+                            <div>
+                                <div class="config-label">Email Notifications</div>
+                                <div class="config-desc">Send email alerts for account creation and updates</div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="cfg-email" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                        <div class="config-row">
+                            <div>
+                                <div class="config-label">Audit Logging</div>
+                                <div class="config-desc">Record all admin actions to audit trail</div>
+                            </div>
+                            <label class="toggle">
+                                <input type="checkbox" id="cfg-audit" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+
+                        <div style="margin-top:24px;">
+                            <h4 style="font-size:14px;font-weight:700;color:#1b4332;margin-bottom:14px;">System Email
+                                Settings</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>System Email</label>
+                                    <input type="email" class="form-control" id="cfg-sys-email"
+                                        value="noreply@iicm.gov.in">
+                                </div>
+                                <div class="form-group">
+                                    <label>Support Email</label>
+                                    <input type="email" class="form-control" id="cfg-support-email"
+                                        value="support@iicm.gov.in">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>System Base URL</label>
+                                <input type="text" class="form-control" id="cfg-base-url" value="http://localhost:8000">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ══ TAB: DATABASE BACKUP ══ -->
+                <div id="tab-backup" class="tab-panel">
+                    <div class="dash-card">
+                        <div class="section-header">
+                            <h3>💾 Database Backup</h3>
+                            <button class="btn-primary" onclick="triggerBackup()">⬇️ Create New Backup</button>
+                        </div>
+
+                        <div id="backup-progress-wrap" class="progress-bar-wrap" style="margin-bottom:20px;">
+                            <div class="progress-bar-fill" id="backup-progress-fill"></div>
+                        </div>
+                        <p id="backup-status-text" style="font-size:13px;color:#6B7280;margin-bottom:20px;"></p>
+
+                        <h4 style="font-size:14px;font-weight:700;color:#1b4332;margin-bottom:14px;">📁 Backup History
+                        </h4>
+
+                        <div class="backup-card">
+                            <div class="backup-info">
+                                <strong>db_backup_2026_08_01.sqlite3</strong>
+                                <span>📅 Today, 10:00 AM · 4.2 MB · Auto</span>
+                            </div>
+                            <button class="btn-primary btn-sm" onclick="showToast('Downloading backup...')">⬇️
+                                Download</button>
+                        </div>
+                        <div class="backup-card">
+                            <div class="backup-info">
+                                <strong>db_backup_2026_07_31.sqlite3</strong>
+                                <span>📅 Yesterday, 11:00 PM · 4.0 MB · Scheduled</span>
+                            </div>
+                            <button class="btn-primary btn-sm" onclick="showToast('Downloading backup...')">⬇️
+                                Download</button>
+                        </div>
+                        <div class="backup-card">
+                            <div class="backup-info">
+                                <strong>db_backup_2026_07_30.sqlite3</strong>
+                                <span>📅 2 days ago · 3.8 MB · Manual</span>
+                            </div>
+                            <button class="btn-primary btn-sm" onclick="showToast('Downloading backup...')">⬇️
+                                Download</button>
+                        </div>
+
+                        <div
+                            style="margin-top:20px;padding:14px;background:#fefce8;border:1px solid #fde68a;border-radius:8px;">
+                            <strong style="font-size:13px;color:#854d0e;">⚠ Auto-Backup Policy:</strong>
+                            <p style="font-size:12px;color:#92400e;margin-top:4px;">Backups are created automatically
+                                every 24 hours. Last 7 daily + 4 weekly backups are retained. Old backups are purged
+                                automatically.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ══ TAB: AUDIT LOGS ══ -->
+                <div id="tab-logs" class="tab-panel">
+                    <div class="dash-card">
+                        <div class="section-header">
+                            <h3>📋 System Audit Logs</h3>
+                            <div style="display:flex;gap:10px;">
+                                <select class="filter-select" id="log-filter" onchange="filterLogs()">
+                                    <option value="">All Events</option>
+                                    <option value="LOGIN">Logins</option>
+                                    <option value="CREATE">User Created</option>
+                                    <option value="UPDATE">User Updated</option>
+                                    <option value="DELETE">Deactivated</option>
+                                    <option value="CONFIG">Config Changes</option>
+                                </select>
+                                <button class="btn-secondary btn-sm" onclick="showToast('Logs exported as CSV')">📤
+                                    Export CSV</button>
+                            </div>
+                        </div>
+                        <div id="audit-logs-list"></div>
+                    </div>
+                </div>
+
+                <!-- ══ TAB: ACADEMIC CALENDAR MODULE ══ -->
+                <div id="tab-calendar" class="tab-panel">
+                    <div class="dash-card">
+                        <div
+                            style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:20px; border-bottom:1px solid #e5e7eb; padding-bottom:16px;">
+                            <div>
+                                <h3 style="margin:0; font-size:18px; color:#1b4332; font-weight:700;">📅 Academic
+                                    Calendar &amp; Master Events Governance (Live Updates View)</h3>
+                                <p style="margin:4px 0 0 0; font-size:13px; color:#6b7280;">Live view of all system
+                                    holidays, training schedules, workshops, assessments, and company events with Google
+                                    Calendar Sync integration.</p>
+                            </div>
+                            <div>
+                                <button type="button" class="btn-primary" style="background:#1b4332; border:none; padding:8px 16px; border-radius:8px; font-size:13px; font-weight:700; color:#fff;" onclick="saOpenAddCalendarEventModal()">
+                                    ➕ Add Calendar Event
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Top 8 KPI Metric Cards Row -->
+                        <div class="cal-kpi-grid">
+                            <div class="cal-kpi-card">
+                                <div class="cal-kpi-icon green">📅</div>
+                                <div>
+                                    <div class="cal-kpi-val" id="sa-kpi-total">48</div>
+                                    <div class="cal-kpi-lbl">Total Events</div>
+                                </div>
+                            </div>
+                            <div class="cal-kpi-card">
+                                <div class="cal-kpi-icon orange">📆</div>
+                                <div>
+                                    <div class="cal-kpi-val" id="sa-kpi-upcoming">12</div>
+                                    <div class="cal-kpi-lbl">Upcoming Events</div>
+                                </div>
+                            </div>
+                            <div class="cal-kpi-card">
+                                <div class="cal-kpi-icon blue">🕒</div>
+                                <div>
+                                    <div class="cal-kpi-val" id="sa-kpi-today">5</div>
+                                    <div class="cal-kpi-lbl">Today's Events</div>
+                                </div>
+                            </div>
+                            <div class="cal-kpi-card">
+                                <div class="cal-kpi-icon red">🔴</div>
+                                <div>
+                                    <div class="cal-kpi-val" id="sa-kpi-holidays">10</div>
+                                    <div class="cal-kpi-lbl">Holidays</div>
+                                </div>
+                            </div>
+                            <div class="cal-kpi-card">
+                                <div class="cal-kpi-icon purple">🎓</div>
+                                <div>
+                                    <div class="cal-kpi-val" id="sa-kpi-training">8</div>
+                                    <div class="cal-kpi-lbl">Training Programs</div>
+                                </div>
+                            </div>
+                            <div class="cal-kpi-card">
+                                <div class="cal-kpi-icon teal">📑</div>
+                                <div>
+                                    <div class="cal-kpi-val" id="sa-kpi-assessments">6</div>
+                                    <div class="cal-kpi-lbl">Assessments</div>
+                                </div>
+                            </div>
+                            <div class="cal-kpi-card">
+                                <div class="cal-kpi-icon darkblue">🛠</div>
+                                <div>
+                                    <div class="cal-kpi-val" id="sa-kpi-workshops">5</div>
+                                    <div class="cal-kpi-lbl">Workshops</div>
+                                </div>
+                            </div>
+                            <div class="cal-kpi-card">
+                                <div class="cal-kpi-icon cyan">🏢</div>
+                                <div>
+                                    <div class="cal-kpi-val" id="sa-kpi-visits">2</div>
+                                    <div class="cal-kpi-lbl">Company Visits</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Bar -->
+                        <div class="cal-action-bar">
+                            <div class="cal-action-left">
+                                <button type="button" class="cal-btn-outline" onclick="saExportGoogleCalendarICS()">📥
+                                    Export Calendar (.ics)</button>
+                                <button type="button" class="cal-btn-outline" onclick="window.print()">🖨 Print
+                                    Calendar</button>
+                                <button type="button" class="cal-btn-outline"
+                                    style="border-color:#4285f4; color:#1a73e8; font-weight:700;"
+                                    onclick="saConnectGoogleCalendarSync()">📅 Connect Google Calendar</button>
+                            </div>
+                            <div class="cal-action-right">
+                                <select id="sa-cal-filter-type" class="select-control"
+                                    style="width:auto; height:36px; padding:0 10px; border-radius:8px;"
+                                    onchange="saRenderAcademicCalendar()">
+                                    <option value="">Filter ▾</option>
+                                    <option value="HOLIDAY">🔴 Holidays</option>
+                                    <option value="TRAINING">🔵 Training Programs</option>
+                                    <option value="WORKSHOP">🟢 Workshops</option>
+                                    <option value="ASSESSMENT">🟣 Assessments</option>
+                                    <option value="COMPANY_EVENT">🟧 Company Visits</option>
+                                </select>
+                                <input type="text" id="sa-cal-search-input" class="cal-search-input"
+                                    placeholder="🔍 Search event..." onkeyup="saFilterCalendarBySearch()">
+                            </div>
+                        </div>
+
+                        <!-- 2-Column Workspace Grid -->
+                        <div class="cal-workspace-grid">
+
+                            <!-- Left Workspace Column (~75%) -->
+                            <div class="table-card"
+                                style="padding:20px; border-radius:12px; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+
+                                <!-- Navigation & View Modes Header -->
+                                <div
+                                    style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;">
+                                    <div style="display:flex; align-items:center; gap:8px;">
+                                        <button type="button" class="cal-btn-outline" style="padding:4px 10px;"
+                                            onclick="saNavigateCalendarMonth(-1)">‹</button>
+                                        <button type="button" class="cal-btn-outline" style="padding:4px 10px;"
+                                            onclick="saNavigateCalendarMonth(1)">›</button>
+                                        <button type="button" class="cal-btn-outline"
+                                            style="padding:4px 12px; font-weight:600;"
+                                            onclick="saNavigateCalendarToday()">Today</button>
+                                    </div>
+
+                                    <h3 id="sa-cal-month-year-label"
+                                        style="margin:0; font-size:18px; font-weight:800; color:#0f172a;">August 2026
+                                    </h3>
+
+                                    <div
+                                        style="display:flex; background:#f1f5f9; border-radius:8px; padding:3px; gap:2px;">
+                                        <button type="button" class="btn-action-sm cal-view-btn active"
+                                            id="sa-view-mode-month" onclick="saSwitchCalendarViewMode('month')"
+                                            style="padding:5px 12px; border-radius:6px; font-weight:600;">Month</button>
+                                        <button type="button" class="btn-action-sm cal-view-btn" id="sa-view-mode-week"
+                                            onclick="saSwitchCalendarViewMode('week')"
+                                            style="padding:5px 12px; border-radius:6px; font-weight:600;">Week</button>
+                                        <button type="button" class="btn-action-sm cal-view-btn" id="sa-view-mode-day"
+                                            onclick="saSwitchCalendarViewMode('day')"
+                                            style="padding:5px 12px; border-radius:6px; font-weight:600;">Day</button>
+                                        <button type="button" class="btn-action-sm cal-view-btn"
+                                            id="sa-view-mode-agenda" onclick="saSwitchCalendarViewMode('agenda')"
+                                            style="padding:5px 12px; border-radius:6px; font-weight:600;">Agenda</button>
+                                    </div>
+                                </div>
+
+                                <!-- View 1: Month View Grid -->
+                                <div id="sa-calendar-grid-view" style="display:block;">
+                                    <div
+                                        style="display:grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap:1px; background:#e2e8f0; border:1px solid #e2e8f0; border-top-left-radius:10px; border-top-right-radius:10px; overflow:hidden;">
+                                        <div
+                                            style="background:#f8fafc; padding:10px 4px; text-align:center; font-weight:700; font-size:12px; color:#475569;">
+                                            Sun</div>
+                                        <div
+                                            style="background:#f8fafc; padding:10px 4px; text-align:center; font-weight:700; font-size:12px; color:#475569;">
+                                            Mon</div>
+                                        <div
+                                            style="background:#f8fafc; padding:10px 4px; text-align:center; font-weight:700; font-size:12px; color:#475569;">
+                                            Tue</div>
+                                        <div
+                                            style="background:#f8fafc; padding:10px 4px; text-align:center; font-weight:700; font-size:12px; color:#475569;">
+                                            Wed</div>
+                                        <div
+                                            style="background:#f8fafc; padding:10px 4px; text-align:center; font-weight:700; font-size:12px; color:#475569;">
+                                            Thu</div>
+                                        <div
+                                            style="background:#f8fafc; padding:10px 4px; text-align:center; font-weight:700; font-size:12px; color:#475569;">
+                                            Fri</div>
+                                        <div
+                                            style="background:#f8fafc; padding:10px 4px; text-align:center; font-weight:700; font-size:12px; color:#475569;">
+                                            Sat</div>
+                                    </div>
+                                    <div id="sa-calendar-days-grid"
+                                        style="display:grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap:1px; background:#e2e8f0; border-bottom-left-radius:10px; border-bottom-right-radius:10px; overflow:hidden;">
+                                        <!-- Dynamic calendar cells -->
+                                    </div>
+                                </div>
+
+                                <!-- View 2: Agenda View Container -->
+                                <div id="sa-calendar-agenda-view" style="display:none; padding:10px 0;">
+                                    <div id="sa-agenda-items-container">
+                                        <!-- Agenda items -->
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Right Sidebar Column (~25%) -->
+                            <div>
+
+                                <!-- Card 1: Upcoming Events -->
+                                <div class="cal-sidebar-card">
+                                    <div class="cal-sidebar-header">
+                                        <span class="cal-sidebar-title">Upcoming Events</span>
+                                        <span class="cal-sidebar-link" onclick="saSwitchCalendarViewMode('agenda')">View
+                                            all →</span>
+                                    </div>
+                                    <div id="sa-upcoming-events-list">
+                                        <!-- Dynamically Injected -->
+                                    </div>
+                                </div>
+
+                                <!-- Card 2: Today's Schedule -->
+                                <div class="cal-sidebar-card">
+                                    <div class="cal-sidebar-header">
+                                        <span class="cal-sidebar-title">Today's Schedule</span>
+                                        <span class="cal-sidebar-link" onclick="saSwitchCalendarViewMode('day')">View
+                                            all →</span>
+                                    </div>
+                                    <div id="sa-todays-schedule-list">
+                                        <!-- Dynamically Injected -->
+                                    </div>
+                                </div>
+
+                                <!-- Card 3: Google Calendar Sync Link -->
+                                <div class="cal-sidebar-card" style="background:#f0f9ff; border:1px solid #bae6fd;">
+                                    <div class="cal-sidebar-header" style="margin-bottom:8px;">
+                                        <span class="cal-sidebar-title" style="color:#0369a1;">📅 Google Calendar
+                                            Sync</span>
+                                    </div>
+                                    <p style="font-size:12px; color:#334155; margin:0 0 12px 0; line-height:1.4;">
+                                        Sync all live IICM academic calendar events directly with your official Google
+                                        Calendar application.
+                                    </p>
+                                    <button type="button" class="btn-primary btn-sm"
+                                        style="width:100%; background:#1a73e8; border:none; border-radius:6px; font-weight:700;"
+                                        onclick="saConnectGoogleCalendarSync()">
+                                        🔄 Sync Google Calendar (.ics)
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ══ TAB: EXECUTIVE REPORTS ══ -->
+                <div id="tab-reports" class="tab-panel">
+                    <div class="dash-card">
+                        <div style="margin-bottom:20px; border-bottom:1px solid #e5e7eb; padding-bottom:16px;">
+                            <h3 style="margin:0; font-size:18px; color:#1b4332; font-weight:700;">📊 Executive System Reports Governance</h3>
+                            <p style="margin:4px 0 0 0; font-size:13px; color:#6b7280;">Generate, review, and export aggregated reports for compliance auditing, trainee attendance, session feedbacks, and certificate registry.</p>
+                        </div>
+
+                        <!-- 4 Report Cards Grid -->
+                        <div class="cal-kpi-grid" style="grid-template-columns: repeat(4, 1fr); gap:16px; margin-bottom:24px;">
+                            <div class="cal-kpi-card" style="cursor:pointer;" onclick="openSaReportPanel('program')">
+                                <div class="cal-kpi-icon green">📄</div>
+                                <div>
+                                    <div style="font-size:14px; font-weight:800; color:#1e293b;">Program Reports</div>
+                                    <small style="color:#6b7280;">Performance &amp; Execution</small>
+                                </div>
+                            </div>
+                            <div class="cal-kpi-card" style="cursor:pointer;" onclick="openSaReportPanel('attendance')">
+                                <div class="cal-kpi-icon blue">📅</div>
+                                <div>
+                                    <div style="font-size:14px; font-weight:800; color:#1e293b;">Attendance Reports</div>
+                                    <small style="color:#6b7280;">Bio-metric Analytics</small>
+                                </div>
+                            </div>
+                            <div class="cal-kpi-card" style="cursor:pointer;" onclick="openSaReportPanel('feedback')">
+                                <div class="cal-kpi-icon purple">⭐</div>
+                                <div>
+                                    <div style="font-size:14px; font-weight:800; color:#1e293b;">Feedback Reports</div>
+                                    <small style="color:#6b7280;">Ratings &amp; Evaluations</small>
+                                </div>
+                            </div>
+                            <div class="cal-kpi-card" style="cursor:pointer;" onclick="openSaReportPanel('certificate')">
+                                <div class="cal-kpi-icon orange">🎓</div>
+                                <div>
+                                    <div style="font-size:14px; font-weight:800; color:#1e293b;">Certificate Reports</div>
+                                    <small style="color:#6b7280;">Master Logs Registry</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Report Container -->
+                        <div id="sa-report-details-card" class="table-card" style="padding:20px; border-radius:12px; display:none; background:#ffffff; border:1px solid #e2e8f0; margin-bottom:20px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; border-bottom:1px dashed #e2e8f0; padding-bottom:12px;">
+                                <h4 id="sa-report-title" style="margin:0; font-size:15px; font-weight:800; color:#1b4332;"></h4>
+                                <div style="display:flex; gap:10px;">
+                                    <button type="button" class="btn-primary btn-sm" onclick="triggerSaReportExport()" style="background:#1b4332; border:none; font-weight:700;">📥 Export CSV / PDF</button>
+                                    <button type="button" class="btn-secondary btn-sm" onclick="closeSaReportPanel()">Close</button>
+                                </div>
+                            </div>
+                            <div id="sa-report-content" style="line-height:1.6; font-size:13.5px; color:#374151;">
+                                <!-- Dynamic content injected -->
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div><!-- /content-body -->
+        </main>
+    </div>
+
+    <!-- ═══════════════ TOAST ═══════════════ -->
+    <div id="toast"></div>
+
+    <!-- ═══════════════ CREATE USER MODAL ═══════════════ -->
+    <div id="createUserModal" class="modal-backdrop">
+        <div class="modal-box">
+            <div class="modal-box-header">
+                <h3>➕ Create New User</h3>
+                <button class="modal-x" onclick="closeCreateModal()">✕</button>
+            </div>
+            <div class="modal-box-body">
+                <div id="create-alert" class="alert alert-danger"></div>
+                <form id="create-user-form" onsubmit="handleCreateUser(event)">
+                    <div class="form-group">
+                        <label>Username *</label>
+                        <input type="text" id="cu_username" class="form-control" placeholder="e.g. john_doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address *</label>
+                        <input type="email" id="cu_email" class="form-control" placeholder="user@iicm.gov.in" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <input type="text" id="cu_firstname" class="form-control" placeholder="First Name">
+                        </div>
+                        <div class="form-group">
+                            <label>Last Name</label>
+                            <input type="text" id="cu_lastname" class="form-control" placeholder="Last Name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Role *</label>
+                        <select id="cu_role" class="form-control" required>
+                            <option value="">-- Select Role --</option>
+                            <option value="SUPER_ADMIN">Super Admin</option>
+                            <option value="ADMIN">Admin</option>
+                            <option value="PROGRAM_COORDINATOR">Program Coordinator</option>
+                            <option value="FACULTY">Faculty</option>
+                            <option value="TRAINEE">Trainee</option>
+                            <option value="GM">General Manager</option>
+                            <option value="DC">Department Controller</option>
+                            <option value="COMPANY_ADMIN">Company Admin</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="text" id="cu_phone" class="form-control" placeholder="+91 9XXXXXXXXX">
+                        </div>
+                        <div class="form-group">
+                            <label>EIS / Employee Code</label>
+                            <input type="text" id="cu_eis" class="form-control" placeholder="EIS-XXXX">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-box-footer">
+                <button class="btn-secondary" onclick="closeCreateModal()">Cancel</button>
+                <button class="btn-primary" id="cu_submit_btn" onclick="handleCreateUser(event)">✅ Create User</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════ EDIT USER MODAL ═══════════════ -->
+    <div id="editUserModal" class="modal-backdrop">
+        <div class="modal-box">
+            <div class="modal-box-header">
+                <h3>✏️ Edit User</h3>
+                <button class="modal-x" onclick="closeEditModal()">✕</button>
+            </div>
+            <div class="modal-box-body">
+                <div id="edit-alert" class="alert alert-danger"></div>
+                <input type="hidden" id="eu_id">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" id="eu_firstname" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" id="eu_lastname" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="eu_email" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Role</label>
+                    <select id="eu_role" class="form-control">
+                        <option value="SUPER_ADMIN">Super Admin</option>
+                        <option value="ADMIN">Admin</option>
+                        <option value="PROGRAM_COORDINATOR">Program Coordinator</option>
+                        <option value="FACULTY">Faculty</option>
+                        <option value="TRAINEE">Trainee</option>
+                        <option value="GM">General Manager</option>
+                        <option value="DC">Department Controller</option>
+                        <option value="COMPANY_ADMIN">Company Admin</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="text" id="eu_phone" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>EIS / Employee Code</label>
+                        <input type="text" id="eu_eis" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+                        <input type="checkbox" id="eu_is_active" style="width:16px;height:16px;">
+                        Account Active
+                    </label>
+                </div>
+            </div>
+            <div class="modal-box-footer">
+                <button class="btn-secondary" onclick="closeEditModal()">Cancel</button>
+                <button class="btn-primary" id="eu_submit_btn" onclick="handleEditUser()">💾 Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════ CONFIRM DEACTIVATE MODAL ═══════════════ -->
+    <div id="confirmModal" class="modal-backdrop">
+        <div class="modal-box" style="max-width:400px;">
+            <div class="modal-box-header" style="background:#dc2626;">
+                <h3>⚠️ Confirm Action</h3>
+                <button class="modal-x" onclick="closeConfirmModal()">✕</button>
+            </div>
+            <div class="modal-box-body">
+                <p id="confirm-text" style="font-size:14px;line-height:1.6;"></p>
+            </div>
+            <div class="modal-box-footer">
+                <button class="btn-secondary" onclick="closeConfirmModal()">Cancel</button>
+                <button class="btn-danger" id="confirm-action-btn">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════ SUPER ADMIN CALENDAR EVENT MODAL ═══════════════ -->
+    <div id="saCalendarEventModal" class="modal-backdrop">
+        <div class="modal-box" style="max-width:600px;">
+            <div class="modal-box-header">
+                <h3 id="sa-cal-modal-title">➕ Create Academic Calendar Event</h3>
+                <button class="modal-x" onclick="saCloseCalendarEventModal()">✕</button>
+            </div>
+            <div class="modal-box-body">
+                <form id="sa-calendar-event-form" onsubmit="saHandleSaveCalendarEvent(event)">
+                    <input type="hidden" id="sa-cal-event-id">
+
+                    <div class="form-group">
+                        <label>Event Title *</label>
+                        <input type="text" id="sa-cal-title" class="form-control"
+                            placeholder="e.g. Annual Coal Mining Leadership Conference" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Event Category *</label>
+                            <select id="sa-cal-event-type" class="form-control" required>
+                                <option value="HOLIDAY">🔴 System Holiday</option>
+                                <option value="TRAINING" selected>🔵 Training Schedule</option>
+                                <option value="WORKSHOP">🟢 Workshop</option>
+                                <option value="ASSESSMENT">🟣 Assessment</option>
+                                <option value="COMPANY_EVENT">🟧 Company Event</option>
+                                <option value="OTHER">⚪ Other / Reminder</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;margin-top:28px;">
+                                <input type="checkbox" id="sa-cal-is-holiday" style="width:18px;height:18px;">
+                                <strong>Mark as Official System Holiday 🔴</strong>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Start Date *</label>
+                            <input type="date" id="sa-cal-start-date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>End Date *</label>
+                            <input type="date" id="sa-cal-end-date" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Start Time</label>
+                            <input type="time" id="sa-cal-start-time" class="form-control" value="09:30">
+                        </div>
+                        <div class="form-group">
+                            <label>End Time</label>
+                            <input type="time" id="sa-cal-end-time" class="form-control" value="16:30">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Description / Administrative Notes</label>
+                        <textarea id="sa-cal-description" class="form-control" rows="3"
+                            placeholder="Full details, venue allocation, or instructions..."></textarea>
+                    </div>
+
+                    <div class="modal-box-footer" style="padding-left:0; padding-right:0; padding-bottom:0;">
+                        <button type="button" class="btn-secondary"
+                            onclick="saCloseCalendarEventModal()">Cancel</button>
+                        <button type="submit" class="btn-primary">💾 Save Event</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════ SUPER ADMIN CALENDAR DETAIL MODAL ═══════════════ -->
+    <div id="saCalendarDetailModal" class="modal-backdrop">
+        <div class="modal-box" style="max-width:550px;">
+            <div class="modal-box-header">
+                <h3>Event Governance &amp; Actions</h3>
+                <button class="modal-x" onclick="saCloseCalendarDetailModal()">✕</button>
+            </div>
+            <div class="modal-box-body" id="sa-cal-detail-body">
+                <!-- Injected by JS -->
+            </div>
+            <div class="modal-box-footer" id="sa-cal-detail-footer">
+                <button class="btn-secondary" onclick="saCloseCalendarDetailModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="super_admin.js?v=20260807"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = checkAuth('SUPER_ADMIN');
+            if (user) {
+                renderUserProfile(user);
+                loadUsers();       // pre-load for stats
+                renderAuditLogs();
+                saLoadAcademicCalendarEvents(); // Pre-load Academic Calendar
+            }
+        });
+    </script>
+    <script src="../assets/js/mobile-nav.js?v=20260806"></script>
+</body>
+
+</html>

@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IICM Admin — Master Data Control Center</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../assets/css/mobile-responsive.css?v=20260806">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">IICM Admin Master</div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-item active"><a href="#" onclick="switchTab('companies')">🏢 Company Master</a></li>
+                <li class="sidebar-item"><a href="#" onclick="switchTab('departments')">🏛️ Department Master</a></li>
+                <li class="sidebar-item"><a href="#" onclick="switchTab('designations')">🏷️ Designation Master</a></li>
+                <li class="sidebar-item"><a href="#" onclick="switchTab('faculties')">👨‍🏫 Faculty Master</a></li>
+                <li class="sidebar-item"><a href="#" onclick="switchTab('venues')">🏫 Venue Master</a></li>
+                <li class="sidebar-item"><a href="#" onclick="switchTab('program-types')">🎓 Program Type Master</a></li>
+                <li class="sidebar-item"><a href="#" onclick="switchTab('subjects')">📚 Training Subject Master</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            <!-- Top Navbar -->
+            <header class="top-navbar">
+                <div style="font-weight: 700; color: #1b4332; font-size: 16px;">
+                    Enterprise Master Data Management System
+                </div>
+                <div class="user-profile-badge">
+                    <div id="user-profile-info"></div>
+                    <button onclick="logoutUser()" class="btn-logout">Sign Out</button>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="content-body">
+                <!-- Master Module Tabs Bar -->
+                <div class="master-tabs">
+                    <button class="master-tab active" id="tab-companies" onclick="switchTab('companies')">🏢 Companies</button>
+                    <button class="master-tab" id="tab-departments" onclick="switchTab('departments')">🏛️ Departments</button>
+                    <button class="master-tab" id="tab-designations" onclick="switchTab('designations')">🏷️ Designations</button>
+                    <button class="master-tab" id="tab-faculties" onclick="switchTab('faculties')">👨‍🏫 Faculty</button>
+                    <button class="master-tab" id="tab-venues" onclick="switchTab('venues')">🏫 Venues</button>
+                    <button class="master-tab" id="tab-program-types" onclick="switchTab('program-types')">🎓 Program Types</button>
+                    <button class="master-tab" id="tab-subjects" onclick="switchTab('subjects')">📚 Training Subjects</button>
+                </div>
+
+                <!-- Main Card Container -->
+                <div class="dash-card">
+                    <!-- Control Toolbar (Search, Filter, Add Record) -->
+                    <div class="toolbar">
+                        <div class="toolbar-search">
+                            <input type="text" id="search-input" class="form-control" placeholder="Search master records..." oninput="handleSearch()">
+                            <select id="status-filter" class="form-control" style="width: 140px;" onchange="handleFilterChange()">
+                                <option value="">All Status</option>
+                                <option value="true">Active Only</option>
+                                <option value="false">Inactive Only</option>
+                            </select>
+                        </div>
+                        <button class="btn-primary" onclick="openAddModal()">
+                            <span>+</span> Add New Record
+                        </button>
+                    </div>
+
+                    <!-- Master Table Area -->
+                    <div class="table-responsive">
+                        <table class="data-table" id="master-table">
+                            <thead>
+                                <tr id="table-head-row">
+                                    <!-- Dynamic headers injected by admin.js -->
+                                </tr>
+                            </thead>
+                            <tbody id="table-body-rows">
+                                <!-- Dynamic rows injected by admin.js -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination Controls -->
+                    <div class="pagination-bar">
+                        <div class="pagination-info" id="pagination-info">Showing 0 of 0 records</div>
+                        <div class="pagination-btns" id="pagination-btns">
+                            <!-- Dynamic pagination buttons -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Generic Master Add/Edit Modal Window -->
+    <div class="modal-overlay" id="master-modal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 id="modal-title">Add Master Record</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="master-form" onsubmit="handleFormSubmit(event)">
+                <div class="modal-body" id="modal-form-fields">
+                    <!-- Dynamic form inputs injected by admin.js based on active master -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn-primary" id="modal-submit-btn">Save Record</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="admin.js"></script>
+    <script src="../assets/js/mobile-nav.js?v=20260806"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IICM Portal - Redirecting...</title>
+    <script>
+        (function() {
+            const token = localStorage.getItem('iicm_access_token');
+            const userJson = localStorage.getItem('iicm_user');
+            
+            const DASH = {
+                'SUPER_ADMIN':         './super_admin/dashboard.html',
+                'ADMIN':               './admin/dashboard.html',
+                'GM':                  './gm/dashboard.html',
+                'DC':                  './dc/dashboard.html',
+                'PROGRAM_COORDINATOR': './program_coordinator/dashboard.html',
+                'COMPANY_ADMIN':       './company/dashboard.html',
+                'FACULTY':             './faculty/dashboard.html',
+                'TRAINEE':             './trainee/dashboard.html'
+            };
+
+            if (token && userJson) {
+                try {
+                    const user = JSON.parse(userJson);
+                    if (user && user.role_code && DASH[user.role_code]) {
+                        window.location.href = DASH[user.role_code];
+                        return;
+                    }
+                } catch(e) {}
+            }
+            window.location.href = './login/index.html';
+        })();
+    </script>
+</head>
+<body style="background: #071a11; color: #ffffff; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0;">
+    <div style="text-align: center;">
+        <h2 style="color: #D4AF37;">IICM Portal</h2>
+        <p style="color: #A0AEC0;">Redirecting to your dashboard...</p>
+    </div>
+</body>
+</html>

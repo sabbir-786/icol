@@ -1,0 +1,1969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IICM — Program Coordinator Executive Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=20260806">
+    <link rel="stylesheet" href="coordinator-redesign.css?v=20260806-cal4">
+    <link rel="stylesheet" href="../assets/css/mobile-responsive.css?v=20260806">
+    <!-- Immediate Global Navigation Router (Guaranteed 100% clickability on initial parse) -->
+    <script>
+    function id(elemId) { return document.getElementById(elemId); }
+
+    function showSection(sectionName) {
+        if (window._showSectionImpl && typeof window._showSectionImpl === 'function') {
+            window._showSectionImpl(sectionName);
+            return;
+        }
+
+        // Fast fallback router
+        document.querySelectorAll('.sidebar-item').forEach(function(el) { el.classList.remove('active'); });
+
+        var navMap = {
+            'dash': 'nav-dash',
+            'nomination-form': 'nav-nomination-form',
+            'faculty-assign': 'nav-faculty-assign',
+            'list': 'nav-list',
+            'programs': 'nav-list',
+            'pending': 'nav-list',
+            'approved': 'nav-list',
+            'ongoing': 'nav-ongoing',
+            'attendance': 'nav-ongoing',
+            'completed': 'nav-list',
+            'notesheet': 'nav-notesheet',
+            'fac-invite': 'nav-fac-invite',
+            'payment-release': 'nav-payment-release',
+            'fac-master': 'nav-fac-master',
+            'honorarium': 'nav-honorarium',
+            'mis': 'nav-mis',
+            'create': 'nav-create',
+            'nominations': 'nav-nominations',
+            'selected': 'nav-selected',
+            'calendar': 'nav-calendar',
+            'notifications': 'nav-notifications'
+        };
+
+        var activeNavId = navMap[sectionName];
+        if (activeNavId) {
+            var activeNav = document.getElementById(activeNavId);
+            if (activeNav) activeNav.classList.add('active');
+        }
+
+        var sectionMap = {
+            'dash': 'section-dash',
+            'nomination-form': 'section-nomination-form',
+            'faculty-assign': 'section-faculty-assign',
+            'list': 'section-programs',
+            'programs': 'section-programs',
+            'pending': 'section-programs',
+            'approved': 'section-programs',
+            'completed': 'section-programs',
+            'notesheet': 'section-notesheet',
+            'fac-invite': 'section-fac-invite',
+            'ongoing': 'section-session-attendance',
+            'attendance': 'section-session-attendance',
+            'payment-release': 'section-payment-release',
+            'fac-master': 'section-fac-master',
+            'honorarium': 'section-honorarium',
+            'mis': 'section-mis',
+            'create': 'section-create',
+            'nominations': 'section-nominations',
+            'selected': 'section-selected',
+            'notifications': 'section-notifications'
+        };
+
+        document.querySelectorAll('.dashboard-only').forEach(function(el) {
+            el.style.display = (sectionName === 'dash') ? '' : 'none';
+        });
+
+        document.querySelectorAll('.section-view').forEach(function(el) {
+            el.classList.remove('active');
+            el.style.display = 'none';
+        });
+
+        var targetSecId = sectionMap[sectionName] || ('section-' + sectionName);
+        var targetSec = document.getElementById(targetSecId);
+        if (targetSec) {
+            targetSec.classList.add('active');
+            targetSec.style.display = 'block';
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    window.showSection = showSection;
+    </script>
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="app-sidebar">
+            <div class="sidebar-brand">
+                <div class="sidebar-brand-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </div>
+                <span>IICM Coordinator</span>
+            </div>
+
+            <div class="sidebar-nav-container">
+                <ul class="sidebar-nav">
+                    <!-- 1. Dashboard -->
+                    <li class="sidebar-item active" id="nav-dash">
+                        <a href="javascript:void(0)" onclick="showSection('dash')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+
+                    <!-- 2. Nomination Form -->
+                    <li class="sidebar-item" id="nav-nomination-form">
+                        <a href="javascript:void(0)" onclick="showSection('nomination-form')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><path d="M9 14h6"/><path d="M9 18h6"/><path d="M12 10h3"/></svg>
+                            <span>Nomination Form</span>
+                        </a>
+                    </li>
+
+                    <!-- 3. Program Design & Schedule -->
+                    <li class="sidebar-item" id="nav-faculty-assign">
+                        <a href="javascript:void(0)" onclick="showSection('faculty-assign')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            <span>Program Design &amp; Schedule</span>
+                        </a>
+                    </li>
+
+                    <!-- 4. Program List -->
+                    <li class="sidebar-item" id="nav-list">
+                        <a href="javascript:void(0)" onclick="showSection('list')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                            <span>Program List</span>
+                        </a>
+                    </li>
+
+                    <!-- 5. Note Sheet Approval -->
+                    <li class="sidebar-item" id="nav-notesheet">
+                        <a href="javascript:void(0)" onclick="showSection('notesheet')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                            <span>Note Sheet Approval</span>
+                        </a>
+                    </li>
+
+                    <!-- 6. Invitation to Faculty -->
+                    <li class="sidebar-item" id="nav-fac-invite">
+                        <a href="javascript:void(0)" onclick="showSection('fac-invite')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            <span>Invitation to Faculty</span>
+                        </a>
+                    </li>
+
+                    <!-- 7. Attendance -->
+                    <li class="sidebar-item" id="nav-ongoing">
+                        <a href="javascript:void(0)" onclick="showSection('ongoing')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="7" y="7" width="1" height="1"/><rect x="16" y="7" width="1" height="1"/><rect x="7" y="16" width="1" height="1"/></svg>
+                            <span>Attendance</span>
+                        </a>
+                    </li>
+
+                    <!-- 8. Participant Feedback -->
+                    <li class="sidebar-item" id="nav-participant-feedback">
+                        <a href="../feedback/index.html" target="_blank">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a4 4 0 0 1-4 4H7l-4 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z"/><path d="m9 12 2 2 4-4"/></svg>
+                            <span>Participant Feedback</span>
+                        </a>
+                    </li>
+
+                    <!-- 9. Payment Release Note -->
+                    <li class="sidebar-item" id="nav-payment-release">
+                        <a href="javascript:void(0)" onclick="showSection('payment-release')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="12" y1="4" x2="12" y2="20"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+                            <span>Payment Release Note</span>
+                        </a>
+                    </li>
+
+                    <!-- Other Modules -->
+                    <li class="sidebar-item" id="nav-fac-master">
+                        <a href="javascript:void(0)" onclick="showSection('fac-master')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            <span>Faculty Master Directory</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item" id="nav-honorarium">
+                        <a href="javascript:void(0)" onclick="showSection('honorarium')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            <span>Honorarium Module</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item" id="nav-mis">
+                        <a href="javascript:void(0)" onclick="showSection('mis')">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><rect x="2" y="2" width="20" height="20" rx="2" ry="2" opacity="0"/></svg>
+                            <span>MIS Report</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="sidebar-nav">
+                    <li class="sidebar-item"><a href="javascript:void(0)" onclick="logoutUser()" style="color:#fca5a5; font-weight:700;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sign Out</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-weather-widget">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"/><line x1="8" y1="16" x2="8.01" y2="21"/><line x1="12" y1="16" x2="12.01" y2="21"/><line x1="16" y1="16" x2="16.01" y2="21"/></svg>
+                <div>
+                    <div style="font-weight: 700; color: #ffffff;">27°C</div>
+                    <div style="font-size: 11px; color: rgba(255,255,255,0.7);">Light rain</div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace Area -->
+        <main class="main-content">
+            <!-- Top Navbar -->
+            <header class="top-navbar">
+                <div class="top-navbar-left">
+                    <button class="btn-hamburger" type="button" onclick="toggleSidebar()">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    </button>
+                </div>
+
+                <div class="top-navbar-right">
+                    <button class="notification-bell-btn" type="button" onclick="showSection('notifications')">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                        <span class="notification-badge-dot">3</span>
+                    </button>
+
+                    <div class="user-profile-dropdown" aria-label="Current user profile">
+                        <div class="user-avatar-circle">PC</div>
+                        <div class="user-profile-meta">
+                            <span class="name">Program Coordinator</span>
+                            <span class="role">IICM Coordinator</span>
+                        </div>
+                    </div>
+
+                    <button type="button" style="border:1px solid #fca5a5; color:#dc2626; font-weight:700; padding:6px 14px; border-radius:8px; display:flex; align-items:center; gap:6px; cursor:pointer; background:#ffffff; font-size:13px;" onclick="logoutUser()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                        Sign Out
+                    </button>
+                </div>
+            </header>
+
+            <div class="content-body">
+
+<div id="section-dash" class="section-view active">
+                    <!-- Light Welcome Banner -->
+                    <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:24px 28px; margin-bottom:20px; box-shadow:0 1px 4px rgba(0,0,0,0.02);">
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+                            <div>
+                                <h2 style="font-size:22px; font-weight:800; color:#0f172a; margin:0 0 6px 0;">Welcome, Program Coordinator</h2>
+                                <p style="font-size:13.5px; color:#64748b; margin:0;">Indian Institute of Coal Management &bull; Executive Training Management Workspace</p>
+                            </div>
+                            <div style="display:flex; gap:10px;">
+                                <button type="button" onclick="showSection('faculty-assign')" style="background:#047857; color:#fff; border:none; padding:10px 18px; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer;">
+                                    ➕ Design Program
+                                </button>
+                                <button type="button" onclick="showSection('list')" style="background:#f8fafc; color:#0f172a; border:1px solid #cbd5e1; padding:10px 18px; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer;">
+                                    📋 View Program List
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Clean Quick Launch Cards Grid in exact menu order -->
+                    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px; margin-bottom:24px;">
+                        <!-- 1. Nomination Form -->
+                        <div onclick="showSection('nomination-form'); if(window.initNominationFormSection) window.initNominationFormSection();" style="cursor:pointer; background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,0.02); transition:all 0.15s ease;" onmouseover="this.style.borderColor='#2563eb';this.style.boxShadow='0 4px 12px rgba(37,99,235,0.08)';" onmouseout="this.style.borderColor='#e2e8f0';this.style.boxShadow='0 1px 3px rgba(0,0,0,0.02)';">
+                            <div style="font-size:24px; margin-bottom:8px;">📋</div>
+                            <div style="font-size:15px; font-weight:800; color:#0f172a;">Nomination Form</div>
+                            <div style="font-size:12px; color:#64748b; margin-top:4px;">Generate &amp; dispatch employee nomination calls in table format</div>
+                        </div>
+
+                        <!-- 2. Program Design & Schedule -->
+                        <div onclick="showSection('faculty-assign')" style="cursor:pointer; background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,0.02); transition:all 0.15s ease;" onmouseover="this.style.borderColor='#047857';this.style.boxShadow='0 4px 12px rgba(4,120,87,0.08)';" onmouseout="this.style.borderColor='#e2e8f0';this.style.boxShadow='0 1px 3px rgba(0,0,0,0.02)';">
+                            <div style="font-size:24px; margin-bottom:8px;">🗓️</div>
+                            <div style="font-size:15px; font-weight:800; color:#0f172a;">Program Design &amp; Schedule</div>
+                            <div style="font-size:12px; color:#64748b; margin-top:4px;">Design sessions, timetable &amp; yoga slots</div>
+                        </div>
+
+                        <!-- 3. Program List -->
+                        <div onclick="showSection('list')" style="cursor:pointer; background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,0.02); transition:all 0.15s ease;" onmouseover="this.style.borderColor='#0f172a';this.style.boxShadow='0 4px 12px rgba(15,23,42,0.08)';" onmouseout="this.style.borderColor='#e2e8f0';this.style.boxShadow='0 1px 3px rgba(0,0,0,0.02)';">
+                            <div style="font-size:24px; margin-bottom:8px;">📊</div>
+                            <div style="font-size:15px; font-weight:800; color:#0f172a;">Program List</div>
+                            <div style="font-size:12px; color:#64748b; margin-top:4px;">Status filters (Pending, Ongoing, Upcoming, Completed)</div>
+                        </div>
+
+                        <!-- 4. Note Sheet Approval -->
+                        <div onclick="showSection('notesheet'); if(window.initNotesheetSection) window.initNotesheetSection();" style="cursor:pointer; background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,0.02); transition:all 0.15s ease;" onmouseover="this.style.borderColor='#b45309';this.style.boxShadow='0 4px 12px rgba(180,83,9,0.08)';" onmouseout="this.style.borderColor='#e2e8f0';this.style.boxShadow='0 1px 3px rgba(0,0,0,0.02)';">
+                            <div style="font-size:24px; margin-bottom:8px;">📑</div>
+                            <div style="font-size:15px; font-weight:800; color:#0f172a;">Note Sheet Approval</div>
+                            <div style="font-size:12px; color:#64748b; margin-top:4px;">Proposed budget, sanction file &amp; GM sign-off</div>
+                        </div>
+
+                        <!-- 5. Participant Feedback -->
+                        <div onclick="window.open('../feedback/index.html', '_blank')" style="cursor:pointer; background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,0.02); transition:all 0.15s ease;" onmouseover="this.style.borderColor='#059669';this.style.boxShadow='0 4px 12px rgba(5,150,105,0.08)';" onmouseout="this.style.borderColor='#e2e8f0';this.style.boxShadow='0 1px 3px rgba(0,0,0,0.02)';">
+                            <div style="font-size:24px; margin-bottom:8px;">⭐</div>
+                            <div style="font-size:15px; font-weight:800; color:#0f172a;">Participant Feedback ↗</div>
+                            <div style="font-size:12px; color:#64748b; margin-top:4px;">Open direct official 33-question Google feedback form</div>
+                        </div>
+
+                        <!-- 6. Payment Release Note -->
+                        <div onclick="showSection('payment-release'); if(window.initPaymentReleaseSection) window.initPaymentReleaseSection();" style="cursor:pointer; background:#ffffff; border:1px solid #e2e8f0; border-radius:10px; padding:20px; box-shadow:0 1px 3px rgba(0,0,0,0.02); transition:all 0.15s ease;" onmouseover="this.style.borderColor='#7c3aed';this.style.boxShadow='0 4px 12px rgba(124,58,237,0.08)';" onmouseout="this.style.borderColor='#e2e8f0';this.style.boxShadow='0 1px 3px rgba(0,0,0,0.02)';">
+                            <div style="font-size:24px; margin-bottom:8px;">💰</div>
+                            <div style="font-size:15px; font-weight:800; color:#0f172a;">Payment Release Note</div>
+                            <div style="font-size:12px; color:#64748b; margin-top:4px;">Faculty honorarium with sanction order details</div>
+                        </div>
+                    </div>
+                
+                    <!-- COMMUNICATIONS & EMAIL DISPATCH ACTIVITY CENTER (INCOMING & OUTGOING) -->
+                    <div class="table-card" style="margin-top:24px; border:1px solid #e2e8f0; background:#ffffff; border-radius:12px; padding:24px; box-shadow:0 2px 8px rgba(0,0,0,0.03);">
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:18px; border-bottom:1.5px solid #f1f5f9; padding-bottom:14px;">
+                            <div>
+                                <h3 style="margin:0; font-size:18px; font-weight:800; color:#0f172a; display:flex; align-items:center; gap:8px;">
+                                    📬 Communications &amp; Email Dispatch Center
+                                </h3>
+                                <p style="margin:4px 0 0 0; font-size:13px; color:#64748b;">Live log of all outgoing dispatched letters/PDFs and incoming approvals &amp; responses.</p>
+                            </div>
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <div style="display:flex; background:#f1f5f9; padding:3px; border-radius:6px; border:1px solid #cbd5e1;">
+                                    <button type="button" id="dispatch-tab-all" onclick="filterDispatches('ALL')" style="padding:5px 12px; border:none; border-radius:4px; font-size:12px; font-weight:700; cursor:pointer; background:#047857; color:#fff;">All (8)</button>
+                                    <button type="button" id="dispatch-tab-out" onclick="filterDispatches('OUT')" style="padding:5px 12px; border:none; border-radius:4px; font-size:12px; font-weight:700; cursor:pointer; background:transparent; color:#475569;">📤 Dispatched</button>
+                                    <button type="button" id="dispatch-tab-in" onclick="filterDispatches('IN')" style="padding:5px 12px; border:none; border-radius:4px; font-size:12px; font-weight:700; cursor:pointer; background:transparent; color:#475569;">📥 Received</button>
+                                </div>
+                                <button type="button" onclick="loadDispatchCommunications()" class="btn-action-sm" style="background:#f8fafc; color:#0f172a; border:1px solid #cbd5e1; font-weight:700;">🔄 Refresh</button>
+                            </div>
+                        </div>
+
+                        <!-- Dispatches Table -->
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr style="background:#f8fafc;">
+                                        <th style="width:110px; text-align:center;">Type</th>
+                                        <th>Subject / Communication Title</th>
+                                        <th>Program Title</th>
+                                        <th>Sender / Recipient</th>
+                                        <th>Date &amp; Time</th>
+                                        <th>Status</th>
+                                        <th style="text-align:center;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dispatch-log-tbody">
+                                    <!-- Injected dynamically by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- SECTION 1: PROGRAM LIST TABLE (DEDICATED SECTION) -->
+                <div id="section-programs" class="section-view">
+
+                    <!-- Executive Program Status Category Cards Grid -->
+                    <div class="prog-status-cards-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:14px; margin-bottom:18px;">
+                        <div class="prog-stat-card active" id="prog-stat-card-all" onclick="filterProgramsByStatusCard('')" style="cursor:pointer; background:#ffffff; border:2px solid #047857; border-radius:10px; padding:14px 18px; box-shadow:0 2px 8px rgba(4,120,87,0.08); transition:all 0.2s ease; position:relative; overflow:hidden;">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                                <div>
+                                    <div style="font-size:12px; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.5px;">All Programs</div>
+                                    <div id="prog-count-all" style="font-size:24px; font-weight:800; color:#0f172a; margin-top:4px;">0</div>
+                                </div>
+                                <div style="background:#f0fdf4; width:38px; height:38px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:18px;">📋</div>
+                            </div>
+                            <div style="font-size:11px; color:#059669; font-weight:700; margin-top:8px;">● Complete Catalogue</div>
+                        </div>
+
+                        <div class="prog-stat-card" id="prog-stat-card-pending" onclick="filterProgramsByStatusCard('PENDING_APPROVAL')" style="cursor:pointer; background:#ffffff; border:2px solid #e2e8f0; border-radius:10px; padding:14px 18px; box-shadow:0 2px 8px rgba(0,0,0,0.04); transition:all 0.2s ease; position:relative; overflow:hidden;">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                                <div>
+                                    <div style="font-size:12px; font-weight:700; color:#b45309; text-transform:uppercase; letter-spacing:0.5px;">Pending Programs</div>
+                                    <div id="prog-count-pending" style="font-size:24px; font-weight:800; color:#b45309; margin-top:4px;">0</div>
+                                </div>
+                                <div style="background:#fef3c7; width:38px; height:38px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:18px;">⏳</div>
+                            </div>
+                            <div style="font-size:11px; color:#d97706; font-weight:700; margin-top:8px;">● Awaiting GM Approval</div>
+                        </div>
+
+                        <div class="prog-stat-card" id="prog-stat-card-ongoing" onclick="filterProgramsByStatusCard('ONGOING')" style="cursor:pointer; background:#ffffff; border:2px solid #e2e8f0; border-radius:10px; padding:14px 18px; box-shadow:0 2px 8px rgba(0,0,0,0.04); transition:all 0.2s ease; position:relative; overflow:hidden;">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                                <div>
+                                    <div style="font-size:12px; font-weight:700; color:#15803d; text-transform:uppercase; letter-spacing:0.5px;">Ongoing Programs</div>
+                                    <div id="prog-count-ongoing" style="font-size:24px; font-weight:800; color:#15803d; margin-top:4px;">0</div>
+                                </div>
+                                <div style="background:#dcfce7; width:38px; height:38px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:18px;">🟢</div>
+                            </div>
+                            <div style="font-size:11px; color:#16a34a; font-weight:700; margin-top:8px;">● Active Training Sessions</div>
+                        </div>
+
+                        <div class="prog-stat-card" id="prog-stat-card-upcoming" onclick="filterProgramsByStatusCard('UPCOMING')" style="cursor:pointer; background:#ffffff; border:2px solid #e2e8f0; border-radius:10px; padding:14px 18px; box-shadow:0 2px 8px rgba(0,0,0,0.04); transition:all 0.2s ease; position:relative; overflow:hidden;">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                                <div>
+                                    <div style="font-size:12px; font-weight:700; color:#1d4ed8; text-transform:uppercase; letter-spacing:0.5px;">Upcoming Programs</div>
+                                    <div id="prog-count-upcoming" style="font-size:24px; font-weight:800; color:#1d4ed8; margin-top:4px;">0</div>
+                                </div>
+                                <div style="background:#dbeafe; width:38px; height:38px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:18px;">📅</div>
+                            </div>
+                            <div style="font-size:11px; color:#2563eb; font-weight:700; margin-top:8px;">● Scheduled Batches</div>
+                        </div>
+
+                        <div class="prog-stat-card" id="prog-stat-card-completed" onclick="filterProgramsByStatusCard('COMPLETED')" style="cursor:pointer; background:#ffffff; border:2px solid #e2e8f0; border-radius:10px; padding:14px 18px; box-shadow:0 2px 8px rgba(0,0,0,0.04); transition:all 0.2s ease; position:relative; overflow:hidden;">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                                <div>
+                                    <div style="font-size:12px; font-weight:700; color:#475569; text-transform:uppercase; letter-spacing:0.5px;">Completed</div>
+                                    <div id="prog-count-completed" style="font-size:24px; font-weight:800; color:#475569; margin-top:4px;">0</div>
+                                </div>
+                                <div style="background:#f1f5f9; width:38px; height:38px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:18px;">🏁</div>
+                            </div>
+                            <div style="font-size:11px; color:#64748b; font-weight:700; margin-top:8px;">● Concluded Programs</div>
+                        </div>
+                    </div>
+
+                    <div class="table-card">
+                        <!-- Toolbar Header Controls -->
+                        <div class="table-toolbar" style="flex-wrap:wrap; gap:12px;">
+                            <div class="toolbar-search-group" style="flex:1; min-width:300px;">
+                                <div class="search-input-wrapper" style="flex:1;">
+                                    <span class="search-icon">🔍</span>
+                                    <input type="text" id="program-search" placeholder="Search program by name, venue or objective..." oninput="loadProgramsTable()">
+                                </div>
+
+                                <select id="filter-status-select" class="select-control" onchange="handleFilterChange()">
+                                    <option value="">All Status</option>
+                                    <option value="ONGOING">Ongoing</option>
+                                    <option value="PENDING_APPROVAL">Pending Approval</option>
+                                    <option value="UPCOMING">Upcoming</option>
+                                    <option value="APPROVED">Approved</option>
+                                    <option value="COMPLETED">Completed</option>
+                                </select>
+
+                                <select id="filter-type-select" class="select-control" onchange="handleFilterChange()">
+                                    <option value="">All Types</option>
+                                    <option value="MT">MT</option>
+                                    <option value="Non-MT">Non-MT</option>
+                                </select>
+                            </div>
+
+                            <div style="display:flex; gap:8px; align-items:center;">
+                                <button type="button" class="btn-filter" onclick="loadProgramsTable()">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                                    <span>Refresh</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Data Table View -->
+                        <div class="table-responsive" id="prog-table-view-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Program Name</th>
+                                        <th style="width:120px; text-align:center;">Type</th>
+                                        <th>Venue</th>
+                                        <th>Faculty</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="programs-table-body">
+                                    <!-- Injected by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pagination Footer -->
+                        <div class="table-footer">
+                            <div id="table-entries-count">Showing 1 to 4 of 4 entries</div>
+                            <div class="pagination">
+                                <button class="page-btn" type="button">&lt;</button>
+                                <button class="page-btn active" type="button">1</button>
+                                <button class="page-btn" type="button">&gt;</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 2: CREATE PROGRAM FORM SECTION -->
+                <div id="section-create" class="section-view">
+                    <div class="table-card">
+                        <h3 style="color: var(--primary-emerald); margin-bottom: 20px; font-size: 18px;" id="form-heading">Create New Program</h3>
+                        <form id="program-form" onsubmit="handleProgramSubmit(event)">
+                            <input type="hidden" id="program-id">
+                            
+                            <div class="form-group">
+                                <label for="prog-title">Program Name / Title *</label>
+                                <input type="text" id="prog-title" class="form-control" required placeholder="e.g. Advanced Mine Safety Management Program">
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                <div class="form-group">
+                                    <label for="prog-type">Program Type *</label>
+                                    <select id="prog-type" class="form-control" required></select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="prog-venue">Venue / Complex *</label>
+                                    <select id="prog-venue" class="form-control" required></select>
+                                </div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+                                <div class="form-group">
+                                    <label for="prog-start">Start Date *</label>
+                                    <input type="date" id="prog-start" class="form-control" required onchange="calcDuration()">
+                                </div>
+                                <div class="form-group">
+                                    <label for="prog-end">End Date *</label>
+                                    <input type="date" id="prog-end" class="form-control" required onchange="calcDuration()">
+                                </div>
+                                <div class="form-group">
+                                    <label for="prog-duration">Duration (Days)</label>
+                                    <input type="number" id="prog-duration" class="form-control" readonly style="background: #f1f5f9;">
+                                </div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                <div class="form-group">
+                                    <label for="prog-budget">Estimated Budget (INR ₹) *</label>
+                                    <input type="number" id="prog-budget" class="form-control" required placeholder="e.g. 500000">
+                                </div>
+                                <div class="form-group">
+                                    <label for="prog-participants">Target Participants *</label>
+                                    <input type="number" id="prog-participants" class="form-control" required value="30">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="prog-objective">Program Objective *</label>
+                                <textarea id="prog-objective" class="form-control" rows="2" required placeholder="Key learning outcomes and objectives..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="prog-description">Description &amp; Context</label>
+                                <textarea id="prog-description" class="form-control" rows="3" placeholder="Detailed program description..."></textarea>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                <div class="form-group">
+                                    <label for="prog-whatsapp">Official WhatsApp Group Link 💬</label>
+                                    <input type="url" id="prog-whatsapp" class="form-control" placeholder="https://chat.whatsapp.com/ExAmPlELiNk">
+                                </div>
+                                <div class="form-group">
+                                    <label for="prog-instructions">Reporting Instructions 📝</label>
+                                    <input type="text" id="prog-instructions" class="form-control" placeholder="e.g. Report at IICM Training Hall by 9:00 AM">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Target Subsidiary Companies *</label>
+                                <div id="companies-checkbox-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; background: #fff;"></div>
+                            </div>
+
+                            <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+                                <button type="button" class="btn-action-sm" onclick="showSection('list')">Cancel</button>
+                                <button type="button" class="btn-action-sm" style="background:#ffedd5; color:#c2410c; border-color:#fed7aa;" onclick="saveAsDraft()">Save as Draft</button>
+                                <button type="submit" class="btn-filter">Submit for GM Approval</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- SECTION 3: REVIEW NOMINEES FROM COMPANY MASTER -->
+                <div id="section-nominations" class="section-view">
+                    <div class="table-card">
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px; border-bottom:1px solid #e2e8f0; padding-bottom:12px;">
+                            <div>
+                                <h3 style="margin:0; font-size:18px; font-weight:800; color:#0f172a;">Review Nominees (Company Master)</h3>
+                                <p style="margin:4px 0 0 0; font-size:13px; color:#64748b;">Review employee nominations submitted by companies. Accept/Select candidates for final roster or Reject.</p>
+                            </div>
+                        </div>
+
+                        <div class="table-toolbar">
+                            <div class="toolbar-search-group">
+                                <select id="coord-prog-select" class="select-control" onchange="loadCoordinatorNominationsTable()">
+                                    <option value="">-- Select Approved Program --</option>
+                                </select>
+                                <select id="coord-status-select" class="select-control" onchange="loadCoordinatorNominationsTable()">
+                                    <option value="NOMINATED" selected>Pending Review (Nominated)</option>
+                                    <option value="SHORTLISTED">Accepted / Selected</option>
+                                    <option value="REJECTED">Rejected</option>
+                                    <option value="">-- All Statuses --</option>
+                                </select>
+                            </div>
+                            <button type="button" class="btn-filter" style="background:#059669;" onclick="finalizeParticipantRoster()">🔒 Lock &amp; Finalize Roster</button>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>EIS Code</th>
+                                        <th>Full Name</th>
+                                        <th>Company</th>
+                                        <th>Email &amp; Phone</th>
+                                        <th>Department</th>
+                                        <th>Designation</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="coord-nominations-body">
+                                    <!-- Injected by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 6: SELECTED CANDIDATES & EMAIL -->
+                <div id="section-selected" class="section-view">
+                    <div class="table-card">
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px; border-bottom:1px solid #e2e8f0; padding-bottom:12px;">
+                            <div>
+                                <h3 style="margin:0; font-size:18px; font-weight:800; color:#0f172a;">Selected Candidates</h3>
+                                <p style="margin:4px 0 0 0; font-size:13px; color:#64748b;">Candidates accepted and approved by the Program Coordinator from the nominee review list.</p>
+                            </div>
+                            <button type="button" class="btn-filter" style="background:#0284c7; font-size:13px; font-weight:700; padding:8px 16px; border-radius:8px;" onclick="sendEmailToSelectedCandidates()">
+                                ✉️ Send Email to All Selected Candidates
+                            </button>
+                        </div>
+
+                        <div class="table-toolbar">
+                            <div class="toolbar-search-group">
+                                <select id="coord-selected-prog-select" class="select-control" onchange="loadSelectedCandidatesTable()">
+                                    <option value="">-- Select Approved Program --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>EIS Code</th>
+                                        <th>Full Name</th>
+                                        <th>Company</th>
+                                        <th>Email &amp; Phone</th>
+                                        <th>Department</th>
+                                        <th>Designation</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="coord-selected-body">
+                                    <!-- Injected by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 7: PROGRAM DESIGN & SCHEDULING -->
+                <div id="section-faculty-assign" class="section-view">
+                    
+                    <!-- TOP SELECTION CARD: PROGRAM TYPE & TITLE DROPDOWNS -->
+                    <div class="table-card" style="margin-bottom:20px; border-top:4px solid #1b4332;">
+                        <div style="border-bottom:1px solid #e2e8f0; padding-bottom:12px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center;">
+                            <div>
+                                <h3 style="margin:0; font-size:19px; font-weight:800; color:#1b4332;">Program Design &amp; Schedule</h3>
+                                <p style="margin:4px 0 0 0; font-size:13px; color:#64748b;">Select program, design daily sessions, preview the grid and export in PDF / Word format.</p>
+                            </div>
+                            <button type="button" onclick="openSchedulePreviewModal()"
+                                style="display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;border:none;padding:10px 20px;border-radius:9px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 4px 12px rgba(124,58,237,0.25);">
+                                👁 View Created Schedule
+                            </button>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: 1fr 1.5fr 1.5fr; gap: 16px;">
+                            <div class="form-group">
+                                <label for="design-prog-type-select" style="font-weight:700; color:#1b4332;">Program Type *</label>
+                                <select id="design-prog-type-select" class="form-control" style="font-weight:700; border:2px solid #cbd5e1;" onchange="onProgramTypeFilterChange()">
+                                    <option value="MT" selected>MT Programs</option>
+                                    <option value="NON_MT">Non-MT Programs</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="assign-prog-select" style="font-weight:700; color:#1b4332;">Program Title *</label>
+                                <select id="assign-prog-select" class="form-control" style="font-weight:700; border:2px solid #cbd5e1;" required onchange="onProgramTitleSelectChange()">
+                                    <option value="">-- Select Program Title --</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="assign-prog-venue" style="font-weight:700; color:#1b4332;">Venue / Location *</label>
+                                <input type="text" id="assign-prog-venue" class="form-control" style="font-weight:700; border:2px solid #cbd5e1; font-size:13.5px;" value="Main Auditorium, IICM" placeholder="e.g. Main Auditorium" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- MULTI-SESSION BUILDER CARD -->
+                    <div class="table-card" style="margin-bottom:24px; border-top:4px solid #1b4332;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; border-bottom:1px solid #e2e8f0; padding-bottom:12px;">
+                            <div>
+                                <h4 style="margin:0; font-size:16px; font-weight:800; color:#1b4332;">📅 Design Program Sessions</h4>
+                                <p style="margin:3px 0 0 0; font-size:12.5px; color:#64748b;">Add multiple sessions for this program. Each session has its own slot, topic, faculty, date and time.</p>
+                            </div>
+                            <span style="background:#fef9c3; color:#854d0e; font-size:11.5px; font-weight:700; padding:5px 12px; border-radius:20px; border:1px solid #fde68a;">🍱 Lunch Break fixed: 1:00 PM – 2:00 PM</span>
+                        </div>
+
+                        <!-- Column headers -->
+                        <div style="display:grid; grid-template-columns:160px 1fr 180px 120px 90px 90px 44px; gap:10px; padding:6px 10px; background:#f1f5f9; border-radius:8px; margin-bottom:8px;">
+                            <div style="font-size:11.5px; font-weight:700; color:#475569;">Session Slot</div>
+                            <div style="font-size:11.5px; font-weight:700; color:#475569;">Topic (write here)</div>
+                            <div style="font-size:11.5px; font-weight:700; color:#475569;">Faculty</div>
+                            <div style="font-size:11.5px; font-weight:700; color:#475569;">Date</div>
+                            <div style="font-size:11.5px; font-weight:700; color:#475569;">Start</div>
+                            <div style="font-size:11.5px; font-weight:700; color:#475569;">End</div>
+                            <div></div>
+                        </div>
+
+                        <!-- Session rows container -->
+                        <div id="session-rows-container"></div>
+
+                        <!-- Add row button -->
+                        <button type="button" onclick="addSessionRow()" style="margin-top:12px; display:flex; align-items:center; gap:8px; background:#f0fdf4; color:#1b4332; border:2px dashed #86efac; padding:10px 20px; border-radius:8px; font-size:13.5px; font-weight:700; cursor:pointer; width:100%; justify-content:center;">
+                            ➕ Add Another Session
+                        </button>
+
+                        <!-- Save & Create Schedule Buttons -->
+                        <div style="margin-top:16px; display:flex; gap:12px; justify-content:flex-end; flex-wrap:wrap;">
+                            <button type="button" onclick="saveAllSessions()" style="background:#f1f5f9; color:#1b4332; border:1px solid #cbd5e1; padding:11px 24px; border-radius:8px; font-size:13.5px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:8px;">
+                                💾 Save All Sessions
+                            </button>
+                            <button type="button" onclick="createAndOpenScheduleModal()" style="background:linear-gradient(135deg,#1b4332,#2d6a4f); color:#fff; border:none; padding:11px 32px; border-radius:8px; font-size:14px; font-weight:800; cursor:pointer; display:flex; align-items:center; gap:9px; box-shadow:0 4px 14px rgba(27,67,50,0.25);">
+                                ✨ Create Program Schedule &amp; View
+                            </button>
+                        </div>
+
+                        <!-- Hidden fields for backward compat -->
+                        <input type="hidden" id="assign-session-slot" value="">
+                        <input type="hidden" id="assign-topic" value="">
+                        <input type="hidden" id="assign-faculty-select" value="">
+                        <input type="hidden" id="assign-date" value="">
+                        <input type="hidden" id="assign-start" value="">
+                        <input type="hidden" id="assign-end" value="">
+                    </div>
+
+                    <!-- YOGA SESSION BOX -->
+                    <div class="table-card" style="margin-bottom:24px; border-top:4px solid #16a34a; background:linear-gradient(135deg,#f0fdf4 0%,#ffffff 100%);">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; border-bottom:1px solid #d1fae5; padding-bottom:12px;">
+                            <div>
+                                <h4 style="margin:0; font-size:16px; font-weight:800; color:#15803d;">🧘 Yoga Session</h4>
+                                <p style="margin:4px 0 0 0; font-size:12.5px; color:#64748b;">Add a yoga / wellness session for this program with fully custom timing.</p>
+                            </div>
+                            <span style="background:#dcfce7; color:#15803d; font-size:11.5px; font-weight:700; padding:5px 14px; border-radius:20px; border:1px solid #86efac;">Optional &mdash; Custom Time</span>
+                        </div>
+
+                        <div style="display:grid; grid-template-columns:1fr 140px 90px 90px; gap:14px; align-items:flex-end;">
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px; font-weight:700; color:#15803d; display:block; margin-bottom:5px;">Session Topic / Title</label>
+                                <input type="text" id="yoga-topic" class="form-control"
+                                    placeholder="e.g. Morning Yoga &amp; Wellness Session"
+                                    style="font-size:13px; border:1.5px solid #86efac;">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px; font-weight:700; color:#15803d; display:block; margin-bottom:5px;">Date</label>
+                                <input type="date" id="yoga-date" class="form-control"
+                                    style="font-size:12px; border:1.5px solid #86efac;">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px; font-weight:700; color:#15803d; display:block; margin-bottom:5px;">Start Time</label>
+                                <input type="time" id="yoga-start" class="form-control" value="06:30"
+                                    style="font-size:12px; border:1.5px solid #86efac;">
+                            </div>
+                            <div class="form-group" style="margin:0;">
+                                <label style="font-size:12px; font-weight:700; color:#15803d; display:block; margin-bottom:5px;">End Time</label>
+                                <input type="time" id="yoga-end" class="form-control" value="07:30"
+                                    style="font-size:12px; border:1.5px solid #86efac;">
+                            </div>
+                        </div>
+
+                        <div style="margin-top:14px; display:flex; justify-content:flex-end;">
+                            <button type="button" onclick="saveYogaSession()"
+                                style="background:#16a34a; color:#fff; border:none; padding:10px 26px; border-radius:8px; font-size:13px; font-weight:800; cursor:pointer; display:flex; align-items:center; gap:8px; box-shadow:0 4px 10px rgba(22,163,74,0.2);">
+                                💾 Save Yoga Session
+                            </button>
+                        </div>
+                    </div>
+
+
+                    <!-- DETAILED SESSIONS & INVITATION RESPONSES LIST TABLE -->
+                    <div class="table-card" style="margin-bottom:24px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-bottom:1px solid #e2e8f0; padding-bottom:12px;">
+                            <div>
+                                <h3 style="margin:0; font-size:16px; font-weight:800; color:#1b4332;">Configured Sessions List</h3>
+                                <p style="margin:3px 0 0 0; font-size:12.5px; color:#64748b;">Individual session line entries with faculty response status and management actions.</p>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date &amp; Time</th>
+                                        <th>Topic Title</th>
+                                        <th>Faculty</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="faculty-schedules-body">
+                                    <!-- Injected dynamically by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- EXPORT CARD -->
+                    <div class="table-card" style="border:2px solid #1b4332; background:linear-gradient(135deg,#f0fdf4 0%,#ffffff 100%);">
+                        <div style="display:flex; align-items:center; gap:14px; margin-bottom:16px; padding-bottom:12px; border-bottom:1px solid #d1fae5;">
+                            <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#1b4332,#2d6a4f);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;box-shadow:0 4px 10px rgba(27,67,50,0.25);">📑</div>
+                            <div>
+                                <h3 style="margin:0;font-size:17px;font-weight:800;color:#0f172a;">Export &amp; Document Generation</h3>
+                                <p style="margin:3px 0 0 0;font-size:13px;color:#475569;">Generate the official Program Schedule document in **PDF** and **Word (.docx)** formats.</p>
+                            </div>
+                        </div>
+
+                        <!-- Status Banner -->
+                        <div id="schedule-pdf-status-banner" style="display:none; margin-bottom:16px; padding:12px 16px; border-radius:10px; font-size:13px; font-weight:600;"></div>
+
+                        <!-- Action buttons -->
+                        <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
+                            <button type="button" id="btn-generate-schedule-pdf"
+                                onclick="generateProgramSchedulePDF()"
+                                style="display:flex;align-items:center;gap:9px;background:linear-gradient(135deg,#1b4332,#2d6a4f);color:#fff;border:none;padding:12px 24px;border-radius:10px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(27,67,50,0.25);transition:all 0.2s;">
+                                📄 Export PDF Format
+                            </button>
+
+                            <button type="button" id="btn-generate-schedule-docx"
+                                onclick="generateProgramScheduleDocx()"
+                                style="display:flex;align-items:center;gap:9px;background:linear-gradient(135deg,#1e40af,#3b82f6);color:#fff;border:none;padding:12px 24px;border-radius:10px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;box-shadow:0 4px 14px rgba(30,64,175,0.25);transition:all 0.2s;">
+                                📝 Export Word Format (.docx)
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION: NOTESHEET APPROVAL FOR CONDUCTION PROGRAM -->
+                <div id="section-notesheet" class="section-view">
+
+                    <!-- Header Card -->
+                    <div class="table-card" style="margin-bottom:24px; border-top:4px solid #dc2626;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:14px; border-bottom:1px solid #e2e8f0; margin-bottom:20px;">
+                            <div>
+                                <h3 style="margin:0; font-size:19px; font-weight:800; color:#991b1b;">📋 Notesheet Approval for Conduction Program</h3>
+                                <p style="margin:4px 0 0 0; font-size:13px; color:#64748b;">Compose financial Noting Sheet for faculty honorarium, travel &amp; miscellaneous expenses, and send for GM/Finance approval.</p>
+                            </div>
+                            <span style="background:#fef2f2; color:#991b1b; font-size:11.5px; font-weight:700; padding:5px 14px; border-radius:20px; border:1px solid #fecaca;">Official Noting Sheet</span>
+                        </div>
+
+                        <form id="notesheet-form" onsubmit="handleSendNotesheetApproval(event)">
+
+                            <!-- Row 1: Program Name + Ref No + Date -->
+                            <div style="display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:18px; margin-bottom:16px;">
+                                <div class="form-group">
+                                    <label for="ns-program-select" style="font-weight:700; color:#1e3a5f;">Select Program Name *</label>
+                                    <select id="ns-program-select" class="form-control" required style="border:1.5px solid #cbd5e1; font-weight:600;" onchange="onNotesheetProgramChange()">
+                                        <option value="">-- Select Program --</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ns-ref-no" style="font-weight:700; color:#1e3a5f;">Noting Ref. No. *</label>
+                                    <input type="text" id="ns-ref-no" class="form-control" value="IICM/Academics/Faculty Payment/MTP/2025-26/" required style="border:1.5px solid #cbd5e1; font-size:12.5px;">
+                                </div>
+                                <div class="form-group">
+                                    <label for="ns-date" style="font-weight:700; color:#1e3a5f;">Date *</label>
+                                    <input type="date" id="ns-date" class="form-control" required style="border:1.5px solid #cbd5e1;">
+                                </div>
+                            </div>
+
+                            <!-- Row 2: Proposed Budget -->
+                            <div style="margin-bottom:18px; padding:14px 16px; background:#f8fafc; border-radius:8px; border:1px solid #e2e8f0;">
+                                <div class="form-group" style="margin:0; max-width:320px;">
+                                    <label for="ns-proposed-budget" style="font-size:12.5px; font-weight:700; color:#1e3a5f; display:block; margin-bottom:6px;">
+                                        Proposed Budget (&#x20B9;) *
+                                    </label>
+                                    <input type="number" id="ns-proposed-budget" class="form-control" value="47500" required style="font-size:13px; font-weight:700; border:1.5px solid #cbd5e1; color:#0f172a;" placeholder="Enter proposed budget amount">
+                                </div>
+                            </div>
+
+                            <!-- Row 3: Faculty Honorarium Calculator Table -->
+                            <div style="margin-bottom:20px;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                                    <label style="font-weight:700; color:#1e3a5f; font-size:14px;">
+                                        👨‍🏫 Faculty Honorarium Details &amp; Rate Category
+                                    </label>
+                                    <button type="button" onclick="addNotesheetFacultyRow()" style="background:#f0fdf4; color:#15803d; border:1px solid #86efac; padding:5px 14px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">
+                                        ➕ Add Faculty Line
+                                    </button>
+                                </div>
+
+                                <div style="border:1px solid #cbd5e1; border-radius:8px; overflow:hidden; background:#fff;">
+                                    <table style="width:100%; border-collapse:collapse; font-size:12.5px;">
+                                        <thead>
+                                            <tr style="background:#f1f5f9; border-bottom:2px solid #cbd5e1; color:#334155; text-align:left;">
+                                                <th style="padding:8px 10px; width:160px;">Faculty Name</th>
+                                                <th style="padding:8px 10px; width:160px;">Designation &amp; Dept</th>
+                                                <th style="padding:8px 10px;">Category &amp; Rate Policy *</th>
+                                                <th style="padding:8px 10px; width:70px;">Sessions</th>
+                                                <th style="padding:8px 10px; width:100px;">Rate (&#x20B9;/sess)</th>
+                                                <th style="padding:8px 10px; width:110px;">Amount (&#x20B9;)</th>
+                                                <th style="padding:8px 10px; width:40px;"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="ns-faculty-rows-container">
+                                            <!-- Dynamically injected -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Row 4: Travel Expense & Miscellaneous Expense Columns -->
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:20px;">
+                                <!-- Travel Expense Card -->
+                                <div style="padding:14px 16px; background:#eff6ff; border:1px solid #bfdbfe; border-radius:8px;">
+                                    <div style="font-weight:700; color:#1e40af; margin-bottom:8px; font-size:13.5px;">✈️ Travel Expense Details</div>
+                                    <div style="display:grid; grid-template-columns:1fr 120px; gap:12px;">
+                                        <div class="form-group" style="margin:0;">
+                                            <label style="font-size:11.5px; font-weight:700; color:#334155; display:block; margin-bottom:4px;">Travel Description</label>
+                                            <input type="text" id="ns-travel-desc" class="form-control" placeholder="e.g. Flight &amp; local taxi reimbursement" style="font-size:12px; border:1px solid #cbd5e1;" oninput="calcNotesheetTotals()">
+                                        </div>
+                                        <div class="form-group" style="margin:0;">
+                                            <label style="font-size:11.5px; font-weight:700; color:#334155; display:block; margin-bottom:4px;">Amount (&#x20B9;)</label>
+                                            <input type="number" id="ns-travel-amount" class="form-control" value="0" style="font-size:12px; border:1px solid #cbd5e1;" oninput="calcNotesheetTotals()">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Miscellaneous Expense Card -->
+                                <div style="padding:14px 16px; background:#fefce8; border:1px solid #fef08a; border-radius:8px;">
+                                    <div style="font-weight:700; color:#854d0e; margin-bottom:8px; font-size:13.5px;">📦 Miscellaneous Expense Details</div>
+                                    <div style="display:grid; grid-template-columns:1fr 120px; gap:12px;">
+                                        <div class="form-group" style="margin:0;">
+                                            <label style="font-size:11.5px; font-weight:700; color:#334155; display:block; margin-bottom:4px;">Misc Items Description</label>
+                                            <input type="text" id="ns-misc-desc" class="form-control" value="Purchase of A3 Paper &amp; Photo Frame" style="font-size:12px; border:1px solid #cbd5e1;" oninput="calcNotesheetTotals()">
+                                        </div>
+                                        <div class="form-group" style="margin:0;">
+                                            <label style="font-size:11.5px; font-weight:700; color:#334155; display:block; margin-bottom:4px;">Amount (&#x20B9;)</label>
+                                            <input type="number" id="ns-misc-amount" class="form-control" value="2800" style="font-size:12px; border:1px solid #cbd5e1;" oninput="calcNotesheetTotals()">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Row 5: Total Calculation Summary & Approver Email -->
+                            <div style="display:flex; justify-content:space-between; align-items:center; padding:16px 20px; background:#f8fafc; border:2px solid #cbd5e1; border-radius:10px; margin-bottom:18px; flex-wrap:wrap; gap:14px;">
+                                <div>
+                                    <div style="font-size:12px; color:#64748b; font-weight:700;">Approver Email Address *</div>
+                                    <input type="email" id="ns-approver-email" class="form-control" value="finance.approval@iicm.ac.in" required style="width:260px; font-size:13px; margin-top:4px; border:1.5px solid #cbd5e1;">
+                                </div>
+
+                                <div style="text-align:right;">
+                                    <div style="font-size:12.5px; color:#475569;">
+                                        Honorarium: <strong id="ns-sum-honorarium">&#x20B9;0</strong> |
+                                        Travel: <strong id="ns-sum-travel">&#x20B9;0</strong> |
+                                        Misc: <strong id="ns-sum-misc">&#x20B9;0</strong>
+                                    </div>
+                                    <div style="font-size:18px; font-weight:900; color:#dc2626; margin-top:2px;">
+                                        Total Proposed Amount: <span id="ns-sum-total">&#x20B9;0</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- File Chooser for Sanctioned File (Before Email & PDF Send) -->
+                            <div style="background:#f0fdf4; border:1.5px dashed #86efac; border-radius:10px; padding:14px 18px; margin-bottom:22px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px;">
+                                <div style="display:flex; align-items:center; gap:12px;">
+                                    <div style="width:40px; height:40px; border-radius:8px; background:#dcfce7; color:#15803d; display:flex; align-items:center; justify-content:center; font-size:20px;">
+                                        📎
+                                    </div>
+                                    <div>
+                                        <label for="ns-sanctioned-file" style="font-size:13px; font-weight:800; color:#166534; margin:0; cursor:pointer;">
+                                            Upload Sanctioned File / Sanction Order (Optional)
+                                        </label>
+                                        <div style="font-size:12px; color:#475569;" id="ns-file-selected-text">Attach approval copy / office order (PDF, DOCX, JPG, PNG)</div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <input type="file" id="ns-sanctioned-file" class="form-control" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="font-size:12px; border:1px solid #86efac; padding:6px 10px; background:#fff;" onchange="onNotesheetFileSelected(this)">
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap;">
+                                <button type="submit" id="btn-send-notesheet-approval"
+                                    style="display:flex; align-items:center; gap:9px; background:linear-gradient(135deg,#dc2626,#991b1b); color:#fff; border:none; padding:12px 28px; border-radius:10px; font-size:14px; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(220,38,38,0.25);">
+                                    📧 Send Approval Email &amp; PDF
+                                </button>
+                                <button type="button" onclick="generateNotesheetPDF()"
+                                    style="display:flex; align-items:center; gap:9px; background:linear-gradient(135deg,#1b4332,#2d6a4f); color:#fff; border:none; padding:12px 26px; border-radius:10px; font-size:14px; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(27,67,50,0.25);">
+                                    📄 Export PDF Note Sheet
+                                </button>
+                                <button type="button" onclick="generateNotesheetDocx()"
+                                    style="display:flex; align-items:center; gap:9px; background:linear-gradient(135deg,#1e40af,#3b82f6); color:#fff; border:none; padding:12px 24px; border-radius:10px; font-size:14px; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(30,64,175,0.25);">
+                                    📝 Export Word Format (.docx)
+                                </button>
+                                <button type="button" onclick="previewNotesheet()"
+                                    style="display:flex; align-items:center; gap:9px; background:#f8fafc; color:#1e40af; border:1.5px solid #bfdbfe; padding:12px 24px; border-radius:10px; font-size:14px; font-weight:800; cursor:pointer;">
+                                    👁 Preview Note Sheet
+                                </button>
+                            </div>
+
+                            <!-- Status Banner -->
+                            <div id="notesheet-status-banner" style="display:none; margin-top:16px; padding:14px 18px; border-radius:10px; font-size:13.5px; font-weight:600;"></div>
+                        </form>
+                    </div>
+
+                    <!-- Approved Notesheets Log Table -->
+                    <div class="table-card" style="margin-bottom:24px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-bottom:1px solid #e2e8f0; padding-bottom:12px;">
+                            <div>
+                                <h3 style="margin:0; font-size:16px; font-weight:800; color:#991b1b;">Noting Sheet Submissions &amp; Approvals Log</h3>
+                                <p style="margin:3px 0 0 0; font-size:12.5px; color:#64748b;">History of all program conduction noting sheets submitted for approval.</p>
+                            </div>
+                            <button type="button" onclick="loadSubmittedNotesheets()" class="btn-action-sm" style="background:#fef2f2; color:#991b1b; border:1px solid #fecaca; font-weight:700;">🔄 Refresh</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Noting Ref. No.</th>
+                                        <th>Program Title</th>
+                                        <th>Faculties &amp; Rates</th>
+                                        <th>Total Amount (&#x20B9;)</th>
+                                        <th>Submitted On</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="notesheets-log-body">
+                                    <tr><td colspan="6" style="text-align:center; color:#94a3b8; padding:20px;">No noting sheets submitted yet.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- SECTION: INVITATION TO FACULTY (SEPARATE DEDICATED PAGE) -->
+                <div id="section-fac-invite" class="section-view">
+
+                    <!-- Header Card -->
+                    <div class="table-card" style="margin-bottom:24px; border-top:4px solid #1e40af;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:14px; border-bottom:1px solid #e2e8f0; margin-bottom:20px;">
+                            <div>
+                                <h3 style="margin:0; font-size:19px; font-weight:800; color:#1e40af;">✉ Invitation to Faculty</h3>
+                                <p style="margin:4px 0 0 0; font-size:13px; color:#64748b;">Select faculty &amp; program, review configured sessions data, add remarks, and generate PDF / Email invitation.</p>
+                            </div>
+                            <span style="background:#eff6ff; color:#1e40af; font-size:11.5px; font-weight:700; padding:5px 14px; border-radius:20px; border:1px solid #bfdbfe;">Faculty Invitation Module</span>
+                        </div>
+
+                        <form id="faculty-invite-form" onsubmit="handleSendFacultyInvite(event)">
+
+                            <!-- Row 1: Faculty Name, Faculty Email & Program Name -->
+                            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px; margin-bottom:16px;">
+                                <div class="form-group">
+                                    <label for="invite-faculty-select" style="font-weight:700; color:#1e3a5f;">Select Faculty Name *</label>
+                                    <select id="invite-faculty-select" class="form-control" required style="border:1.5px solid #bfdbfe; font-weight:600; font-size:13.5px;" onchange="onInviteFacultyChange()">
+                                        <option value="">-- Select Faculty Member --</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="invite-faculty-email" style="font-weight:700; color:#1e3a5f;">Faculty Email Address *</label>
+                                    <input type="email" id="invite-faculty-email" class="form-control" required placeholder="e.g. faculty@institute.ac.in" style="border:1.5px solid #bfdbfe; font-size:13.5px;">
+                                </div>
+                                <div class="form-group">
+                                    <label for="invite-program-select" style="font-weight:700; color:#1e3a5f;">Select Program Name *</label>
+                                    <select id="invite-program-select" class="form-control" required style="border:1.5px solid #bfdbfe; font-weight:600; font-size:13.5px;" onchange="onInviteProgramChange()">
+                                        <option value="">-- Select Program --</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Row 2: Program Data (Start Date, End Date, Venue, Department) -->
+                            <div style="display:grid; grid-template-columns:1fr 1fr 1.2fr 1fr; gap:14px; margin-bottom:18px; padding:14px 16px; background:#f8fafc; border-radius:8px; border:1px solid #e2e8f0;">
+                                <div class="form-group" style="margin:0;">
+                                    <label style="font-size:12px; font-weight:700; color:#475569; display:block; margin-bottom:4px;">Start Date</label>
+                                    <input type="date" id="invite-start-date" class="form-control" style="font-size:12.5px; border:1px solid #cbd5e1;">
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label style="font-size:12px; font-weight:700; color:#475569; display:block; margin-bottom:4px;">End Date</label>
+                                    <input type="date" id="invite-end-date" class="form-control" style="font-size:12.5px; border:1px solid #cbd5e1;">
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label style="font-size:12px; font-weight:700; color:#475569; display:block; margin-bottom:4px;">Venue / Location</label>
+                                    <input type="text" id="invite-venue" class="form-control" value="IICM, Ranchi" style="font-size:12.5px; border:1px solid #cbd5e1;">
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <label style="font-size:12px; font-weight:700; color:#475569; display:block; margin-bottom:4px;">Organizing Entity</label>
+                                    <input type="text" id="invite-dept" class="form-control" value="ICT Department of CIL (HQ)" style="font-size:12.5px; border:1px solid #cbd5e1;">
+                                </div>
+                            </div>
+
+                            <!-- Row 3: Sessions List for Selected Program -->
+                            <div style="margin-bottom:20px;">
+                                <label style="font-weight:700; color:#1e3a5f; display:block; margin-bottom:8px; font-size:14px;">
+                                    📋 Sessions Schedule Data (Auto-loaded for Selected Program &amp; Faculty)
+                                </label>
+                                <div id="invite-program-sessions-container" style="border:1px solid #bfdbfe; border-radius:8px; overflow:hidden; background:#ffffff;">
+                                    <div style="text-align:center; padding:24px; color:#94a3b8; font-size:13px;">
+                                        Select a Program above to view its configured sessions list.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Row 4: Remarks Box -->
+                            <div class="form-group" style="margin-bottom:24px;">
+                                <label for="invite-remarks" style="font-weight:700; color:#1e3a5f; display:block; margin-bottom:6px; font-size:14px;">
+                                    📝 Remarks / Instructions *
+                                </label>
+                                <textarea id="invite-remarks" class="form-control" rows="3"
+                                    placeholder="e.g. We request you to kindly confirm your availability and itinerary may be shared for needful arrangements. TA/DA and lodging provided as per institute norms."
+                                    style="border:1.5px solid #bfdbfe; font-size:13.5px; line-height:1.6; resize:vertical; border-radius:8px;"></textarea>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div style="display:flex; gap:14px; align-items:center; flex-wrap:wrap;">
+                                <button type="submit" id="btn-send-faculty-invite"
+                                    style="display:flex; align-items:center; gap:9px; background:linear-gradient(135deg,#1e40af,#3b82f6); color:#fff; border:none; padding:12px 28px; border-radius:10px; font-size:14px; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(30,64,175,0.25);">
+                                    📧 Send Email Invitation &amp; PDF
+                                </button>
+                                <button type="button" onclick="generateFacultyInvitePDF()"
+                                    style="display:flex; align-items:center; gap:9px; background:linear-gradient(135deg,#1b4332,#2d6a4f); color:#fff; border:none; padding:12px 26px; border-radius:10px; font-size:14px; font-weight:800; cursor:pointer; box-shadow:0 4px 14px rgba(27,67,50,0.25);">
+                                    📄 Generate PDF Letter
+                                </button>
+                                <button type="button" onclick="previewFacultyInvite()"
+                                    style="display:flex; align-items:center; gap:9px; background:#f8fafc; color:#1e40af; border:1.5px solid #bfdbfe; padding:12px 24px; border-radius:10px; font-size:14px; font-weight:800; cursor:pointer;">
+                                    👁 Preview Letter
+                                </button>
+                                <button type="button" onclick="resetFacultyInviteForm()"
+                                    style="display:flex; align-items:center; gap:9px; background:#fff1f2; color:#b91c1c; border:1.5px solid #fecdd3; padding:12px 20px; border-radius:10px; font-size:14px; font-weight:700; cursor:pointer;">
+                                    ↺ Reset
+                                </button>
+                            </div>
+
+                            <!-- Status Banner -->
+                            <div id="invite-status-banner" style="display:none; margin-top:16px; padding:14px 18px; border-radius:10px; font-size:13.5px; font-weight:600;"></div>
+                        </form>
+                    </div>
+
+                    <!-- Sent Invitations Table -->
+                    <div class="table-card" style="margin-bottom:24px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-bottom:1px solid #e2e8f0; padding-bottom:12px;">
+                            <div>
+                                <h3 style="margin:0; font-size:16px; font-weight:800; color:#1e40af;">Sent Invitations &amp; PDF Log</h3>
+                                <p style="margin:3px 0 0 0; font-size:12.5px; color:#64748b;">History of all invitation emails &amp; attached PDF letters sent to faculty members.</p>
+                            </div>
+                            <button type="button" onclick="loadSentInvitations()" class="btn-action-sm" style="background:#eff6ff; color:#1e40af; border:1px solid #bfdbfe; font-weight:700;">🔄 Refresh</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Faculty &amp; Email</th>
+                                        <th>Program Title</th>
+                                        <th>PDF Attachment</th>
+                                        <th>Dates</th>
+                                        <th>Remarks</th>
+                                        <th>Sent On</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sent-invitations-body">
+                                    <tr><td colspan="7" style="text-align:center; color:#94a3b8; padding:20px;">No invitations sent yet.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- SECTION: NOMINATION FORM -->
+                <div id="section-nomination-form" class="section-view">
+                    <!-- Main Nomination Card -->
+                    <div class="table-card" style="margin-bottom:24px; border:1px solid #e2e8f0; box-shadow:0 2px 10px rgba(0,0,0,0.03); background:#ffffff; border-radius:12px; padding:24px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:16px; border-bottom:1.5px solid #f1f5f9; margin-bottom:20px; flex-wrap:wrap; gap:10px;">
+                            <div>
+                                <h3 style="margin:0; font-size:18px; font-weight:800; color:#0f172a; display:flex; align-items:center; gap:8px;">
+                                    📋 Nomination Call Form
+                                </h3>
+                                <p style="margin:4px 0 0 0; font-size:13px; color:#64748b;">Configure programme particulars and nominee details in table format for preview, PDF export &amp; dispatch.</p>
+                            </div>
+                            <span style="background:#f8fafc; color:#047857; font-size:12px; font-weight:700; padding:6px 14px; border-radius:20px; border:1px solid #e2e8f0;">Official CIL Format</span>
+                        </div>
+
+                        <form id="nomination-form" onsubmit="handleSendNominationForm(event)">
+
+                            <!-- 1. TOP SECTION: PROGRAM NAME, START DATE, END DATE -->
+                            <div style="margin-bottom:18px; padding:16px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px;">
+                                <div style="font-size:12.5px; font-weight:800; color:#0f172a; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
+                                    📌 Program Details
+                                </div>
+                                <div style="display:grid; grid-template-columns:2fr 1fr 1fr; gap:14px;">
+                                    <div class="form-group" style="margin:0;">
+                                        <label for="nom-program-select" style="font-weight:700; color:#334155; font-size:12.5px;">Program Name *</label>
+                                        <select id="nom-program-select" class="form-control" style="border:1px solid #cbd5e1; font-weight:600; background:#fff;" onchange="onNominationProgramChange()" required>
+                                            <option value="">-- Select Existing Program --</option>
+                                        </select>
+                                        <input type="text" id="nom-program-title" class="form-control" style="margin-top:6px; font-weight:600;" placeholder="Or type customized Program Name" value="Occupational Health Capacity Building Workshop">
+                                    </div>
+                                    <div class="form-group" style="margin:0;">
+                                        <label for="nom-start-date" style="font-weight:700; color:#334155; font-size:12.5px;">Start Date *</label>
+                                        <input type="date" id="nom-start-date" class="form-control" required value="2026-07-07">
+                                    </div>
+                                    <div class="form-group" style="margin:0;">
+                                        <label for="nom-end-date" style="font-weight:700; color:#334155; font-size:12.5px;">End Date *</label>
+                                        <input type="date" id="nom-end-date" class="form-control" required value="2026-07-09">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 2. VENUE, EXPECTED NO. OF PARTICIPANTS, MODE -->
+                            <div style="margin-bottom:18px; padding:16px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px;">
+                                <div style="font-size:12.5px; font-weight:800; color:#0f172a; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
+                                    📍 Logistics &amp; Mode
+                                </div>
+                                <div style="display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:14px;">
+                                    <div class="form-group" style="margin:0;">
+                                        <label for="nom-venue" style="font-weight:700; color:#334155; font-size:12.5px;">Venue *</label>
+                                        <input type="text" id="nom-venue" class="form-control" required placeholder="e.g. IICM, Ranchi" value="IICM, Ranchi">
+                                    </div>
+                                    <div class="form-group" style="margin:0;">
+                                        <label for="nom-expected-participants" style="font-weight:700; color:#334155; font-size:12.5px;">Expected No. of Participants *</label>
+                                        <input type="text" id="nom-expected-participants" class="form-control" required placeholder="e.g. 25" value="25">
+                                    </div>
+                                    <div class="form-group" style="margin:0;">
+                                        <label for="nom-mode" style="font-weight:700; color:#334155; font-size:12.5px;">Mode *</label>
+                                        <select id="nom-mode" class="form-control" required>
+                                            <option value="Residential" selected>Residential</option>
+                                            <option value="Non-Residential">Non-Residential</option>
+                                            <option value="Online">Online</option>
+                                            <option value="Hybrid">Hybrid</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 3. NOMINEE DETAILS TABLE FORMAT -->
+                            <div style="margin-bottom:18px; padding:16px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px;">
+                                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                                    <div style="font-size:12.5px; font-weight:800; color:#0f172a; text-transform:uppercase; letter-spacing:0.5px; display:flex; align-items:center; gap:6px;">
+                                        👤 Nominated Employees List (Table Format)
+                                    </div>
+                                    <button type="button" onclick="addNomineeRow()" style="background:#047857; color:#fff; border:none; padding:5px 12px; border-radius:6px; font-size:12px; font-weight:700; cursor:pointer;">
+                                        ➕ Add Employee Row
+                                    </button>
+                                </div>
+
+                                <div class="table-responsive">
+                                    <table class="data-table" id="nom-employees-table" style="background:#ffffff; border:1px solid #cbd5e1; width:100%;">
+                                        <thead>
+                                            <tr style="background:#f1f5f9;">
+                                                <th style="width:50px; text-align:center;">S.No.</th>
+                                                <th>Emp ID (EIS) *</th>
+                                                <th>Emp Name *</th>
+                                                <th>Designation *</th>
+                                                <th>Place of Posting *</th>
+                                                <th style="width:110px;">Company *</th>
+                                                <th>WhatsApp No. *</th>
+                                                <th style="width:60px; text-align:center;">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="nom-employees-tbody">
+                                            <tr>
+                                                <td style="text-align:center; font-weight:700;">1</td>
+                                                <td><input type="text" class="form-control nom-row-empid" value="90234567" placeholder="e.g. 90234567" required style="font-size:12.5px; padding:6px 8px;"></td>
+                                                <td><input type="text" class="form-control nom-row-name" value="Dr. Rajesh Kumar" placeholder="e.g. Dr. Rajesh Kumar" required style="font-size:12.5px; padding:6px 8px; font-weight:600;"></td>
+                                                <td><input type="text" class="form-control nom-row-desig" value="Chief Medical Officer" placeholder="e.g. Chief Medical Officer" required style="font-size:12.5px; padding:6px 8px;"></td>
+                                                <td><input type="text" class="form-control nom-row-posting" value="Central Hospital, Dhanbad" placeholder="e.g. Central Hospital, Dhanbad" required style="font-size:12.5px; padding:6px 8px;"></td>
+                                                <td>
+                                                    <select class="form-control nom-row-company" style="font-size:12.5px; padding:6px 8px; font-weight:600;" required>
+                                                        <option value="BCCL" selected>BCCL</option>
+                                                        <option value="CCL">CCL</option>
+                                                        <option value="ECL">ECL</option>
+                                                        <option value="WCL">WCL</option>
+                                                        <option value="SECL">SECL</option>
+                                                        <option value="MCL">MCL</option>
+                                                        <option value="NCL">NCL</option>
+                                                        <option value="CMPDI">CMPDI</option>
+                                                        <option value="CIL HQ">CIL HQ</option>
+                                                        <option value="NEC">NEC</option>
+                                                    </select>
+                                                </td>
+                                                <td><input type="tel" class="form-control nom-row-whatsapp" value="9876543210" placeholder="e.g. 9876543210" required style="font-size:12.5px; padding:6px 8px;"></td>
+                                                <td style="text-align:center;">
+                                                    <button type="button" onclick="removeNomineeRow(this)" style="background:#fee2e2; color:#b91c1c; border:1px solid #fca5a5; border-radius:4px; padding:4px 8px; cursor:pointer; font-weight:700;">&times;</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- 4. BOTTOM SECTION: PROGRAM OBJECTIVE -->
+                            <div style="margin-bottom:20px; padding:16px; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px;">
+                                <div style="font-size:12.5px; font-weight:800; color:#0f172a; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:10px;">
+                                    🎯 Program Objective
+                                </div>
+                                <div class="form-group" style="margin:0;">
+                                    <textarea id="nom-program-objective" class="form-control" rows="3" style="font-size:13px; line-height:1.6;" placeholder="Enter programme objective...">The programme is designed to enhance knowledge, operational efficiency, and competencies in subject domain while ensuring adherence to statutory provisions and best industrial practices.</textarea>
+                                </div>
+                            </div>
+
+                            <!-- ACTION BUTTONS -->
+                            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:6px;">
+                                <button type="button" onclick="previewNominationForm()"
+                                    style="background:#047857; color:#fff; border:none; padding:10px 20px; border-radius:6px; font-size:13.5px; font-weight:700; cursor:pointer; box-shadow:0 2px 6px rgba(4,120,87,0.2);">
+                                    👁 Preview Nomination Form (Table Format)
+                                </button>
+                                <button type="button" onclick="window.generateNominationPDF()"
+                                    style="background:#1e293b; color:#fff; border:none; padding:10px 18px; border-radius:6px; font-size:13.5px; font-weight:700; cursor:pointer;">
+                                    📄 Export PDF
+                                </button>
+                                <button type="submit" id="btn-send-nomination-form"
+                                    style="background:#2563eb; color:#fff; border:none; padding:10px 20px; border-radius:6px; font-size:13.5px; font-weight:700; cursor:pointer;">
+                                    📧 Send Nomination Call
+                                </button>
+                            </div>
+
+                            <!-- Status Banner -->
+                            <div id="nomination-status-banner" style="display:none; margin-top:14px; padding:12px 16px; border-radius:8px; font-size:13px; font-weight:600;"></div>
+                        </form>
+                    </div>
+
+                    <!-- Sent Nominations Table -->
+                    <div class="table-card" style="margin-bottom:24px;">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-bottom:1px solid #e2e8f0; padding-bottom:12px;">
+                            <div>
+                                <h3 style="margin:0; font-size:16px; font-weight:800; color:#1e293b;">Sent Nomination Requests Log</h3>
+                                <p style="margin:3px 0 0 0; font-size:12.5px; color:#64748b;">History of all nomination formats dispatched to subsidiaries.</p>
+                            </div>
+                            <button type="button" onclick="loadSentNominations()" class="btn-action-sm" style="background:#f8fafc; color:#1e293b; border:1px solid #cbd5e1; font-weight:700;">🔄 Refresh</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Ref ID</th>
+                                        <th>Program Title</th>
+                                        <th>Dates</th>
+                                        <th>Venue</th>
+                                        <th>Nominees</th>
+                                        <th>Sent On</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sent-nominations-body">
+                                    <tr><td colspan="7" style="text-align:center; color:#94a3b8; padding:20px;">No nomination requests sent yet.</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+<div id="section-payment-release" class="section-view">
+                    <div class="dash-card">
+                        <h2 style="font-size:20px; font-weight:800; color:#1b4332; margin-bottom:6px; border-bottom:2px solid #059669; padding-bottom:8px;">
+                            💰 Payment Release Note (Honorarium)
+                        </h2>
+                        <p style="color:#64748b; font-size:13px; margin-bottom:20px;">
+                            Submit to GM first. Once GM approves, Finance releases the payment and the coordinator receives a confirmation email with payment details.
+                        </p>
+
+                        <div id="pr-workflow-tracker" style="display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:0 0 20px;"></div>
+
+                        <!-- Form for input fields -->
+                        <form id="pr-note-form" onsubmit="event.preventDefault();">
+                            <div class="form-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+                                <div class="form-group">
+                                    <label for="pr-program-select" style="font-weight:700;">Select Training Program *</label>
+                                    <select id="pr-program-select" class="form-control" onchange="onPaymentReleaseProgramChange()" required style="border:1.5px solid #cbd5e1; font-weight:600;">
+                                        <option value="">-- Select Program --</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pr-custom-program-title" style="font-weight:700;">Customized Program Title (For Print/Word/Email)</label>
+                                    <input type="text" id="pr-custom-program-title" class="form-control" placeholder="e.g. Coal India 1st Occupational Health Capacity Building Workshop" style="border:1px solid #cbd5e1;">
+                                </div>
+                            </div>
+
+                            <div class="form-grid" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:16px;">
+                                <div class="form-group">
+                                    <label for="pr-ref-no" style="font-weight:700;">Reference No. *</label>
+                                    <input type="text" id="pr-ref-no" class="form-control" value="IICM/HONORARIUM PAYMENT/OHCBW/2026/" required style="border:1px solid #cbd5e1;">
+                                </div>
+                                <div class="form-group">
+                                    <label for="pr-date" style="font-weight:700;">Date *</label>
+                                    <input type="text" id="pr-date" class="form-control" value="10.07.2026" required style="border:1px solid #cbd5e1;">
+                                </div>
+                                <div class="form-group">
+                                    <label for="pr-recipient-email" style="font-weight:700;">GM Approver Email *</label>
+                                    <input type="email" id="pr-recipient-email" class="form-control" placeholder="e.g. gm.academics@iicm.ac.in" required style="border:1px solid #cbd5e1;">
+                                </div>
+                            </div>
+
+                            <div class="form-grid" style="display:grid; grid-template-columns:1.5fr 1fr 1fr; gap:16px; margin-bottom:16px; background:#f0fdf4; padding:12px 14px; border:1px solid #bbf7d0; border-radius:8px;">
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label for="pr-sanction-ref" style="font-weight:700; color:#166534;">📜 Sanction Order / Ref No. *</label>
+                                    <input type="text" id="pr-sanction-ref" class="form-control" value="RB/2025-26/261 Dated 06-10-2025" placeholder="e.g. RB/2025-26/261 Dated 06-10-2025" style="border:1px solid #86efac; background:#fff;">
+                                </div>
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label for="pr-sanctioned-budget" style="font-weight:700; color:#166534;">💰 Sanctioned Budget (₹) *</label>
+                                    <input type="number" id="pr-sanctioned-budget" class="form-control" value="47500" placeholder="e.g. 47500" style="border:1px solid #86efac; background:#fff;">
+                                </div>
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label for="pr-additional-budget" style="font-weight:700; color:#166534;">➕ Additional Budget (₹)</label>
+                                    <input type="number" id="pr-additional-budget" class="form-control" value="1500" placeholder="e.g. 1500" style="border:1px solid #86efac; background:#fff;">
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin-bottom:16px;">
+                                <label for="pr-subject" style="font-weight:700;">Subject Line *</label>
+                                <input type="text" id="pr-subject" class="form-control" value="Sub:- Payment of honorarium of faculties and other expenditure to organize CSWDB from 07 TO 09 JULY 2026." required style="border:1px solid #cbd5e1;">
+                            </div>
+
+                            <!-- Table of Faculty Honorarium -->
+                            <div style="margin-top:24px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                                <h4 style="font-size:14px; font-weight:800; color:#1e293b; margin:0;">👩‍🏫 FACULTY DETAILS &amp; EXPENSES</h4>
+                                <button type="button" class="btn-primary btn-sm" onclick="addPaymentReleaseFacultyRow()" style="padding:6px 12px; font-size:12px; background:#059669; border:none; border-radius:4px; color:#fff; font-weight:700; cursor:pointer;">
+                                    ➕ Add Faculty Row
+                                </button>
+                            </div>
+                            
+                            <div class="table-responsive" style="margin-bottom:20px;">
+                                <table class="data-table" style="width:100%; border-collapse:collapse; border:1px solid #e2e8f0; font-size:13px;">
+                                    <thead>
+                                        <tr style="background:#f8fafc; border-bottom:2px solid #cbd5e1; font-weight:700;">
+                                            <th style="padding:8px; text-align:center; width:50px;">Sl No.</th>
+                                            <th style="padding:8px;">Name of Faculty</th>
+                                            <th style="padding:8px; width:100px; text-align:center;">Sessions</th>
+                                            <th style="padding:8px; width:120px; text-align:right;">Rate (₹)</th>
+                                            <th style="padding:8px; width:140px; text-align:right;">Travel Expenses (₹)</th>
+                                            <th style="padding:8px; width:140px; text-align:right;">Total Amount (₹)</th>
+                                            <th style="padding:8px; text-align:center; width:60px;">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="pr-faculty-rows-container">
+                                        <!-- Dynamic rows injected here -->
+                                    </tbody>
+                                    <tfoot>
+                                        <tr style="background:#f8fafc; font-weight:800; border-top:2px solid #cbd5e1;">
+                                            <td colspan="5" style="padding:8px; text-align:right; font-size:14px; color:#1e293b;">Total Amount (₹):</td>
+                                            <td id="pr-grand-total" style="padding:8px; text-align:right; font-size:14px; color:#b91c1c;">₹0</td>
+                                            <td></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+
+                            <!-- Miscellaneous Expenses Fields -->
+                            <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:16px; border-radius:8px; margin-bottom:20px;">
+                                <h4 style="font-size:13.5px; font-weight:800; color:#1e293b; margin-top:0; margin-bottom:12px; border-bottom:1px dashed #cbd5e1; padding-bottom:6px;">📦 Miscellaneous Expenses (Optional)</h4>
+                                <div class="form-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:12px;">
+                                    <div class="form-group">
+                                        <label for="pr-misc-a-desc" style="font-weight:600;">Misc Item A Description</label>
+                                        <input type="text" id="pr-misc-a-desc" class="form-control" value="A) Shawl" style="border:1px solid #cbd5e1;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pr-misc-a-amt" style="font-weight:600;">Misc Item A Amount (₹)</label>
+                                        <input type="number" id="pr-misc-a-amt" class="form-control" value="8126" oninput="calcPaymentReleaseGrandTotal()" style="border:1px solid #cbd5e1;">
+                                    </div>
+                                </div>
+                                <div class="form-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+                                    <div class="form-group">
+                                        <label for="pr-misc-b-desc" style="font-weight:600;">Misc Item B Description</label>
+                                        <input type="text" id="pr-misc-b-desc" class="form-control" value="B) Srifal" style="border:1px solid #cbd5e1;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pr-misc-b-amt" style="font-weight:600;">Misc Item B Amount (₹)</label>
+                                        <input type="number" id="pr-misc-b-amt" class="form-control" value="440" oninput="calcPaymentReleaseGrandTotal()" style="border:1px solid #cbd5e1;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Notes/Remarks Section -->
+                            <div style="background:#fffcf2; border:1px solid #fef3c7; padding:16px; border-radius:8px; margin-bottom:20px;">
+                                <h4 style="font-size:13.5px; font-weight:800; color:#854d0e; margin-top:0; margin-bottom:12px; border-bottom:1px dashed #fde68a; padding-bottom:6px;">📝 Notes &amp; Financial Certifications</h4>
+                                <div class="form-group" style="margin-bottom:12px;">
+                                    <label for="pr-note-1" style="font-weight:600; color:#854d0e;">Note 1: Air Ticket / Agency Info</label>
+                                    <input type="text" id="pr-note-1" class="form-control" value="The air ticket bill will be process separately after submission of bill by the M/s Eastern Travels." style="border:1px solid #fde68a;">
+                                </div>
+                                <div class="form-group" style="margin-bottom:12px;">
+                                    <label for="pr-note-bc" style="font-weight:700; color:#b45309;">Note 2: BC Number &amp; Budget Certification *</label>
+                                    <input type="text" id="pr-note-bc" class="form-control" value="BC number RB/2026-27/098 dated 03-07-2026 noted for Rs.57000.00" required style="border:1px solid #fde68a; font-weight:600; background:#fff;">
+                                    <small style="color:#d97706; font-size:11px;">Customizable textbox to enter any budget certification / BC number details.</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="pr-note-3" style="font-weight:600; color:#854d0e;">Note 3: Reimbursement / Miscellaneous Claim Approval</label>
+                                    <input type="text" id="pr-note-3" class="form-control" value="Rs. 8566 Misc. expenditure used which may be reimbursed to the undersigned. Approval has already been taken from competent authority. Approval copy is attched herewith." style="border:1px solid #fde68a;">
+                                </div>
+                            </div>
+
+                            <!-- Enclosures & Signatures -->
+                            <div class="form-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px;">
+                                <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:12px; border-radius:8px;">
+                                    <h5 style="font-size:13px; font-weight:700; margin-top:0; margin-bottom:8px;">📂 Enclosures</h5>
+                                    <div class="form-group" style="margin-bottom:8px;">
+                                        <input type="text" id="pr-encl-1" class="form-control" value="Filled honorarium forms in respect of individual faculty." style="font-size:12px; border:1px solid #cbd5e1; height:32px;">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" id="pr-encl-2" class="form-control" value="Approval copy of the program." style="font-size:12px; border:1px solid #cbd5e1; height:32px;">
+                                    </div>
+                                </div>
+                                <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:12px; border-radius:8px;">
+                                    <h5 style="font-size:13px; font-weight:700; margin-top:0; margin-bottom:8px;">✍ Signatures</h5>
+                                    <div class="form-group" style="margin-bottom:8px;">
+                                        <label style="font-size:11px; font-weight:700;">Left-hand Signatory</label>
+                                        <input type="text" id="pr-sign-left" class="form-control" value="GM(M), IICM" style="font-size:12px; border:1px solid #cbd5e1; height:32px;">
+                                    </div>
+                                    <div class="form-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+                                        <div class="form-group">
+                                            <label style="font-size:11px; font-weight:700;">Right-hand Signatory Name</label>
+                                            <input type="text" id="pr-sign-right-name" class="form-control" value="ROHIT PRAKASH" style="font-size:12px; border:1px solid #cbd5e1; height:32px;">
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="font-size:11px; font-weight:700;">Right-hand Signatory Desig</label>
+                                            <input type="text" id="pr-sign-right-desig" class="form-control" value="Sr. Manager(Systems)" style="font-size:12px; border:1px solid #cbd5e1; height:32px;">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Action buttons -->
+                            <div id="pr-actions-container" style="display:flex; justify-content:space-between; align-items:center; border-top:2px solid #e2e8f0; padding-top:16px; gap:12px;">
+                                <div style="display:flex; gap:12px;">
+                                    <button type="button" class="btn-primary" onclick="generatePaymentReleasePDF()" style="background:#4f46e5; border:none; font-weight:700;">
+                                        📄 Generate PDF
+                                    </button>
+                                    <button type="button" class="btn-primary" onclick="generatePaymentReleaseWord()" style="background:#2563eb; border:none; font-weight:700;">
+                                        📝 Export to Word (.docx)
+                                    </button>
+                                </div>
+                                <button type="button" id="btn-send-payment-release-email" class="btn-primary" onclick="window.submitPaymentReleaseToGM()" style="background:#059669; border:none; font-weight:700;">
+                                    📧 Send Official Release Email
+                                </button>
+                            </div>
+                            <div id="pr-status-banner" style="display:none; margin-top:12px; padding:12px; border-radius:6px; font-size:13px; font-weight:600;"></div>
+                        </form>
+                    </div>
+                </div>
+
+
+        
+                <!-- SECTION: DYNAMIC SESSION ATTENDANCE WITH WHATSAPP QR -->
+                <div id="section-session-attendance" class="section-view">
+                    <div class="table-card" style="margin-bottom:24px; border:1px solid #e2e8f0; background:#ffffff; border-radius:12px; padding:24px; box-shadow:0 2px 10px rgba(0,0,0,0.03);">
+                        <div style="display:flex; justify-content:space-between; align-items:center; padding-bottom:16px; border-bottom:1.5px solid #f1f5f9; margin-bottom:20px; flex-wrap:wrap; gap:10px;">
+                            <div>
+                                <h3 style="margin:0; font-size:18px; font-weight:800; color:#0f172a; display:flex; align-items:center; gap:8px;">
+                                    📲 Dynamic Session-Wise Attendance &amp; Live QR
+                                </h3>
+                                <p style="margin:4px 0 0 0; font-size:13px; color:#64748b;">Generate session-specific QR codes for each program and broadcast directly to participant WhatsApp groups.</p>
+                            </div>
+                            <span style="background:#dcfce7; color:#15803d; font-size:12px; font-weight:700; padding:6px 14px; border-radius:20px; border:1px solid #bbf7d0;">Live QR Broadcasting</span>
+                        </div>
+
+                        <!-- Session Selector Controls -->
+                        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:18px; margin-bottom:20px;">
+                            <div style="display:grid; grid-template-columns:2fr 1.5fr 1fr 1fr auto; gap:14px; align-items:flex-end;">
+                                <div class="form-group" style="margin:0;">
+                                    <label for="att-prog-select" style="font-weight:700; color:#334155; font-size:12.5px;">Select Program *</label>
+                                    <select id="att-prog-select" class="form-control" onchange="onAttendanceProgramChange()" style="font-weight:600;">
+                                        <!-- Injected by JS -->
+                                    </select>
+                                </div>
+
+                                <div class="form-group" style="margin:0;">
+                                    <label for="att-time-select" style="font-weight:700; color:#334155; font-size:12.5px;">Session / Slot *</label>
+                                    <select id="att-time-select" class="form-control" style="font-weight:600;">
+                                        <option value="Session 1 (09:30 AM – 11:00 AM)">Session 1 (09:30 AM – 11:00 AM)</option>
+                                        <option value="Session 2 (11:15 AM – 12:45 PM)">Session 2 (11:15 AM – 12:45 PM)</option>
+                                        <option value="Session 3 (02:00 PM – 03:30 PM)">Session 3 (02:00 PM – 03:30 PM)</option>
+                                        <option value="Session 4 (03:45 PM – 05:15 PM)">Session 4 (03:45 PM – 05:15 PM)</option>
+                                        <option value="Morning Yoga (06:30 AM – 07:30 AM)">Morning Yoga (06:30 AM – 07:30 AM)</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" style="margin:0;">
+                                    <label for="att-validity-select" style="font-weight:700; color:#334155; font-size:12.5px;">QR Validity</label>
+                                    <select id="att-validity-select" class="form-control">
+                                        <option value="10">10 Minutes</option>
+                                        <option value="15" selected>15 Minutes</option>
+                                        <option value="30">30 Minutes</option>
+                                        <option value="60">60 Minutes</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" style="margin:0;">
+                                    <label for="att-topic-custom" style="font-weight:700; color:#334155; font-size:12.5px;">Topic / Module</label>
+                                    <input type="text" id="att-topic-custom" class="form-control" placeholder="Session Topic" value="Module 1: DGMS Guidelines & Mine Safety Regulations">
+                                </div>
+
+                                <div>
+                                    <button type="button" id="btn-generate-attendance-qr" onclick="createNewAttendanceQRSession()" style="background:#047857; color:#fff; border:none; padding:10px 18px; border-radius:6px; font-size:13px; font-weight:700; cursor:pointer; height:38px; display:flex; align-items:center; gap:6px; white-space:nowrap; box-shadow:0 2px 6px rgba(4,120,87,0.2);">
+                                        ⚡ Generate Dynamic QR
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Active Sessions Live QR Grid -->
+                        <div style="font-size:14px; font-weight:800; color:#0f172a; margin-bottom:14px; display:flex; align-items:center; gap:8px;">
+                            <span>📡 Active Dynamic Attendance Broadcasts</span>
+                        </div>
+                        <div id="active-attendance-qr-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(360px, 1fr)); gap:18px; margin-bottom:24px;">
+                            <!-- Injected by JS with Live QR and WhatsApp button -->
+                        </div>
+
+                        <!-- Participant Scan Log -->
+                        <div style="margin-top:20px; border-top:1px solid #e2e8f0; padding-top:16px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                                <div style="font-size:14px; font-weight:800; color:#0f172a;">
+                                    📋 Participant Live Attendance Register
+                                </div>
+                                <div style="display:flex; gap:8px;">
+                                    <button type="button" class="btn-action-sm" onclick="exportAttendanceCSV()" style="background:#f8fafc; color:#0f172a; border:1px solid #cbd5e1; font-weight:700;">📊 Export Excel / CSV</button>
+                                    <button type="button" class="btn-action-sm" onclick="initAttendanceSection(true)" style="background:#f8fafc; color:#0f172a; border:1px solid #cbd5e1; font-weight:700;">🔄 Refresh</button>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr style="background:#f8fafc;">
+                                            <th style="width:50px; text-align:center;">S.No.</th>
+                                            <th>EIS No.</th>
+                                            <th>Participant Name</th>
+                                            <th>Designation</th>
+                                            <th>Company</th>
+                                            <th>Scan Timestamp</th>
+                                            <th>Attendance Status</th>
+                                            <th style="text-align:center;">Manual Override</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="attendance-log-tbody">
+                                        <tr>
+                                            <td style="text-align:center; font-weight:700;">1</td>
+                                            <td style="font-family:monospace; font-weight:700;">90234567</td>
+                                            <td style="font-weight:700; color:#0f172a;">Dr. Rajesh Kumar</td>
+                                            <td>Chief Medical Officer</td>
+                                            <td><span style="background:#e0f2fe; color:#0369a1; padding:2px 8px; border-radius:4px; font-weight:700; font-size:11.5px;">BCCL</span></td>
+                                            <td style="font-size:12px; color:#64748b;">Today, 09:32 AM</td>
+                                            <td><span style="background:#dcfce7; color:#15803d; padding:3px 10px; border-radius:12px; font-size:11.5px; font-weight:700;">✅ Present (QR Scan)</span></td>
+                                            <td style="text-align:center;"><button type="button" style="background:#fee2e2; color:#b91c1c; border:none; padding:3px 8px; border-radius:4px; font-size:11px; cursor:pointer; font-weight:700;">Mark Absent</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center; font-weight:700;">2</td>
+                                            <td style="font-family:monospace; font-weight:700;">90345678</td>
+                                            <td style="font-weight:700; color:#0f172a;">Dr. Sunita Sharma</td>
+                                            <td>Sr. Medical Specialist</td>
+                                            <td><span style="background:#fef3c7; color:#b45309; padding:2px 8px; border-radius:4px; font-weight:700; font-size:11.5px;">CCL</span></td>
+                                            <td style="font-size:12px; color:#64748b;">Today, 09:34 AM</td>
+                                            <td><span style="background:#dcfce7; color:#15803d; padding:3px 10px; border-radius:12px; font-size:11.5px; font-weight:700;">✅ Present (QR Scan)</span></td>
+                                            <td style="text-align:center;"><button type="button" style="background:#fee2e2; color:#b91c1c; border:none; padding:3px 8px; border-radius:4px; font-size:11px; cursor:pointer; font-weight:700;">Mark Absent</button></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center; font-weight:700;">3</td>
+                                            <td style="font-family:monospace; font-weight:700;">90456789</td>
+                                            <td style="font-weight:700; color:#0f172a;">Amitabh Ghosh</td>
+                                            <td>Dy. General Manager (Mining)</td>
+                                            <td><span style="background:#dcfce7; color:#15803d; padding:2px 8px; border-radius:4px; font-weight:700; font-size:11.5px;">ECL</span></td>
+                                            <td style="font-size:12px; color:#64748b;">Today, 09:35 AM</td>
+                                            <td><span style="background:#dcfce7; color:#15803d; padding:3px 10px; border-radius:12px; font-size:11.5px; font-weight:700;">✅ Present (QR Scan)</span></td>
+                                            <td style="text-align:center;"><button type="button" style="background:#fee2e2; color:#b91c1c; border:none; padding:3px 8px; border-radius:4px; font-size:11px; cursor:pointer; font-weight:700;">Mark Absent</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+<!-- SECTION 8: FACULTY MASTER DIRECTORY -->
+                <div id="section-fac-master" class="section-view">
+                    
+                    <!-- ADD NEW FACULTY MASTER FORM -->
+                    <div class="table-card" style="margin-bottom:24px;">
+                        <div style="border-bottom:1px solid #e2e8f0; padding-bottom:12px; margin-bottom:16px;">
+                            <h3 style="margin:0; font-size:18px; font-weight:800; color:#1b4332;">➕ Add New Faculty Master Record</h3>
+                            <p style="margin:4px 0 0 0; font-size:13px; color:#64748b;">Add internal core faculty or external visiting expert profiles to assign programs and monitor teaching progress.</p>
+                        </div>
+
+                        <form id="coord-add-faculty-form" onsubmit="handleCoordAddFacultySubmit(event)">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                <div class="form-group">
+                                    <label for="coord-fac-name">Faculty Name *</label>
+                                    <input type="text" id="coord-fac-name" class="form-control" placeholder="e.g. Dr. Rajesh Sharma" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="coord-fac-email">Email Address *</label>
+                                    <input type="email" id="coord-fac-email" class="form-control" placeholder="e.g. rsharma@iicm.ac.in" required>
+                                </div>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+                                <div class="form-group">
+                                    <label for="coord-fac-phone">Phone Number</label>
+                                    <input type="text" id="coord-fac-phone" class="form-control" placeholder="+91 9876543210">
+                                </div>
+                                <div class="form-group">
+                                    <label for="coord-fac-type">Faculty Type</label>
+                                    <select id="coord-fac-type" class="form-control">
+                                        <option value="INTERNAL">Internal Core Faculty (IICM / CIL)</option>
+                                        <option value="EXTERNAL">External Visiting Expert</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="coord-fac-spec">Specialization / Domain</label>
+                                    <input type="text" id="coord-fac-spec" class="form-control" placeholder="e.g. Mining Engineering &amp; Safety">
+                                </div>
+                            </div>
+
+                            <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:16px;">
+                                <button type="submit" class="btn-filter" style="background:#1b4332; color:#fff; font-weight:700; padding:10px 22px; font-size:14px;">
+                                    ➕ Save Faculty Master Record
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- FACULTY MASTER LIVE PROGRESS CARDS GRID -->
+                    <div class="table-card">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:1px solid #e2e8f0; padding-bottom:12px;">
+                            <div>
+                                <h3 style="margin:0; font-size:18px; font-weight:800; color:#1b4332;">👨‍🏫 Faculty Master Live Teaching Progress Cards</h3>
+                                <p style="margin:4px 0 0 0; font-size:13px; color:#64748b;">Live card overview of active faculty, assigned lectures, session completion progress %, and status.</p>
+                            </div>
+                            <button type="button" class="btn-action-sm" style="background:#f1f5f9; color:#0f172a; font-weight:700; border:1px solid #cbd5e1; padding:6px 14px;" onclick="loadCoordFacultyMasterTable()">🔄 Refresh Faculty Cards</button>
+                        </div>
+
+                        <!-- Grid Container for Cards -->
+                        <div id="coord-faculty-cards-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px;">
+                            <!-- Injected dynamically by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 4: NOTIFICATIONS VIEW -->
+
+                <!-- SECTION: HONORARIUM MODULE -->
+                <div id="section-honorarium" class="section-view">
+
+                    <!-- Premium Header Card — No Steps -->
+                    <div style="background: linear-gradient(135deg, #022c22 0%, #064e3b 60%, #047857 100%); border-radius: 16px; padding: 28px 32px; color: #ffffff; margin-bottom: 24px; box-shadow: 0 10px 32px rgba(6,78,59,0.22); position:relative; overflow:hidden;">
+                        <!-- Decorative circle -->
+                        <div style="position:absolute; top:-40px; right:-40px; width:180px; height:180px; border-radius:50%; background:rgba(255,255,255,0.05); pointer-events:none;"></div>
+                        <div style="position:absolute; bottom:-60px; right:120px; width:140px; height:140px; border-radius:50%; background:rgba(52,211,153,0.07); pointer-events:none;"></div>
+
+                        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;">
+                            <div>
+                                <div style="display:flex; align-items:center; gap:12px; margin-bottom:8px;">
+                                    <div style="width:46px; height:46px; background:rgba(52,211,153,0.18); border:1.5px solid rgba(52,211,153,0.4); border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:22px;">💰</div>
+                                    <div>
+                                        <h2 style="margin:0; font-size:22px; font-weight:900; color:#ffffff; letter-spacing:-0.3px;">Honorarium Management</h2>
+                                        <p style="margin:2px 0 0 0; font-size:13px; color:#a7f3d0; font-weight:600;">Payment Lifecycle for Faculty, Trainers &amp; Guest Speakers</p>
+                                    </div>
+                                </div>
+                                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+                                    <span style="background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); padding:5px 14px; border-radius:20px; font-size:12px; font-weight:700; color:#d1fae5;">🔄 Auto-fetch Session</span>
+                                    <span style="background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); padding:5px 14px; border-radius:20px; font-size:12px; font-weight:700; color:#d1fae5;">✅ Finance Verification</span>
+                                    <span style="background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.2); padding:5px 14px; border-radius:20px; font-size:12px; font-weight:700; color:#d1fae5;">🏛️ GM Approval</span>
+                                    <span style="background:rgba(52,211,153,0.2); border:1px solid rgba(52,211,153,0.4); padding:5px 14px; border-radius:20px; font-size:12px; font-weight:700; color:#34d399;">🧾 Payment &amp; Voucher</span>
+                                </div>
+                            </div>
+                            <div style="display:flex; flex-direction:column; gap:10px; align-items:flex-end;">
+                                <button type="button" onclick="openGenerateHonorariumModal()" style="background:#34d399; color:#022c22; border:none; font-size:14px; font-weight:800; padding:12px 24px; border-radius:10px; cursor:pointer; display:flex; align-items:center; gap:8px; box-shadow:0 4px 14px rgba(52,211,153,0.3); transition:all 0.2s;" onmouseover="this.style.background='#6ee7b7'" onmouseout="this.style.background='#34d399'">
+                                    ➕ Generate Honorarium Bill
+                                </button>
+                                <span style="font-size:12px; color:#6ee7b7; font-weight:600; text-align:right;">After programme completion</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Summary Stat Cards -->
+                    <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:18px; margin-bottom:24px;">
+                        <div style="background:#ffffff; border:1.5px solid #e2e8f0; border-radius:14px; padding:20px; box-shadow:0 2px 10px rgba(0,0,0,0.05); display:flex; flex-direction:column; gap:4px;">
+                            <div style="font-size:28px; font-weight:900; color:#064e3b;" id="hon-stat-total">4</div>
+                            <div style="font-size:13px; font-weight:700; color:#334155;">Total Honorarium Bills</div>
+                            <div style="font-size:11.5px; color:#10b981; font-weight:700; margin-top:2px;">● Lifecycle Active</div>
+                        </div>
+                        <div style="background:#ffffff; border:1.5px solid #e2e8f0; border-radius:14px; padding:20px; box-shadow:0 2px 10px rgba(0,0,0,0.05); display:flex; flex-direction:column; gap:4px;">
+                            <div style="font-size:28px; font-weight:900; color:#d97706;" id="hon-stat-pending">1</div>
+                            <div style="font-size:13px; font-weight:700; color:#334155;">Pending GM Sanction</div>
+                            <div style="font-size:11.5px; color:#d97706; font-weight:700; margin-top:2px;">● Finance Audited</div>
+                        </div>
+                        <div style="background:#ffffff; border:1.5px solid #e2e8f0; border-radius:14px; padding:20px; box-shadow:0 2px 10px rgba(0,0,0,0.05); display:flex; flex-direction:column; gap:4px;">
+                            <div style="font-size:28px; font-weight:900; color:#2563eb;" id="hon-stat-disbursed">₹ 27,000</div>
+                            <div style="font-size:13px; font-weight:700; color:#334155;">Total Disbursed Payments</div>
+                            <div style="font-size:11.5px; color:#2563eb; font-weight:700; margin-top:2px;">● Released &amp; Transferred</div>
+                        </div>
+                        <div style="background:#ffffff; border:1.5px solid #e2e8f0; border-radius:14px; padding:20px; box-shadow:0 2px 10px rgba(0,0,0,0.05); display:flex; flex-direction:column; gap:4px;">
+                            <div style="font-size:28px; font-weight:900; color:#059669;" id="hon-stat-vouchers">3 Uploaded</div>
+                            <div style="font-size:13px; font-weight:700; color:#334155;">Stores Metadata Vouchers</div>
+                            <div style="font-size:11.5px; color:#059669; font-weight:700; margin-top:2px;">● UTR &amp; Receipt Logged</div>
+                        </div>
+                    </div>
+
+                    <!-- Main Data Table Container -->
+                    <div class="table-card">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; border-bottom:1px solid #e2e8f0; padding-bottom:14px; flex-wrap:wrap; gap:12px;">
+                            <div>
+                                <h3 style="margin:0; font-size:20px; font-weight:800; color:#064e3b;">Honorarium Payment Register</h3>
+                                <p style="margin:4px 0 0 0; font-size:14px; color:#64748b;">A compact payment view. Expand a session summary only when you need the lecture-wise details.</p>
+                            </div>
+                            <div>
+                                <input type="text" id="hon-search-input" class="form-control" placeholder="🔍 Search Faculty, Bill No, UTR..." style="width:280px; padding:9px 14px; font-size:13.5px; border:1px solid #cbd5e1; border-radius:8px;" oninput="loadHonorariumTable()">
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Bill &amp; Faculty</th>
+                                        <th>Programme &amp; Sessions</th>
+                                        <th>Net Payable</th>
+                                        <th>Status</th>
+                                        <th>Payment Reference</th>
+                                        <th style="text-align:right;">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="honorarium-table-body">
+                                    <!-- Injected dynamically by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ═══════════════════════════════════════════════════════ -->
+                <!-- SECTION: MIS REPORT MODULE (STEP 12)                    -->
+                <!-- ═══════════════════════════════════════════════════════ -->
+
+                <!-- SECTION: MIS REPORT MODULE -->
+                <div id="section-mis" class="section-view">
+
+                    <!-- Header Card -->
+                    <div style="background:linear-gradient(135deg,#1e3a5f 0%,#1e40af 60%,#2563eb 100%); border-radius:16px; padding:28px 32px; color:#fff; margin-bottom:24px; box-shadow:0 10px 32px rgba(37,99,235,0.2); position:relative; overflow:hidden;">
+                        <div style="position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,0.05);pointer-events:none;"></div>
+                        <div style="position:absolute;bottom:-50px;right:140px;width:130px;height:130px;border-radius:50%;background:rgba(96,165,250,0.08);pointer-events:none;"></div>
+                        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;">
+                            <div>
+                                <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+                                    <div style="width:46px;height:46px;background:rgba(96,165,250,0.2);border:1.5px solid rgba(96,165,250,0.4);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;">📊</div>
+                                    <div>
+                                        <h2 style="margin:0;font-size:22px;font-weight:900;color:#fff;letter-spacing:-0.3px;">MIS Report — Step 12</h2>
+                                        <p style="margin:2px 0 0 0;font-size:13px;color:#bfdbfe;font-weight:600;">Management Information System — Database to PDF / Excel Export</p>
+                                    </div>
+                                </div>
+                                <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:10px;">
+                                    <span style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;color:#dbeafe;">📅 Year &amp; Quarter</span>
+                                    <span style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;color:#dbeafe;">🎓 Programme &amp; Faculty</span>
+                                    <span style="background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;color:#dbeafe;">📋 Attendance &amp; Feedback</span>
+                                    <span style="background:rgba(96,165,250,0.2);border:1px solid rgba(96,165,250,0.4);padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;color:#93c5fd;">💰 Payment Status</span>
+                                </div>
+                            </div>
+                            <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+                                <button type="button" onclick="exportMISExcel()" style="background:#22c55e;color:#fff;border:none;font-size:13.5px;font-weight:800;padding:11px 20px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 4px 14px rgba(34,197,94,0.3);transition:all 0.2s;" onmouseover="this.style.background='#16a34a'" onmouseout="this.style.background='#22c55e'">
+                                    📥 Export Current View
+                                </button>
+                                <button type="button" onclick="exportMISFullExcel()" style="background:#dbeafe;color:#1d4ed8;border:1px solid #93c5fd;font-size:13.5px;font-weight:800;padding:11px 20px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:all 0.2s;" onmouseover="this.style.background='#bfdbfe'" onmouseout="this.style.background='#dbeafe'">
+                                    📚 Full Excel Workbook
+                                </button>
+                                <button type="button" onclick="exportMISPDF()" style="background:#ef4444;color:#fff;border:none;font-size:13.5px;font-weight:800;padding:11px 20px;border-radius:10px;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 4px 14px rgba(239,68,68,0.3);transition:all 0.2s;" onmouseover="this.style.background='#dc2626'" onmouseout="this.style.background='#ef4444'">
+                                    📄 Export PDF
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filter Controls -->
+                    <div class="table-card" style="margin-bottom:20px; padding:18px 24px;">
+                        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+                            <span style="font-size:14px;font-weight:800;color:#0f172a;">🔍 Filter By:</span>
+                            <select id="mis-filter-year" class="form-control" style="width:130px;" onchange="loadMISReport()">
+                                <option value="2026">2026</option>
+                                <option value="2025">2025</option>
+                                <option value="2024">2024</option>
+                            </select>
+                            <select id="mis-filter-quarter" class="form-control" style="width:160px;" onchange="loadMISReport()">
+                                <option value="">All Quarters</option>
+                                <option value="1">Q1 (Jan–Mar)</option>
+                                <option value="2">Q2 (Apr–Jun)</option>
+                                <option value="3">Q3 (Jul–Sep)</option>
+                                <option value="4">Q4 (Oct–Dec)</option>
+                            </select>
+                            <select id="mis-filter-programme" class="form-control" style="width:220px;" onchange="loadMISReport()">
+                                <option value="">All Programmes</option>
+                            </select>
+                            <select id="mis-filter-faculty" class="form-control" style="width:200px;" onchange="loadMISReport()">
+                                <option value="">All Faculty</option>
+                            </select>
+                            <button type="button" onclick="resetMISFilters()" style="background:#f1f5f9;color:#475569;border:1.5px solid #e2e8f0;font-size:13px;font-weight:700;padding:9px 16px;border-radius:8px;cursor:pointer;">↺ Reset</button>
+                            <button type="button" onclick="exportSelectedFacultyExcel()" style="background:#eff6ff;color:#1d4ed8;border:1.5px solid #bfdbfe;font-size:13px;font-weight:700;padding:9px 16px;border-radius:8px;cursor:pointer;">👤 Export Selected Faculty</button>
+                        </div>
+                    </div>
+
+                    <!-- KPI Summary Cards -->
+                    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:24px;">
+                        <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,0.05);">
+                            <div style="font-size:28px;font-weight:900;color:#1e40af;" id="mis-kpi-programmes">—</div>
+                            <div style="font-size:13px;font-weight:700;color:#334155;margin-top:2px;">Programmes Conducted</div>
+                            <div style="font-size:11.5px;color:#2563eb;font-weight:700;margin-top:4px;">● Total in period</div>
+                        </div>
+                        <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,0.05);">
+                            <div style="font-size:28px;font-weight:900;color:#059669;" id="mis-kpi-participants">—</div>
+                            <div style="font-size:13px;font-weight:700;color:#334155;margin-top:2px;">Participants Trained</div>
+                            <div style="font-size:11.5px;color:#059669;font-weight:700;margin-top:4px;">● Selected nominees</div>
+                        </div>
+                        <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,0.05);">
+                            <div style="font-size:28px;font-weight:900;color:#d97706;" id="mis-kpi-attendance">—</div>
+                            <div style="font-size:13px;font-weight:700;color:#334155;margin-top:2px;">Avg. Attendance Rate</div>
+                            <div style="font-size:11.5px;color:#d97706;font-weight:700;margin-top:4px;">● QR scan logs</div>
+                        </div>
+                        <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;padding:20px;box-shadow:0 2px 10px rgba(0,0,0,0.05);">
+                            <div style="font-size:28px;font-weight:900;color:#7c3aed;" id="mis-kpi-disbursed">—</div>
+                            <div style="font-size:13px;font-weight:700;color:#334155;margin-top:2px;">Total Honorarium Paid</div>
+                            <div style="font-size:11.5px;color:#7c3aed;font-weight:700;margin-top:4px;">● Net disbursed (₹)</div>
+                        </div>
+                    </div>
+
+                    <!-- Report Tabs -->
+                    <div class="table-card">
+                        <!-- Tab Navigation -->
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:22px;border-bottom:2px solid #e2e8f0;padding-bottom:16px;">
+                            <button type="button" id="mis-tab-year" onclick="switchMISTab('year')" class="mis-tab-btn mis-tab-active" style="background:#1e40af;color:#fff;border:none;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">📅 Year-wise</button>
+                            <button type="button" id="mis-tab-quarter" onclick="switchMISTab('quarter')" class="mis-tab-btn" style="background:#f1f5f9;color:#475569;border:1.5px solid #e2e8f0;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">📆 Quarter-wise</button>
+                            <button type="button" id="mis-tab-programme" onclick="switchMISTab('programme')" class="mis-tab-btn" style="background:#f1f5f9;color:#475569;border:1.5px solid #e2e8f0;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">🎓 Programme-wise</button>
+                            <button type="button" id="mis-tab-faculty" onclick="switchMISTab('faculty')" class="mis-tab-btn" style="background:#f1f5f9;color:#475569;border:1.5px solid #e2e8f0;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">👤 Faculty-wise</button>
+                            <button type="button" id="mis-tab-attendance" onclick="switchMISTab('attendance')" class="mis-tab-btn" style="background:#f1f5f9;color:#475569;border:1.5px solid #e2e8f0;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">✅ Attendance</button>
+                            <button type="button" id="mis-tab-feedback" onclick="switchMISTab('feedback')" class="mis-tab-btn" style="background:#f1f5f9;color:#475569;border:1.5px solid #e2e8f0;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">⭐ Feedback</button>
+                            <button type="button" id="mis-tab-payment" onclick="switchMISTab('payment')" class="mis-tab-btn" style="background:#f1f5f9;color:#475569;border:1.5px solid #e2e8f0;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">💰 Payment</button>
+                        </div>
+
+                        <!-- Tab Title -->
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                            <div>
+                                <h3 id="mis-tab-title" style="margin:0;font-size:18px;font-weight:800;color:#1e40af;">📅 Year-wise Report</h3>
+                                <p id="mis-tab-subtitle" style="margin:4px 0 0 0;font-size:13.5px;color:#64748b;">Annual programme summary and honorarium disbursement data</p>
+                            </div>
+                            <span id="mis-row-count" style="background:#eff6ff;border:1px solid #bfdbfe;color:#1d4ed8;font-size:13px;font-weight:700;padding:6px 14px;border-radius:20px;">— Records</span>
+                        </div>
+
+                        <!-- Dynamic Table -->
+                        <div class="table-responsive">
+                            <table class="data-table" id="mis-main-table">
+                                <thead id="mis-table-head">
+                                    <!-- Injected by JS per tab -->
+                                </thead>
+                                <tbody id="mis-table-body">
+                                    <!-- Injected by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <!-- ═══════════════════════════════════════════════════════ -->
+
+                
+    <script src="auth.js"></script>
+    <script src="program_coordinator.js?v=20260819-module-fixes"></script>
+    <script src="program-design.js?v=20260819-module-fixes"></script>
+    <script src="../assets/js/mobile-nav.js?v=20260806"></script>
+</body>
+</html>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IICM — Executive Trainee Portal</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px 24px;
+            box-shadow: var(--card-shadow);
+            border-left: 5px solid var(--primary-green);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-card.stat-pending { border-left-color: #ffc107; }
+        .stat-card.stat-accepted { border-left-color: #28a745; }
+
+        .stat-val {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1b4332;
+            margin-top: 4px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .invitation-detail-box {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .detail-row {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            gap: 10px;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .detail-label {
+            font-weight: 700;
+            color: #495057;
+        }
+
+        .section-view { display: none; }
+        .section-view.active { display: block; }
+
+        .scanner-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+            box-shadow: var(--card-shadow);
+            border-top: 4px solid var(--primary-green);
+            text-align: center;
+        }
+
+        /* Certificate Styles */
+        .certificate-card {
+            background: #fffdf7;
+            border: 10px solid #1b4332;
+            padding: 40px;
+            text-align: center;
+            border-radius: 12px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .cert-header {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1b4332;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .cert-sub {
+            font-size: 14px;
+            color: #6c757d;
+            margin-bottom: 24px;
+            font-weight: 600;
+        }
+
+        .cert-body-text {
+            font-size: 15px;
+            color: #2b2b2b;
+            line-height: 1.6;
+            margin: 20px 0;
+        }
+
+        .cert-trainee-name {
+            font-size: 26px;
+            font-weight: 800;
+            color: #d4af37;
+            text-transform: uppercase;
+            border-bottom: 2px solid #d4af37;
+            display: inline-block;
+            padding-bottom: 4px;
+            margin: 10px 0;
+        }
+
+        .cert-seal {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            background: #d4af37;
+            color: #1b4332;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 12px;
+            margin: 20px auto 10px auto;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+        }
+    </style>
+    <link rel="stylesheet" href="../assets/css/mobile-responsive.css?v=20260806">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">IICM Trainee Portal</div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-item active" id="nav-invitations"><a href="javascript:void(0)" onclick="showSection('invitations')">📩 My Invitations</a></li>
+                <li class="sidebar-item" id="nav-programs"><a href="javascript:void(0)" onclick="showSection('programs')">🎓 My Programs & Certificates</a></li>
+                <li class="sidebar-item" id="nav-scan"><a href="javascript:void(0)" onclick="showSection('scan')">📷 Scan QR Attendance</a></li>
+                <li class="sidebar-item" id="nav-notifications"><a href="javascript:void(0)" onclick="showSection('notifications')">🔔 Notifications</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            <!-- Top Navbar -->
+            <header class="top-navbar">
+                <div style="font-weight: 700; color: #1b4332; font-size: 16px;" id="page-title">
+                    Executive Trainee Portal — Official Training Invitations
+                </div>
+                <div class="user-profile-badge">
+                    <div id="user-profile-info"></div>
+                    <button type="button" onclick="logoutUser()" class="btn-logout">Sign Out</button>
+                </div>
+            </header>
+
+            <div class="content-body">
+
+                <!-- Summary Cards -->
+                <div class="stat-grid">
+                    <div class="stat-card">
+                        <div>
+                            <div class="stat-label">Total Invitations</div>
+                            <div class="stat-val" id="stat-total">0</div>
+                        </div>
+                        <div style="font-size: 32px;">📩</div>
+                    </div>
+
+                    <div class="stat-card stat-accepted">
+                        <div>
+                            <div class="stat-label">Confirmed Programs</div>
+                            <div class="stat-val" id="stat-accepted">0</div>
+                        </div>
+                        <div style="font-size: 32px;">✅</div>
+                    </div>
+
+                    <div class="stat-card stat-pending">
+                        <div>
+                            <div class="stat-label">Pending Action</div>
+                            <div class="stat-val" id="stat-pending">0</div>
+                        </div>
+                        <div style="font-size: 32px;">⏳</div>
+                    </div>
+                </div>
+
+                <!-- SECTION 1: MY INVITATIONS TABLE -->
+                <div id="section-invitations" class="section-view active">
+                    <div class="dash-card">
+                        <h3 style="color: #1b4332; margin-bottom: 20px;">Received Official Program Invitations</h3>
+
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Program Title</th>
+                                        <th>Subsidiary Company</th>
+                                        <th>Venue & Complex</th>
+                                        <th>Schedule Dates</th>
+                                        <th>EIS & Trainee</th>
+                                        <th>Confirmation Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="trainee-invitations-body">
+                                    <!-- Injected by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 2: MY CONFIRMED PROGRAMS TABLE -->
+                <div id="section-programs" class="section-view">
+                    <div class="dash-card">
+                        <h3 style="color: #1b4332; margin-bottom: 20px;">Confirmed Training Programs, Feedback & Certificates</h3>
+
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Program Title</th>
+                                        <th>Venue</th>
+                                        <th>Dates</th>
+                                        <th>Duration</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="trainee-programs-body">
+                                    <!-- Injected by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 3: SCAN QR ATTENDANCE -->
+                <div id="section-scan" class="section-view">
+                    <div class="scanner-card">
+                        <div style="font-size:48px; margin-bottom:10px;">📷</div>
+                        <h3 style="color:#1b4332; margin-bottom:8px;">Scan Session Attendance QR Code</h3>
+                        <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Enter the Session QR Code token displayed on the classroom screen to mark your attendance.</p>
+                        
+                        <div id="scan-alert-box" class="alert"></div>
+
+                        <form onsubmit="handleMarkAttendance(event)">
+                            <div class="form-group">
+                                <label for="qr-token-input">Session QR Code Token *</label>
+                                <input type="text" id="qr-token-input" class="form-control" placeholder="e.g. IICM_QR_10_FA459987" required style="font-family:monospace; text-align:center; font-size:16px; font-weight:700;">
+                            </div>
+
+                            <button type="submit" class="btn-primary" style="width:100%; justify-content:center; padding:12px;">
+                                ✅ Mark My Attendance
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- SECTION 4: NOTIFICATIONS VIEW -->
+                <div id="section-notifications" class="section-view">
+                    <div class="dash-card">
+                        <h3 style="color: #1b4332; margin-bottom: 20px;">Trainee Notifications</h3>
+                        <div id="notifications-list">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Feedback Submission Modal -->
+    <!-- Feedback Submission Modal -->
+    <div class="modal-overlay" id="feedback-modal" style="display:none;">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Submit Executive Program Feedback</h3>
+                <button type="button" class="modal-close" onclick="closeFeedbackModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div style="background:#ecfdf5; border:1px solid #a7f3d0; border-radius:8px; padding:12px 14px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+                    <div>
+                        <strong style="color:#065f46; font-size:13px;">Full 33-Field Evaluation Available</strong>
+                        <p style="color:#047857; font-size:12px; margin:2px 0 0;">Fill complete faculty sessions, services matrix, and coordinator feedback</p>
+                    </div>
+                    <button type="button" onclick="openDetailedFeedbackPortal()" class="btn-secondary btn-sm" style="background:#ffffff; color:#065f46; border:1px solid #059669; font-weight:700; cursor:pointer;">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Full Form
+                    </button>
+                </div>
+                <h4 id="fb-program-title" style="color:#1b4332; margin-bottom:16px;">-</h4>
+                <form id="feedback-form" onsubmit="submitFeedbackForm(event)">
+                    <input type="hidden" id="fb-program-id">
+                    
+                    <div class="form-group">
+                        <label>Overall Program Rating (1 to 5 Stars)</label>
+                        <select id="fb-rating" class="form-control">
+                            <option value="5">5 Stars — Excellent</option>
+                            <option value="4">4 Stars — Very Good</option>
+                            <option value="3">3 Stars — Good</option>
+                            <option value="2">2 Stars — Average</option>
+                            <option value="1">1 Star — Poor</option>
+                        </select>
+                    </div>
+
+                    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
+                        <div class="form-group">
+                            <label>Course Content</label>
+                            <select id="fb-content" class="form-control">
+                                <option value="5">5 Stars</option>
+                                <option value="4">4 Stars</option>
+                                <option value="3">3 Stars</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Faculty Quality</label>
+                            <select id="fb-faculty" class="form-control">
+                                <option value="5">5 Stars</option>
+                                <option value="4">4 Stars</option>
+                                <option value="3">3 Stars</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Venue Facilities</label>
+                            <select id="fb-facility" class="form-control">
+                                <option value="5">5 Stars</option>
+                                <option value="4">4 Stars</option>
+                                <option value="3">3 Stars</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Comments & Suggestions</label>
+                        <textarea id="fb-comments" class="form-control" rows="3" placeholder="Share your key takeaways or suggestions for improvement..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary" style="width:100%;">Submit Feedback</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Executive Certificate Modal -->
+    <div class="modal-overlay" id="cert-modal" style="display:none;">
+        <div class="modal-card" style="max-width: 800px;">
+            <div class="modal-header">
+                <h3>Official IICM Executive Completion Certificate</h3>
+                <button type="button" class="modal-close" onclick="closeCertModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="cert-blocked-box" class="alert alert-danger" style="display:none;"></div>
+                <div id="cert-display-card" class="certificate-card" style="display:none;">
+                    <div class="cert-header">Indian Institute of Coal Management</div>
+                    <div class="cert-sub">Kanke Road, Ranchi, Jharkhand — 834006</div>
+                    
+                    <div style="font-size:13px; text-transform:uppercase; letter-spacing:2px; color:#1b4332; font-weight:700;">Certificate of Completion</div>
+                    
+                    <div class="cert-body-text">This is to certify that</div>
+                    <div class="cert-trainee-name" id="cert-name">-</div>
+                    <div class="cert-body-text">
+                        representing <strong><span id="cert-company">-</span></strong> has successfully completed the Management Development Program on<br>
+                        <strong><span id="cert-title" style="font-size:18px; color:#1b4332;">-</span></strong><br>
+                        conducted from <span id="cert-dates">-</span> with an attendance record of <strong><span id="cert-pct">-</span></strong>.
+                    </div>
+
+                    <div class="cert-seal">IICM<br>SEAL</div>
+                    <small style="font-size:11px; color:#6c757d; display:block; margin-top:8px;" id="cert-number">Certificate Ref: -</small>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="closeCertModal()">Close</button>
+                <button type="button" class="btn-success" id="btn-print-cert" onclick="window.print()">🖨️ Print / Download Certificate</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../assets/js/api-fallback.js"></script>
+    <script src="auth.js"></script>
+    <script src="trainee.js"></script>
+    <script src="../assets/js/mobile-nav.js?v=20260806"></script>
+</body>
+</html>

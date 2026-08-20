@@ -1,0 +1,211 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IICM — Executive System Reports & Analytics</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .report-tab-bar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .report-tab-btn {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            color: #495057;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .report-tab-btn.active, .report-tab-btn:hover {
+            background: var(--primary-green);
+            color: #ffffff;
+            border-color: var(--primary-green);
+        }
+
+        .export-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .report-section { display: none; }
+        .report-section.active { display: block; }
+
+        @media print {
+            .sidebar, .top-navbar, .report-tab-bar, .export-actions, .btn-logout {
+                display: none !important;
+            }
+            .main-content { margin: 0; padding: 0; background: #fff; }
+            .dash-card { box-shadow: none; border: none; }
+        }
+    </style>
+    <link rel="stylesheet" href="../assets/css/mobile-responsive.css?v=20260806">
+</head>
+<body>
+    <div class="dashboard-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">IICM Executive Portal</div>
+            <ul class="sidebar-nav">
+                <li class="sidebar-item active"><a href="#">📊 System Reports</a></li>
+                <li class="sidebar-item"><a href="../program_coordinator/dashboard.html">🎓 Coordinator Portal</a></li>
+                <li class="sidebar-item"><a href="../gm/dashboard.html">🏛️ GM Dashboard</a></li>
+                <li class="sidebar-item"><a href="../company/dashboard.html">🏢 Company Portal</a></li>
+            </ul>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            <!-- Top Navbar -->
+            <header class="top-navbar">
+                <div style="font-weight: 700; color: #1b4332; font-size: 16px;" id="page-title">
+                    Executive Analytics & Comprehensive System Reports
+                </div>
+                <div class="user-profile-badge">
+                    <div id="user-profile-info"></div>
+                    <button type="button" onclick="logoutUser()" class="btn-logout">Sign Out</button>
+                </div>
+            </header>
+
+            <div class="content-body">
+
+                <!-- Export Action Bar -->
+                <div class="export-actions">
+                    <button type="button" class="btn-secondary" onclick="printReportPDF()">🖨️ Print / Export PDF</button>
+                    <button type="button" class="btn-success" onclick="exportReportExcel()">📥 Export Current Report to Excel (CSV)</button>
+                </div>
+
+                <!-- Report Navigation Tabs -->
+                <div class="report-tab-bar">
+                    <button class="report-tab-btn active" id="tab-program" onclick="switchReportTab('program')">📋 Program Summary Report</button>
+                    <button class="report-tab-btn" id="tab-attendance" onclick="switchReportTab('attendance')">📅 Attendance Matrix Report</button>
+                    <button class="report-tab-btn" id="tab-feedback" onclick="switchReportTab('feedback')">⭐ Trainee Feedback Analytics</button>
+                    <button class="report-tab-btn" id="tab-payment" onclick="switchReportTab('payment')">💰 Faculty Remuneration Report</button>
+                </div>
+
+                <!-- SECTION 1: PROGRAM SUMMARY REPORT -->
+                <div id="section-program-report" class="report-section active">
+                    <div class="dash-card">
+                        <h3 style="color: #1b4332; margin-bottom: 20px;">Master Program Summary & Status Matrix</h3>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Code</th>
+                                        <th>Program Title</th>
+                                        <th>Type</th>
+                                        <th>Venue</th>
+                                        <th>Schedule Dates</th>
+                                        <th>Duration</th>
+                                        <th>Budget</th>
+                                        <th>Nominations</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="report-program-tbody">
+                                    <!-- Injected by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 2: ATTENDANCE MATRIX REPORT -->
+                <div id="section-attendance-report" class="report-section">
+                    <div class="dash-card">
+                        <h3 style="color: #1b4332; margin-bottom: 20px;">Trainee Attendance & Certificate Eligibility Matrix</h3>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>EIS Number</th>
+                                        <th>Trainee Name</th>
+                                        <th>Company</th>
+                                        <th>Program Title</th>
+                                        <th>Total Sessions</th>
+                                        <th>Attended</th>
+                                        <th>Attendance %</th>
+                                        <th>Certificate Eligible (≥ 75%)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="report-attendance-tbody">
+                                    <!-- Injected by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 3: FEEDBACK ANALYTICS REPORT -->
+                <div id="section-feedback-report" class="report-section">
+                    <div class="dash-card">
+                        <h3 style="color: #1b4332; margin-bottom: 20px;">Trainee Feedback & Quality Satisfaction Ratings</h3>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Program Title</th>
+                                        <th>Trainee Name</th>
+                                        <th>Company</th>
+                                        <th>Overall Rating</th>
+                                        <th>Course Content</th>
+                                        <th>Faculty Quality</th>
+                                        <th>Venue Facilities</th>
+                                        <th>Comments</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="report-feedback-tbody">
+                                    <!-- Injected by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECTION 4: FACULTY PAYMENT REPORT -->
+                <div id="section-payment-report" class="report-section">
+                    <div class="dash-card">
+                        <h3 style="color: #1b4332; margin-bottom: 20px;">Faculty Honorarium & Remuneration Audit Report</h3>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Slip Ref</th>
+                                        <th>Faculty Name</th>
+                                        <th>Designation</th>
+                                        <th>Program Title</th>
+                                        <th>Sessions Conducted</th>
+                                        <th>Gross Remuneration</th>
+                                        <th>TDS Deduction (10%)</th>
+                                        <th>Net Payable</th>
+                                        <th>Audit Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="report-payment-tbody">
+                                    <!-- Injected by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="reports.js"></script>
+    <script src="../assets/js/mobile-nav.js?v=20260806"></script>
+</body>
+</html>

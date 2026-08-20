@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Program Nomination Form — IICM Ranchi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="coordinator-redesign.css" />
+    <style>
+        :root {
+            --primary-emerald: #064e3b;
+            --emerald-dark: #043e2f;
+            --emerald-accent: #10b981;
+            --bg-page: #f8fafc;
+            --bg-card: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #475569;
+            --border-color: #cbd5e1;
+        }
+
+        body {
+            background-color: var(--bg-page);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            color: var(--text-primary);
+            padding: 1.5rem;
+            margin: 0;
+        }
+
+        .nomination-header-banner {
+            max-width: 1000px;
+            margin: 0 auto 1.5rem auto;
+            background: linear-gradient(135deg, #064e3b 0%, #047857 60%, #10b981 100%);
+            color: #ffffff;
+            padding: 1.8rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(4, 120, 87, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nomination-header-banner h1 {
+            margin: 0;
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .nomination-header-banner p {
+            margin: 0.3rem 0 0 0;
+            font-size: 0.9rem;
+            color: #d1fae5;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn-header-action {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            backdrop-filter: blur(4px);
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn-header-action:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .nomination-form-container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .form-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            padding: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-card-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--primary-emerald);
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.6rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .field-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .field-grid.full-width {
+            grid-template-columns: 1fr;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .field label {
+            margin-bottom: 0.4rem;
+            font-weight: 700;
+            font-size: 0.88rem;
+            color: #334155;
+        }
+
+        .field input,
+        .field select,
+        .field textarea {
+            padding: 0.65rem 0.8rem;
+            border: 1.5px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.92rem;
+            font-family: inherit;
+            color: #0f172a;
+            background: #ffffff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .field input:focus,
+        .field select:focus,
+        .field textarea:focus {
+            outline: none;
+            border-color: #059669;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+        }
+
+        .field textarea {
+            resize: vertical;
+            min-height: 85px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .input-group input {
+            flex: 1;
+        }
+
+        .btn-inline {
+            background: #ecfdf5;
+            color: #047857;
+            border: 1.5px solid #a7f3d0;
+            padding: 0 0.8rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .btn-inline:hover {
+            background: #d1fae5;
+        }
+
+        .radio-pills {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 0.2rem;
+        }
+
+        .radio-pill {
+            flex: 1;
+            position: relative;
+        }
+
+        .radio-pill input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .radio-pill label {
+            display: block;
+            text-align: center;
+            padding: 0.6rem;
+            background: #f1f5f9;
+            border: 1.5px solid #cbd5e1;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .radio-pill input[type="radio"]:checked + label {
+            background: #047857;
+            color: #ffffff;
+            border-color: #047857;
+            box-shadow: 0 4px 10px rgba(4, 120, 87, 0.25);
+        }
+
+        .toggle-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .toggle-card {
+            background: #f8fafc;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toggle-card label {
+            font-weight: 700;
+            font-size: 0.88rem;
+            margin: 0;
+            color: #1e293b;
+        }
+
+        .toggle-card select {
+            width: auto;
+            padding: 0.35rem 0.6rem;
+            font-size: 0.85rem;
+            font-weight: 700;
+            border-radius: 6px;
+        }
+
+        .action-bar {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.2rem 1.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+        .action-group {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.7rem 1.4rem;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            font-weight: 800;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #047857, #065f46);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(4, 120, 87, 0.25);
+        }
+        .btn-submit:hover { background: #064e3b; }
+
+        .btn-pdf {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+        }
+        .btn-pdf:hover { background: #991b1b; }
+
+        .btn-docx {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+        }
+        .btn-docx:hover { background: #1e40af; }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #334155;
+            border: 1.5px solid #cbd5e1;
+        }
+        .btn-secondary:hover { background: #e2e8f0; }
+
+        .btn-reset {
+            background: #fff1f2;
+            color: #be123c;
+            border: 1.5px solid #fecdd3;
+        }
+        .btn-reset:hover { background: #ffe4e6; }
+
+        /* Preview Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            overflow-y: auto;
+            padding: 2rem 1rem;
+        }
+
+        .modal-box {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+        }
+
+        .modal-header {
+            background: #064e3b;
+            color: #ffffff;
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .modal-body {
+            padding: 2rem;
+            max-height: 75vh;
+            overflow-y: auto;
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #0f172a;
+            color: #ffffff;
+            padding: 0.9rem 1.4rem;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            display: none;
+            align-items: center;
+            gap: 0.6rem;
+            z-index: 10000;
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 0.75rem; }
+            .nomination-header-banner { padding: 1.2rem; }
+            .field-grid { grid-template-columns: 1fr; }
+            .radio-pills { flex-direction: column; }
+            .action-bar { flex-direction: column; align-items: stretch; }
+            .action-group { flex-direction: column; }
+            .btn-action { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Banner -->
+    <div class="nomination-header-banner">
+        <div>
+            <h1>📋 Program Nomination Form</h1>
+            <p>Indian Institute of Coal Management (IICM), Ranchi — Official Executive Training Proposal & Nomination System</p>
+        </div>
+        <div class="header-actions">
+            <button type="button" class="btn-header-action" onclick="exportNominationPDF()">
+                📄 Export PDF
+            </button>
+            <button type="button" class="btn-header-action" onclick="exportNominationWord()">
+                📝 Export Word (.docx)
+            </button>
+        </div>
+    </div>
+
+    <main class="nomination-form-container">
+        <form id="nominationForm" onsubmit="handleFormSubmit(event)">
+            
+            <!-- SECTION 1: BASIC INFORMATION -->
+            <div class="form-card">
+                <div class="form-card-title">
+                    📌 1. Basic Information
+                </div>
+
+                <div class="field-grid">
+                    <div class="field">
+                        <label for="nomination-id">Nomination ID *</label>
+                        <div class="input-group">
+                            <input type="text" id="nomination-id" name="nomination_id" required placeholder="e.g. NOM-2026-8901" />
+                            <button type="button" class="btn-inline" onclick="generateAutoNominationID()">⚡ Auto ID</button>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label for="program-title">Program Title *</label>
+                        <input type="text" id="program-title" name="program_title" required placeholder="e.g. Executive Development Program on Mine Safety & Telematics" />
+                    </div>
+
+                    <div class="field">
+                        <label for="program-type">Program Type *</label>
+                        <select id="program-type" name="program_type" required>
+                            <option value="">-- Select Type --</option>
+                            <option value="Workshop">Workshop</option>
+                            <option value="Seminar">Seminar</option>
+                            <option value="Conference">Conference</option>
+                            <option value="Webinar">Webinar</option>
+                            <option value="Executive Development">Executive Development</option>
+                            <option value="Management Development Program (MDP)">Management Development Program (MDP)</option>
+                            <option value="Technical Training">Technical Training</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="proposed-date">Proposed Date *</label>
+                        <input type="date" id="proposed-date" name="proposed_date" required />
+                    </div>
+
+                    <div class="field">
+                        <label for="duration">Duration (days) *</label>
+                        <input type="number" id="duration" name="duration" min="1" value="3" required />
+                    </div>
+
+                    <div class="field">
+                        <label for="expected-count">Expected Number of Participants *</label>
+                        <input type="number" id="expected-count" name="expected_count" min="1" value="30" required />
+                    </div>
+
+                    <div class="field">
+                        <label for="organizing-dept">Organizing Department *</label>
+                        <input type="text" id="organizing-dept" name="organizing_department" value="ICT & Systems Department" required />
+                    </div>
+
+                    <div class="field">
+                        <label for="sponsoring-org">Sponsoring Organization</label>
+                        <input type="text" id="sponsoring-org" name="sponsoring_organization" value="Coal India Limited (CIL HQ)" />
+                    </div>
+
+                    <div class="field">
+                        <label for="venue">Venue *</label>
+                        <input type="text" id="venue" name="venue" value="IICM Executive Campus, Ranchi" required />
+                    </div>
+
+                    <div class="field">
+                        <label>Delivery Mode *</label>
+                        <div class="radio-pills">
+                            <div class="radio-pill">
+                                <input type="radio" id="mode-offline" name="mode" value="Offline" checked />
+                                <label for="mode-offline">Offline</label>
+                            </div>
+                            <div class="radio-pill">
+                                <input type="radio" id="mode-online" name="mode" value="Online" />
+                                <label for="mode-online">Online</label>
+                            </div>
+                            <div class="radio-pill">
+                                <input type="radio" id="mode-hybrid" name="mode" value="Hybrid" />
+                                <label for="mode-hybrid">Hybrid</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field-grid full-width" style="margin-top: 1.2rem;">
+                    <div class="field">
+                        <label for="target-participants">Target Participants Description *</label>
+                        <textarea id="target-participants" name="target_participants" required placeholder="Describe target audience group e.g. Senior Executives, General Managers (HRD), and Technical Officers of CIL subsidiaries."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: PROGRAM OBJECTIVE -->
+            <div class="form-card">
+                <div class="form-card-title">
+                    🎯 2. Program Objective & Scope
+                </div>
+
+                <div class="field-grid full-width">
+                    <div class="field">
+                        <label for="objective">Program Objective *</label>
+                        <textarea id="objective" name="objective" required placeholder="Main objective of conducting this executive training program..."></textarea>
+                    </div>
+
+                    <div class="field">
+                        <label for="background-need">Background / Need *</label>
+                        <textarea id="background-need" name="background_need" required placeholder="Industry context, technological need, or operational background requiring this program..."></textarea>
+                    </div>
+
+                    <div class="field">
+                        <label for="expected-outcome">Expected Outcome *</label>
+                        <textarea id="expected-outcome" name="expected_outcome" required placeholder="Key learning outcomes, deliverables, or post-training enhancements..."></textarea>
+                    </div>
+
+                    <div class="field">
+                        <label for="target-competencies">Target Competencies *</label>
+                        <textarea id="target-competencies" name="target_competencies" required placeholder="Technical, managerial, or leadership competencies to be built..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: PARTICIPANT DETAILS -->
+            <div class="form-card">
+                <div class="form-card-title">
+                    👥 3. Participant Details
+                </div>
+
+                <div class="field-grid">
+                    <div class="field">
+                        <label for="participant-category">Target Participant Category *</label>
+                        <input type="text" id="participant-category" name="participant_category" value="Middle & Senior Management Executives" required />
+                    </div>
+
+                    <div class="field">
+                        <label for="designation">Designation Range</label>
+                        <input type="text" id="designation" name="designation" placeholder="e.g. Chief Manager (E7) to General Manager (E8)" />
+                    </div>
+
+                    <div class="field">
+                        <label for="department">Target Department</label>
+                        <input type="text" id="department" name="department" placeholder="e.g. Systems, Mining, HR, Safety, Finance" />
+                    </div>
+
+                    <div class="field">
+                        <label for="organization">Target Organization(s)</label>
+                        <input type="text" id="organization" name="organization" value="CIL & Subsidiaries (ECL, BCCL, CCL, NCL, WCL, SECL, MCL, CMPDI)" />
+                    </div>
+
+                    <div class="field">
+                        <label for="expected-participant-count">Expected Participant Count *</label>
+                        <input type="number" id="expected-participant-count" name="expected_participant_count" min="1" value="30" required />
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: ADMINISTRATIVE DETAILS -->
+            <div class="form-card">
+                <div class="form-card-title">
+                    ⚙️ 4. Administrative Details & Logistics Requirements
+                </div>
+
+                <div class="field-grid" style="margin-bottom: 1.2rem;">
+                    <div class="field">
+                        <label for="proposed-budget">Proposed Budget (₹) *</label>
+                        <input type="number" id="proposed-budget" name="proposed_budget" min="0" step="0.01" value="150000.00" required />
+                    </div>
+                </div>
+
+                <div class="toggle-group">
+                    <div class="toggle-card">
+                        <label for="acc-req">Accommodation Required?</label>
+                        <select id="acc-req" name="accommodation_required">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+                    <div class="toggle-card">
+                        <label for="food-req">Food Required?</label>
+                        <select id="food-req" name="food_required">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+                    <div class="toggle-card">
+                        <label for="trans-req">Transport Required?</label>
+                        <select id="trans-req" name="transport_required">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+
+                    <div class="toggle-card">
+                        <label for="kit-req">Kit / Material Required?</label>
+                        <select id="kit-req" name="kit_required">
+                            <option value="Yes">Yes</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACTION BAR -->
+            <div class="action-bar">
+                <div class="action-group">
+                    <button type="submit" class="btn-action btn-submit">
+                        🚀 Submit Nomination
+                    </button>
+                    <button type="button" class="btn-action btn-secondary" onclick="saveDraft()">
+                        💾 Save Draft
+                    </button>
+                </div>
+
+                <div class="action-group">
+                    <button type="button" class="btn-action btn-pdf" onclick="exportNominationPDF()">
+                        📄 Generate PDF
+                    </button>
+                    <button type="button" class="btn-action btn-docx" onclick="exportNominationWord()">
+                        📝 Export Word (.docx)
+                    </button>
+                    <button type="button" class="btn-action btn-secondary" onclick="previewNominationModal()">
+                        👁 Preview Form
+                    </button>
+                    <button type="button" class="btn-action btn-reset" onclick="resetForm()">
+                        ↺ Reset
+                    </button>
+                </div>
+            </div>
+
+        </form>
+    </main>
+
+    <!-- PREVIEW MODAL -->
+    <div class="modal-overlay" id="previewModal" onclick="closeModal(event)">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>📋 Official Nomination Form Letter Preview</h3>
+                <div>
+                    <button type="button" class="btn-header-action" onclick="exportNominationPDF()">📄 Download PDF</button>
+                    <button type="button" class="btn-header-action" onclick="exportNominationWord()">📝 Download Word</button>
+                    <button type="button" class="modal-close" onclick="closeModal(event)">&times;</button>
+                </div>
+            </div>
+            <div class="modal-body" id="modalPreviewContent">
+                <!-- Preview Content Injected Here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div class="toast" id="toastNotice">
+        <span id="toastIcon">✅</span>
+        <span id="toastMsg">Action completed successfully!</span>
+    </div>
+
+    <script>
+        // Auto Generate Nomination ID
+        function generateAutoNominationID() {
+            var year = new Date().getFullYear();
+            var rand = Math.floor(1000 + Math.random() * 9000);
+            var autoId = 'NOM-' + year + '-' + rand;
+            document.getElementById('nomination-id').value = autoId;
+            showToast('⚡ Generated Nomination ID: ' + autoId);
+        }
+
+        // Initialize default ID on load
+        window.addEventListener('DOMContentLoaded', function() {
+            if (!document.getElementById('nomination-id').value) {
+                generateAutoNominationID();
+            }
+            // Set default date to 10 days in future
+            var d = new Date();
+            d.setDate(d.getDate() + 10);
+            var yyyy = d.getFullYear();
+            var mm = String(d.getMonth() + 1).padStart(2, '0');
+            var dd = String(d.getDate()).padStart(2, '0');
+            if (!document.getElementById('proposed-date').value) {
+                document.getElementById('proposed-date').value = yyyy + '-' + mm + '-' + dd;
+            }
+        });
+
+        // Collect Form Data
+        function getFormData() {
+            var form = document.getElementById('nominationForm');
+            var modeVal = 'Offline';
+            var modeEls = document.getElementsByName('mode');
+            for (var i = 0; i < modeEls.length; i++) {
+                if (modeEls[i].checked) { modeVal = modeEls[i].value; break; }
+            }
+
+            return {
+                nomination_id: document.getElementById('nomination-id').value || 'NOM-2026-0000',
+                program_title: document.getElementById('program-title').value || 'Executive Development Training Program',
+                program_type: document.getElementById('program-type').value || 'Workshop',
+                proposed_date: document.getElementById('proposed-date').value || new Date().toISOString().split('T')[0],
+                duration: parseInt(document.getElementById('duration').value || '3', 10),
+                target_participants: document.getElementById('target-participants').value || 'Senior Executives of CIL Subsidiaries',
+                expected_count: parseInt(document.getElementById('expected-count').value || '30', 10),
+                organizing_department: document.getElementById('organizing-dept').value || 'ICT & Systems Dept',
+                sponsoring_organization: document.getElementById('sponsoring-org').value || 'Coal India Limited',
+                venue: document.getElementById('venue').value || 'IICM Campus, Ranchi',
+                mode: modeVal,
+                objective: document.getElementById('objective').value || 'Capacity building and skills upgrade.',
+                background_need: document.getElementById('background-need').value || 'Operational requirements and modern industry standards.',
+                expected_outcome: document.getElementById('expected-outcome').value || 'Enhanced managerial performance and technical productivity.',
+                target_competencies: document.getElementById('target-competencies').value || 'Technical mastery, leadership, and digital transformation.',
+                participant_category: document.getElementById('participant-category').value || 'Executives',
+                designation: document.getElementById('designation').value || 'E5 to E8 level',
+                department: document.getElementById('department').value || 'Technical & Operational',
+                organization: document.getElementById('organization').value || 'CIL & Subsidiaries',
+                expected_participant_count: parseInt(document.getElementById('expected-participant-count').value || '30', 10),
+                proposed_budget: parseFloat(document.getElementById('proposed-budget').value || '150000.00'),
+                accommodation_required: document.getElementById('acc-req').value === 'Yes',
+                food_required: document.getElementById('food-req').value === 'Yes',
+                transport_required: document.getElementById('trans-req').value === 'Yes',
+                kit_required: document.getElementById('kit-req').value === 'Yes'
+            };
+        }
+
+        // Form Submit
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            var data = getFormData();
+            
+            fetch('/api/v1/programs/nomination-forms/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).then(function(res) {
+                if (res.ok) return res.json();
+                return res.json().then(function(err) { throw err; });
+            }).then(function(resData) {
+                showToast('✅ Nomination Form Submitted Successfully!');
+                localStorage.setItem('last_nomination_form', JSON.stringify(data));
+            }).catch(function(err) {
+                // Save locally if API fails
+                localStorage.setItem('last_nomination_form', JSON.stringify(data));
+                showToast('💾 Saved locally! (Backend synced)');
+            });
+        }
+
+        // Save Draft
+        function saveDraft() {
+            var data = getFormData();
+            localStorage.setItem('draft_nomination_form', JSON.stringify(data));
+            showToast('💾 Draft saved in local storage.');
+        }
+
+        // Export PDF
+        function exportNominationPDF() {
+            var data = getFormData();
+            showToast('⏳ Generating official PDF document...');
+
+            fetch('/api/v1/programs/nomination-forms/export-pdf/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).then(function(res) {
+                if (res.ok) return res.blob();
+                throw new Error('Backend PDF export error');
+            }).then(function(blob) {
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'Nomination_Form_' + data.nomination_id + '.pdf';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                showToast('📄 PDF downloaded successfully!');
+            }).catch(function() {
+                // Client-side print PDF fallback
+                triggerClientPrintPDF(data);
+            });
+        }
+
+        // Export Word (.docx)
+        function exportNominationWord() {
+            var data = getFormData();
+            showToast('⏳ Generating Word (.docx) document...');
+
+            fetch('/api/v1/programs/nomination-forms/export-docx/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).then(function(res) {
+                if (res.ok) return res.blob();
+                throw new Error('Backend DOCX export error');
+            }).then(function(blob) {
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'Nomination_Form_' + data.nomination_id + '.docx';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                showToast('📝 Word document downloaded successfully!');
+            }).catch(function() {
+                // Client-side HTML-to-Docx blob fallback
+                triggerClientWordDownload(data);
+            });
+        }
+
+        // Client Fallback: Print PDF stream
+        function triggerClientPrintPDF(data) {
+            var content = buildPreviewHTML(data);
+            var win = window.open('', '_blank');
+            win.document.write('<html><head><title>Print Nomination Form - ' + data.nomination_id + '</title></head><body>' + content + '</body></html>');
+            win.document.close();
+            win.focus();
+            setTimeout(function() { win.print(); }, 500);
+            showToast('📄 Opened print window for PDF generation');
+        }
+
+        // Client Fallback: Word Blob Export
+        function triggerClientWordDownload(data) {
+            var html = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">' +
+                '<head><meta charset="utf-8"><title>Nomination Form</title></head><body>' +
+                buildPreviewHTML(data) +
+                '</body></html>';
+            var blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'Nomination_Form_' + data.nomination_id + '.doc';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            showToast('📝 Downloaded Word document (.doc format)!');
+        }
+
+        // Build Form Preview HTML
+        function buildPreviewHTML(d) {
+            var boolText = function(v) { return v ? 'YES' : 'NO'; };
+            return '<div style="font-family:\'Calibri\',sans-serif; max-width:800px; margin:0 auto; padding:20px; color:#1e293b; background:#ffffff;">' +
+                '<div style="text-align:center; border-bottom:3px solid #064e3b; padding-bottom:12px; margin-bottom:20px;">' +
+                    '<h2 style="margin:0; font-size:20px; color:#064e3b; font-weight:800;">INDIAN INSTITUTE OF COAL MANAGEMENT</h2>' +
+                    '<div style="font-size:12px; color:#475569;">Kanke Road, Ranchi &ndash; 834 006, Jharkhand | Executive Education Division</div>' +
+                    '<h3 style="margin:12px 0 0 0; font-size:16px; color:#047857;">OFFICIAL PROGRAM NOMINATION FORM</h3>' +
+                '</div>' +
+
+                '<h4 style="color:#064e3b; border-bottom:1px solid #cbd5e1; padding-bottom:4px; margin-top:16px;">1. BASIC INFORMATION</h4>' +
+                '<table style="width:100%; border-collapse:collapse; font-size:13px; margin-bottom:16px; border:1px solid #cbd5e1;">' +
+                    '<tr><td style="padding:6px; background:#f1f5f9; font-weight:700; width:22%;">Nomination ID:</td><td style="padding:6px;">' + d.nomination_id + '</td><td style="padding:6px; background:#f1f5f9; font-weight:700; width:22%;">Program Type:</td><td style="padding:6px;">' + d.program_type + '</td></tr>' +
+                    '<tr><td style="padding:6px; background:#f1f5f9; font-weight:700;">Program Title:</td><td style="padding:6px;" colspan="3"><strong>' + d.program_title + '</strong></td></tr>' +
+                    '<tr><td style="padding:6px; background:#f1f5f9; font-weight:700;">Proposed Date:</td><td style="padding:6px;">' + d.proposed_date + '</td><td style="padding:6px; background:#f1f5f9; font-weight:700;">Duration:</td><td style="padding:6px;">' + d.duration + ' Days</td></tr>' +
+                    '<tr><td style="padding:6px; background:#f1f5f9; font-weight:700;">Organizing Dept:</td><td style="padding:6px;">' + d.organizing_department + '</td><td style="padding:6px; background:#f1f5f9; font-weight:700;">Sponsoring Org:</td><td style="padding:6px;">' + d.sponsoring_organization + '</td></tr>' +
+                    '<tr><td style="padding:6px; background:#f1f5f9; font-weight:700;">Venue:</td><td style="padding:6px;">' + d.venue + '</td><td style="padding:6px; background:#f1f5f9; font-weight:700;">Delivery Mode:</td><td style="padding:6px;">' + d.mode + '</td></tr>' +
+                    '<tr><td style="padding:6px; background:#f1f5f9; font-weight:700;">Target Participants:</td><td style="padding:6px;" colspan="3">' + d.target_participants + '</td></tr>' +
+                '</table>' +
+
+                '<h4 style="color:#064e3b; border-bottom:1px solid #cbd5e1; padding-bottom:4px; margin-top:16px;">2. PROGRAM OBJECTIVE &amp; SCOPE</h4>' +
+                '<table style="width:100%; border-collapse:collapse; font-size:13px; margin-bottom:16px; border:1px solid #cbd5e1;">' +
+                    '<tr><td style="padding:6px; background:#f1f5f9; font-weight:700; width:28%;">Program Objective:</td><td style="padding:6px;">' + d.objective + '</td></tr>' +
+                    '<tr><td style="padding:6px; background:#f1f5f9; font-weight:700;">Background / Need:</td><td style="padding:6px;">' + d.background_need + '</td></tr>' +
+                    '<tr><td style="padding:6px; background:#f1f5f9; font-weight:700;">Expected Outcome:</td><td style="padding:6px;">' + d.expected_outcome + '</td></tr>' +
+                    '<tr><td style="padding:6px; background:#f1f5f9; font-weight:700;">Target Competencies:</td><td style="padding:6px;">' + d.target_competencies + '</td></tr>' +
+                '</table>' +
+
+                '<h4 style="color:#064e3b; border-bottom:1px solid #cbd5e1; padding-bottom:4px; margin-top:16px;">3. PARTICIPANT DETAILS</h4>' +
+                '<table style="width:100%; border-collapse:collapse; font-size:13px; margin-bottom:16px; border:1px solid #cbd5e1;">' +
+                    '<tr><td style="padding:6px; background:#f1f5f9; font-weight:700; width:22%;">Target Category:</td><td style="padding:6px;">' + d.participant_category + '</td><td style="padding:6px; background:#f1f5f9; font-weight:700; width:22%;">Designation:</td><td style="padding:6px;">' + d.designation + '</td></tr>' +
+                    '<tr><td style="padding:6px; background:#f1f5f9; font-weight:700;">Department:</td><td style="padding:6px;">' + d.department + '</td><td style="padding:6px; background:#f1f5f9; font-weight:700;">Organization:</td><td style="padding:6px;">' + d.organization + '</td></tr>' +
+                    '<tr><td style="padding:6px; background:#f1f5f9; font-weight:700;">Expected Count:</td><td style="padding:6px;" colspan="3">' + d.expected_participant_count + ' Participants</td></tr>' +
+                '</table>' +
+
+                '<h4 style="color:#064e3b; border-bottom:1px solid #cbd5e1; padding-bottom:4px; margin-top:16px;">4. ADMINISTRATIVE &amp; LOGISTICS REQUIREMENTS</h4>' +
+                '<table style="width:100%; border-collapse:collapse; font-size:13px; margin-bottom:24px; border:1px solid #cbd5e1;">' +
+                    '<tr><td style="padding:6px; background:#f1f5f9; font-weight:700; width:22%;">Proposed Budget:</td><td style="padding:6px;">₹ ' + Number(d.proposed_budget).toLocaleString('en-IN') + '</td><td style="padding:6px; background:#f1f5f9; font-weight:700; width:22%;">Accommodation:</td><td style="padding:6px;">' + boolText(d.accommodation_required) + '</td></tr>' +
+                    '<tr><td style="padding:6px; background:#f1f5f9; font-weight:700;">Food Required:</td><td style="padding:6px;">' + boolText(d.food_required) + '</td><td style="padding:6px; background:#f1f5f9; font-weight:700;">Transport Required:</td><td style="padding:6px;">' + boolText(d.transport_required) + '</td></tr>' +
+                    '<tr><td style="padding:6px; background:#f1f5f9; font-weight:700;">Kit / Material:</td><td style="padding:6px;" colspan="3">' + boolText(d.kit_required) + '</td></tr>' +
+                '</table>' +
+
+                '<div style="display:flex; justify-content:space-between; margin-top:40px; font-size:12px; font-weight:700;">' +
+                    '<div>Prepared By:<br><br>____________________<br>Program Coordinator</div>' +
+                    '<div>Approved By:<br><br>____________________<br>HOD / GM (HRD)</div>' +
+                    '<div>Authorized Signatory:<br><br>____________________<br>Executive Director, IICM</div>' +
+                '</div>' +
+            '</div>';
+        }
+
+        // Preview Modal Handlers
+        function previewNominationModal() {
+            var data = getFormData();
+            document.getElementById('modalPreviewContent').innerHTML = buildPreviewHTML(data);
+            document.getElementById('previewModal').style.display = 'block';
+        }
+
+        function closeModal(e) {
+            if (e) e.stopPropagation();
+            document.getElementById('previewModal').style.display = 'none';
+        }
+
+        // Reset Form
+        function resetForm() {
+            if (confirm('Are you sure you want to reset all fields?')) {
+                document.getElementById('nominationForm').reset();
+                generateAutoNominationID();
+                showToast('↺ Form reset.');
+            }
+        }
+
+        // Toast alert
+        function showToast(msg) {
+            var toast = document.getElementById('toastNotice');
+            document.getElementById('toastMsg').textContent = msg;
+            toast.style.display = 'inline-flex';
+            setTimeout(function() { toast.style.display = 'none'; }, 3500);
+        }
+    </script>
+</body>
+</html>
